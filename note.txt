@@ -2,3 +2,5 @@
 - Install Library
     + Axios
     + Lodash (Optional)
+
+- Organizing Your Next.js 15 Project Structure: https://www.wisp.blog/blog/the-ultimate-guide-to-organizing-your-nextjs-15-project-structure
