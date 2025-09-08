@@ -1,0 +1,4 @@
+- Install plugin prettier, sort class tainwild: https://tailwindcss.com/blog/automatic-class-sorting-with-prettier
+- Install Library
+    + Axios
+    + Lodash (Optional)
