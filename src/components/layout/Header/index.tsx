@@ -2,6 +2,7 @@
 
 import React from "react";
 import { GraduationCap, User, ChevronDown, Menu, X } from "lucide-react";
+import Link from "next/link";
 
 const Header: React.FC = () => {
     const [openMobile, setOpenMobile] = React.useState(false);
@@ -80,15 +81,15 @@ const Header: React.FC = () => {
 
                     {/* Auth (desktop) */}
                     <div className="hidden items-center gap-4 md:flex">
-                        <a href="#" className="text-[#06b6d4] hover:opacity-80">
+                        <Link href="/login" className="text-[#06b6d4] hover:opacity-80">
                             Login
-                        </a>
-                        <a
-                            href="#"
+                        </Link>
+                        <Link
+                            href="/register"
                             className="shadow-soft inline-flex items-center gap-2 rounded-xl bg-[#06b6d4] px-4 py-2 text-white hover:opacity-90"
                         >
                             <User className="h-4 w-4" /> Register
-                        </a>
+                        </Link>
                     </div>
 
                     {/* Mobile toggle */}

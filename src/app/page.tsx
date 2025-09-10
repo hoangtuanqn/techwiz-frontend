@@ -24,8 +24,6 @@ import Header from "~/components/layout/Header";
 export default function Home() {
     return (
         <>
-            <Header />
-
             <section id="home" className="relative">
                 <div className="absolute inset-0">
                     <img
@@ -526,8 +524,6 @@ export default function Home() {
                     </div>
                 </div>
             </section>
-
-            <Footer />
         </>
     );
 }
