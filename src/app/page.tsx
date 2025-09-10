@@ -8,6 +8,7 @@ import Testimonials from "./_comments/Testimonials";
 import Blogs from "./_comments/Blogs";
 import Cta from "./_comments/Cta";
 import UpcomingEvents from "./_comments/UpcomingEvents";
+import NewLetter from "./_comments/NewLetter";
 
 export default function Home() {
     return (
@@ -32,6 +33,9 @@ export default function Home() {
 
             {/* BLOG + NEWSLETTER */}
             <Blogs />
+
+            {/* Newsletter */}
+            <NewLetter />
 
             {/* CTA */}
             <Cta />

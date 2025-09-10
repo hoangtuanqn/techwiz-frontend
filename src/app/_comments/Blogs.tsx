@@ -73,34 +73,6 @@ const Blogs = () => {
                         </div>
                     </div>
                 </div>
-                {/* Newsletter */}
-                <aside className="mt-8 w-full" data-aos="fade-up" data-aos-delay="60">
-                    <div className="w-full rounded-3xl border border-slate-300 bg-white p-8 shadow-md">
-                        <h3 className="text-xl font-semibold text-slate-900">Subscribe for updates</h3>
-                        <p className="mt-2 text-sm text-slate-600">Weekly highlights of campus events.</p>
-                        <form
-                            className="mt-6 flex w-full gap-4"
-                            aria-label="Newsletter"
-                            onSubmit={(e) => {
-                                e.preventDefault();
-                                alert("Subscribed!");
-                            }}
-                        >
-                            <input
-                                type="email"
-                                placeholder="you@example.com"
-                                required
-                                className="flex-1 rounded-2xl border border-slate-300 px-4 py-3 text-slate-900 placeholder-slate-400 transition focus:ring-2 focus:ring-cyan-400 focus:outline-none"
-                            />
-                            <button
-                                type="submit"
-                                className="inline-flex items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-cyan-500 to-fuchsia-500 px-6 py-3 font-semibold text-white shadow-lg transition hover:opacity-90"
-                            >
-                                <Send className="h-5 w-5" /> Subscribe
-                            </button>
-                        </form>
-                    </div>
-                </aside>
             </div>
         </section>
     );
