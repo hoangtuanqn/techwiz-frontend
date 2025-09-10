@@ -37,7 +37,7 @@ const ROLE_DETAIL: Record<
             "Download e-certificates after eligibility",
             "Personal dashboard: history, saved media, notifications",
         ],
-        cta: { label: "Create Account", href: "/register" },
+        cta: { label: "Create Account", href: "/auth/register" },
     },
     organizer: {
         title: "Organizer",

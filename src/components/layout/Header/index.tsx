@@ -1,8 +1,7 @@
-"use client";
-
 import React from "react";
 import { GraduationCap, UserPlus, Menu } from "lucide-react";
 import Link from "next/link";
+import ActionHeader from "./ActionHeader";
 
 const Header: React.FC = () => {
     return (
@@ -38,17 +37,7 @@ const Header: React.FC = () => {
                     </nav>
 
                     {/* Desktop Auth */}
-                    <div className="hidden items-center gap-3 md:flex">
-                        <Link href="/login" className="text-cyan-600 hover:text-cyan-700">
-                            Login
-                        </Link>
-                        <Link
-                            href="/register"
-                            className="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-cyan-500 to-fuchsia-500 px-4 py-2 text-white shadow transition hover:opacity-90"
-                        >
-                            <UserPlus className="h-4 w-4" /> Register
-                        </Link>
-                    </div>
+                    <ActionHeader />
 
                     {/* Mobile Toggle */}
                     <button

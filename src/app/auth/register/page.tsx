@@ -84,7 +84,7 @@ const RegisterPage: React.FC = () => {
                         {/* Footer hint */}
                         <p className="mt-6 text-center text-sm text-slate-600">
                             Already have an account?{" "}
-                            <Link href="/login" className="font-medium text-cyan-600 hover:text-cyan-700">
+                            <Link href="/auth/login" className="font-medium text-cyan-600 hover:text-cyan-700">
                                 Log in
                             </Link>
                         </p>

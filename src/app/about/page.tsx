@@ -184,7 +184,7 @@ export default function AboutPage() {
                     </p>
                     <div className="mt-8 flex justify-center gap-4">
                         <a
-                            href="/register"
+                            href="/auth/register"
                             className="rounded-xl bg-[#06b6d4] px-6 py-3 text-white shadow hover:opacity-90"
                         >
                             Get Started
