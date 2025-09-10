@@ -19,20 +19,18 @@ const Header: React.FC = () => {
                         <Link className="transition hover:text-cyan-600" href="/">
                             Home
                         </Link>
-                        <a className="transition hover:text-cyan-600" href="#categories">
-                            Categories
-                        </a>
-                        <a className="transition hover:text-cyan-600" href="#events">
+                        <a className="transition hover:text-cyan-600" href="/catalog">
                             Events
                         </a>
-                        <a className="transition hover:text-cyan-600" href="#features">
-                            Features
-                        </a>
+
                         <a className="transition hover:text-cyan-600" href="#blog">
                             Blog
                         </a>
                         <a className="transition hover:text-cyan-600" href="#contact">
-                            Contact
+                            About Us
+                        </a>
+                        <a className="transition hover:text-cyan-600" href="#calendar">
+                            Calendar
                         </a>
                     </nav>
 
