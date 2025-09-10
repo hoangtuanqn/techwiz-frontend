@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-// import { UserType } from "~/schemaValidate/user.schema";
+import { UserType } from "~/types/user.type";
 
 interface UserState {
     user: UserType | null;
@@ -13,8 +13,7 @@ export const userSlice = createSlice({
     name: "user",
     initialState,
     reducers: {
-        // setUser(state, action: PayloadAction<UserType | null>) {
-        setUser(state, action) {
+        setUser(state, action: PayloadAction<UserType | null>) {
             state.user = action.payload;
         },
         clearUser(state) {
