@@ -19,21 +19,18 @@ const Header: React.FC = () => {
                         <Link className="transition hover:text-cyan-600" href="/">
                             Home
                         </Link>
-                        <a className="transition hover:text-cyan-600" href="#categories">
-                            Categories
-                        </a>
-                        <a className="transition hover:text-cyan-600" href="#events">
+                        <Link className="transition hover:text-cyan-600" href="/catalog">
                             Events
-                        </a>
-                        <a className="transition hover:text-cyan-600" href="#features">
-                            Features
-                        </a>
-                        <a className="transition hover:text-cyan-600" href="#blog">
+                        </Link>
+                        <Link className="transition hover:text-cyan-600" href="#blog">
                             Blog
-                        </a>
-                        <a className="transition hover:text-cyan-600" href="#contact">
-                            Contact
-                        </a>
+                        </Link>
+                        <Link className="transition hover:text-cyan-600" href="#contact">
+                            About Us
+                        </Link>
+                        <Link className="transition hover:text-cyan-600" href="/calendar">
+                            Calendar
+                        </Link>
                     </nav>
 
                     {/* Desktop Auth */}
@@ -56,9 +53,9 @@ const Header: React.FC = () => {
                     <a className="py-2" href="#home">
                         Home
                     </a>
-                    <a className="py-2" href="#categories">
-                        Categories
-                    </a>
+                    <Link className="py-2" href="/categories">
+                        Events
+                    </Link>
                     <a className="py-2" href="#events">
                         Events
                     </a>
