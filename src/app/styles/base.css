@@ -1,7 +1,11 @@
 @layer base {
     /* reset styles, font-family, etc. */
     :root {
-        --primary: #06b6d4;
-        
+        --brand1: #06b6d4;
+        --brand2: #d946ef;
+    }
+    html,
+    body {
+        scroll-behavior: smooth;
     }
 }
