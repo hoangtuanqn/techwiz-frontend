@@ -65,11 +65,12 @@ const Hero = () => {
                             {/* Category select */}
                             <select className="w-full rounded-xl border border-white/20 bg-white/70 px-3 py-3 text-slate-800 focus:ring-2 focus:ring-cyan-400/50 focus:outline-none">
                                 <option value="">Category</option>
-                                <option>Technical</option>
-                                <option>Business</option>
-                                <option>Cultural</option>
-                                <option>Sports</option>
-                                <option>Volunteering</option>
+                                <option>Cultural Event</option>
+                                <option>Technical Festival</option>
+                                <option>Sports Competition</option>
+                                <option>Annual Function</option>
+                                <option>Seminars and Workshops</option>
+                                <option>Inter-school Competition</option>
                             </select>
 
                             {/* Difficulty select */}
