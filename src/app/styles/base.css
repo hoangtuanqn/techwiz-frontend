@@ -1,0 +1,7 @@
+@layer base {
+    /* reset styles, font-family, etc. */
+    :root {
+        --primary: #06b6d4;
+        
+    }
+}
