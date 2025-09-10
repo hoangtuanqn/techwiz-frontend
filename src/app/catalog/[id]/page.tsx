@@ -70,11 +70,7 @@ export default function EventDetailPage() {
                 {/* Action */}
                 <div className="mt-8 flex justify-center gap-4">
                     <button className="rounded-xl bg-[#06b6d4] px-6 py-3 text-white shadow hover:opacity-90">
-                        <Link
-                            href="/register"
-                        >
-                            Register Now
-                        </Link>
+                        <Link href="/auth/register">Register Now</Link>
                     </button>
                     <button className="rounded-xl border border-slate-300 px-6 py-3 text-slate-700 hover:bg-slate-50">
                         Add to Calendar

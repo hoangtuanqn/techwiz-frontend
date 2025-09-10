@@ -7,7 +7,6 @@ import { GraduationCap } from "lucide-react";
 import FormLogin from "./_components/FormLogin";
 
 const LoginPage: React.FC = () => {
-
     return (
         <main className="flex min-h-[100dvh] items-center justify-center bg-gradient-to-br from-cyan-50 to-fuchsia-50 px-4">
             <div className="w-full max-w-md">
@@ -27,7 +26,7 @@ const LoginPage: React.FC = () => {
                         {/* Footer hint */}
                         <p className="mt-6 text-center text-sm text-slate-600">
                             Don’t have an account?{" "}
-                            <Link href="/register" className="font-medium text-cyan-600 hover:text-cyan-700">
+                            <Link href="/auth/register" className="font-medium text-cyan-600 hover:text-cyan-700">
                                 Register
                             </Link>
                         </p>

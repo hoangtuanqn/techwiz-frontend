@@ -35,8 +35,11 @@ const FormLogin = () => {
     const loginMutation = useMutation({
         mutationFn: (data: { username: string; password: string }) => authApi.login(data),
 
-        onSuccess: () => {
+        onSuccess: (res) => {
+            router.refresh();
             router.push("/");
+
+            login(res.data.data);
             toast.success("Login successful! Redirecting...");
         },
 
