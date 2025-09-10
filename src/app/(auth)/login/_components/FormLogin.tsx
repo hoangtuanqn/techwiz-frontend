@@ -10,6 +10,8 @@ import { useMutation } from "@tanstack/react-query";
 import authApi from "~/apiRequest/auth";
 import { toast } from "sonner";
 import { notificationErrorApi } from "~/libs/apis/validationResponse";
+import { useRouter } from "next/navigation";
+import { useAuth } from "~/hooks/useAuth";
 // Định nghĩa schema validation bằng zod
 const loginSchema = z.object({
     username: z.string().min(1),
@@ -18,6 +20,9 @@ const loginSchema = z.object({
 type LoginType = z.infer<typeof loginSchema>;
 
 const FormLogin = () => {
+    const router = useRouter();
+
+    const { login } = useAuth();
     const form = useForm<LoginType>({
         resolver: zodResolver(loginSchema),
         mode: "onBlur",
@@ -30,8 +35,9 @@ const FormLogin = () => {
     const loginMutation = useMutation({
         mutationFn: (data: { username: string; password: string }) => authApi.login(data),
 
-        onSuccess: (res) => {
-            toast.info("Login successful! Redirecting...");
+        onSuccess: () => {
+            router.push("/");
+            toast.success("Login successful! Redirecting...");
         },
 
         onError: notificationErrorApi,

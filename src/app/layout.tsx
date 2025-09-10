@@ -5,6 +5,8 @@ import "aos/dist/aos.css";
 import Header from "~/components/layout/Header";
 import Footer from "~/components/layout/Footer";
 import QueryProvider from "~/wrapper/QueryProvider";
+import LayoutGetInfoMe from "~/components/layout/LayoutGetInfoMe";
+import { ReduxProvider } from "~/wrapper/npm install @reduxjs/ReduxProvider";
 
 const geistSans = Geist({
     variable: "--font-geist-sans",
@@ -32,9 +34,13 @@ export default function RootLayout({
     return (
         <html lang="en">
             <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-                <Header />
-                <QueryProvider>{children}</QueryProvider>
-                <Footer />
+                <ReduxProvider>
+                    <LayoutGetInfoMe>
+                        <Header />
+                        <QueryProvider>{children}</QueryProvider>
+                        <Footer />
+                    </LayoutGetInfoMe>
+                </ReduxProvider>
             </body>
         </html>
     );
