@@ -2,6 +2,7 @@
 
 import React from "react";
 import { GraduationCap, UserPlus, Menu } from "lucide-react";
+import Link from "next/link";
 
 const Header: React.FC = () => {
     return (
@@ -9,16 +10,16 @@ const Header: React.FC = () => {
             <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                 <div className="flex h-16 items-center justify-between">
                     {/* Logo */}
-                    <a href="#home" className="flex items-center gap-2" aria-label="EventSphere home">
+                    <Link href="/" className="flex items-center gap-2" aria-label="EventSphere home">
                         <GraduationCap className="h-6 w-6 text-cyan-500" />
                         <span className="text-xl font-semibold tracking-wide">EVENTSPHERE</span>
-                    </a>
+                    </Link>
 
                     {/* Desktop Nav */}
                     <nav className="hidden items-center gap-8 md:flex" aria-label="Main">
-                        <a className="transition hover:text-cyan-600" href="#home">
+                        <Link className="transition hover:text-cyan-600" href="/">
                             Home
-                        </a>
+                        </Link>
                         <a className="transition hover:text-cyan-600" href="#categories">
                             Categories
                         </a>
@@ -38,15 +39,15 @@ const Header: React.FC = () => {
 
                     {/* Desktop Auth */}
                     <div className="hidden items-center gap-3 md:flex">
-                        <a href="#" className="text-cyan-600 hover:text-cyan-700">
+                        <Link href="/login" className="text-cyan-600 hover:text-cyan-700">
                             Login
-                        </a>
-                        <a
-                            href="#"
+                        </Link>
+                        <Link
+                            href="/register"
                             className="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-cyan-500 to-fuchsia-500 px-4 py-2 text-white shadow transition hover:opacity-90"
                         >
                             <UserPlus className="h-4 w-4" /> Register
-                        </a>
+                        </Link>
                     </div>
 
                     {/* Mobile Toggle */}
