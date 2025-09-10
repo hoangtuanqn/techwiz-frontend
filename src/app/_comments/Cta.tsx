@@ -1,6 +1,7 @@
 "use client";
 import React from "react";
 import { LogIn, UserPlus } from "lucide-react";
+import Link from "next/link";
 
 const Cta = () => {
     return (
@@ -15,18 +16,18 @@ const Cta = () => {
                         <p className="mt-2 text-slate-600">Create your account and register in seconds.</p>
                     </div>
                     <div className="flex items-center gap-3">
-                        <a
-                            href="#"
+                        <Link
+                            href="/auth/login"
                             className="inline-flex items-center gap-2 rounded-xl border border-slate-300 px-5 py-3 hover:bg-slate-50"
                         >
                             <LogIn className="h-4 w-4" /> Login
-                        </a>
-                        <a
-                            href="#"
+                        </Link>
+                        <Link
+                            href="/auth/register"
                             className="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-cyan-500 to-fuchsia-500 px-5 py-3 text-white shadow hover:opacity-90"
                         >
                             <UserPlus className="h-4 w-4" /> Register
-                        </a>
+                        </Link>
                     </div>
                 </div>
             </div>
