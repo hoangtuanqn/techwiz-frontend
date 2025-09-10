@@ -31,6 +31,9 @@ const Header: React.FC = () => {
                         <Link className="transition hover:text-cyan-600" href="/calendar">
                             Calendar
                         </Link>
+                        <Link className="transition hover:text-cyan-600" href="/contact">
+                            Contact
+                        </Link>
                     </nav>
 
                     {/* Desktop Auth */}
