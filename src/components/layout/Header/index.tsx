@@ -19,7 +19,7 @@ const Header: React.FC = () => {
                         <Link className="transition hover:text-cyan-600" href="/">
                             Home
                         </Link>
-                        <Link className="transition hover:text-cyan-600" href="/catalog">
+                        <Link className="transition hover:text-cyan-600" href="/events">
                             Events
                         </Link>
                         <Link className="transition hover:text-cyan-600" href="#blog">

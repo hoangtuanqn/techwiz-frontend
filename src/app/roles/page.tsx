@@ -1,7 +1,6 @@
 "use client";
 import Link from "next/link";
 import { Eye, IdCard, ClipboardList, ShieldCheck, ArrowRight } from "lucide-react";
-
 export default function RolesPage() {
     const roles = [
         {

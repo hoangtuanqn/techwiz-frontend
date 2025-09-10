@@ -1,7 +1,11 @@
 import Map from "./_components/Map";
 import ContactInfo from "./_components/ContactInfo";
 import FormContact from "./_components/FormContact";
-
+import { Metadata } from "next";
+export const metadata: Metadata = {
+    title: "Contact Us",
+    description: "Get in touch with us for any inquiries or support.",
+};
 export default function ContactPage() {
     return (
         <section id="contact" className="bg-white py-16">

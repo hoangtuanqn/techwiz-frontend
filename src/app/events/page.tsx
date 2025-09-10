@@ -1,7 +1,7 @@
 "use client";
+import { Search, RotateCcw } from "lucide-react";
+import EventList from "./_components/EventList";
 import { useState } from "react";
-import { Search, SlidersHorizontal, RotateCcw } from "lucide-react";
-import Link from "next/link";
 
 // Fake data demo
 const allEvents = Array.from({ length: 20 }).map((_, i) => ({
@@ -104,34 +104,7 @@ export default function CatalogPage() {
                 </div>
 
                 {/* Grid */}
-                <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-                    {currentData.map((ev) => (
-                        <article
-                            key={ev.id}
-                            className="group overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-lg"
-                        >
-                            <img
-                                src={ev.image}
-                                alt={ev.title}
-                                className="h-40 w-full object-cover transition-transform duration-300 group-hover:scale-105"
-                            />
-                            <div className="p-4">
-                                <h3 className="font-semibold text-slate-800 group-hover:text-[#06b6d4]">{ev.title}</h3>
-                                <p className="mt-1 line-clamp-2 text-sm text-slate-600">{ev.desc}</p>
-                                <div className="mt-3 flex items-center justify-between text-sm">
-                                    <span className="text-slate-500">{ev.category}</span>
-                                    <Link
-                                        href={`/catalog/${ev.id}`}
-                                        className="flex items-center gap-1 text-[#06b6d4] hover:underline"
-                                    >
-                                        Details <SlidersHorizontal className="h-3 w-3" />
-                                    </Link>
-                                </div>
-                            </div>
-                        </article>
-                    ))}
-                </div>
-
+                <EventList currentData={currentData} />
                 {/* Pagination */}
                 {totalPages > 1 && (
                     <div className="mt-10 flex justify-center gap-2">
