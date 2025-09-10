@@ -1,12 +1,12 @@
 import React from "react";
-import { GraduationCap, UserPlus, Menu } from "lucide-react";
+import { GraduationCap, UserPlus, Menu, Mail, Bell } from "lucide-react";
 import Link from "next/link";
 import ActionHeader from "./ActionHeader";
 
 const Header: React.FC = () => {
     return (
         <header className="sticky top-0 z-50 border-b border-slate-200 bg-white/90 backdrop-blur">
-            <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <div className="max-w-10xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="flex h-16 items-center justify-between">
                     {/* Logo */}
                     <Link href="/" className="flex items-center gap-2" aria-label="EventSphere home">
@@ -31,10 +31,31 @@ const Header: React.FC = () => {
                         <Link className="transition hover:text-cyan-600" href="/calendar">
                             Calendar
                         </Link>
+                        <Link className="transition hover:text-cyan-600" href="/gallery">
+                            Gallery
+                        </Link>
+                        <Link className="transition hover:text-cyan-600" href="/faq">
+                            FAQ
+                        </Link>
                     </nav>
 
-                    {/* Desktop Auth */}
-                    <ActionHeader />
+                    {/* Right-side Icons (desktop only) */}
+                    <div className="hidden items-center gap-4 md:flex">
+                        {/* Auth */}
+                        <ActionHeader />
+
+                        {/* Notifications */}
+                        <Link href="#" className="relative text-slate-600 hover:text-cyan-600" title="Notifications">
+                            <Bell className="h-5 w-5" />
+                            {/* Badge (optional) */}
+                            {/* <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-red-500"></span> */}
+                        </Link>
+
+                        {/* Messages */}
+                        <Link href="#" className="relative text-slate-600 hover:text-cyan-600" title="Messages">
+                            <Mail className="h-5 w-5" />
+                        </Link>
+                    </div>
 
                     {/* Mobile Toggle */}
                     <button
@@ -50,31 +71,31 @@ const Header: React.FC = () => {
             {/* Mobile Drawer */}
             <div id="mobileNav" className="hidden border-t border-slate-200 bg-white md:hidden">
                 <nav className="flex flex-col gap-2 px-4 py-3">
-                    <a className="py-2" href="#home">
+                    <Link className="py-2" href="#home">
                         Home
-                    </a>
+                    </Link>
                     <Link className="py-2" href="/categories">
                         Events
                     </Link>
-                    <a className="py-2" href="#events">
+                    <Link className="py-2" href="#events">
                         Events
-                    </a>
-                    <a className="py-2" href="#features">
+                    </Link>
+                    <Link className="py-2" href="#features">
                         Features
-                    </a>
-                    <a className="py-2" href="#blog">
+                    </Link>
+                    <Link className="py-2" href="#blog">
                         Blog
-                    </a>
-                    <a className="py-2" href="#contact">
+                    </Link>
+                    <Link className="py-2" href="#contact">
                         Contact
-                    </a>
+                    </Link>
                     <div className="my-2 h-px bg-slate-200"></div>
-                    <a className="py-2 text-cyan-600" href="#">
+                    <Link className="py-2 text-cyan-600" href="#">
                         Login
-                    </a>
-                    <a className="inline-flex items-center gap-2 py-2" href="#">
+                    </Link>
+                    <Link className="inline-flex items-center gap-2 py-2" href="#">
                         <UserPlus className="h-4 w-4" /> Register
-                    </a>
+                    </Link>
                 </nav>
             </div>
         </header>
