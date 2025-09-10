@@ -2,6 +2,7 @@
 
 import React from "react";
 import { GraduationCap, Facebook, Twitter, Instagram, MapPin, Mail, Phone, ArrowUp } from "lucide-react";
+import { Toaster } from "sonner";
 
 const Footer: React.FC = () => {
     return (
@@ -121,6 +122,7 @@ const Footer: React.FC = () => {
                     </a>
                 </div>
             </div>
+            <Toaster position="top-center" expand={true} richColors duration={5000} />
         </footer>
     );
 };

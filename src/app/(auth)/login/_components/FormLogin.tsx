@@ -31,7 +31,7 @@ const FormLogin = () => {
         mutationFn: (data: { username: string; password: string }) => authApi.login(data),
 
         onSuccess: (res) => {
-            toast.info("Login successful! Redirecting...");
+            toast.success("Login successful! Redirecting...");
         },
 
         onError: notificationErrorApi,
