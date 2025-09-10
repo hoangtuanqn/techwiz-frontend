@@ -18,9 +18,6 @@ import authApi from "~/apiRequest/auth";
 import { notificationErrorApi } from "~/libs/apis/validationResponse";
 import { useAuth } from "~/hooks/useAuth";
 
-// Nếu bạn đã có sẵn:
-// import authApi from "~/apiRequest/auth";
-// import { notificationErrorApi } from "~/libs/apis/validationResponse";
 type RegisterType = z.infer<typeof registerSchema>;
 
 const FormRegister = () => {
@@ -31,7 +28,7 @@ const FormRegister = () => {
         resolver: zodResolver(registerSchema),
         mode: "onBlur",
         defaultValues: {
-            name: "",
+            full_name: "",
             email: "",
             mobile: "",
             username: "",
@@ -61,7 +58,7 @@ const FormRegister = () => {
                 {/* Full Name */}
                 <FormField
                     control={form.control}
-                    name="name"
+                    name="full_name"
                     render={({ field }) => (
                         <FormItem>
                             <FormLabel>Full Name</FormLabel>

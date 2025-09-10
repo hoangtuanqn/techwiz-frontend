@@ -12,7 +12,7 @@ const ActionHeader = () => {
             {user ? (
                 <div className="relative">
                     <button className="flex items-center gap-1 py-2 text-cyan-600 hover:text-cyan-700">
-                        {user.name}
+                        {user.full_name}
                         <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                         </svg>
