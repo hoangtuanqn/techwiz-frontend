@@ -1,74 +1,12 @@
-"use client";
 import { Search, RotateCcw } from "lucide-react";
 import EventList from "./_components/EventList";
-import { useState } from "react";
-
-const isAvailable = (endDate: string) => {
-    return new Date(endDate) >= new Date();
+import { Metadata } from "next";
+export const metadata: Metadata = {
+    title: "Event Catalog",
+    description: "Browse and discover campus events in our comprehensive event catalog.",
 };
 
-// Fake data demo
-const allEvents = Array.from({ length: 20 }).map((_, i) => {
-    // Random số ngày từ -15 đến +15
-    const randomDays = Math.floor(Math.random() * 31) - 15;
-    const endDate = new Date();
-    endDate.setDate(endDate.getDate() + randomDays);
-
-    return {
-        id: i + 1,
-        title: `Event ${i + 1}`,
-        category: ["Technical", "Business", "Cultural", "Sports"][i % 4],
-        desc: "Short description for this event, including what you can expect to learn and enjoy.",
-        image: `https://picsum.photos/seed/${i}/400/250`,
-        seatsBooked: Math.floor(Math.random() * 100),
-        seatsTotal: 120,
-        endDate: endDate.toISOString().split("T")[0], // YYYY-MM-DD format
-    };
-});
-
-const pct = (booked: number, total: number) => (total ? Math.min(100, Math.round((booked / total) * 100)) : 0);
-
 export default function CatalogPage() {
-    const [keyword, setKeyword] = useState("");
-    const [category, setCategory] = useState("All");
-    const [sort, setSort] = useState("Available");
-    const [page, setPage] = useState(1);
-
-    const perPage = 12;
-
-    const resetFilters = () => {
-        setKeyword("");
-        setCategory("All");
-        setSort("Newest");
-        setPage(1);
-    };
-
-    const filtered = allEvents
-        .filter((ev) => {
-            const matchCategory = category === "All" || ev.category === category;
-            const matchKeyword = ev.title.toLowerCase().includes(keyword.toLowerCase());
-            const available = isAvailable(ev.endDate);
-
-            if (sort === "Available") return available && matchCategory && matchKeyword;
-            if (sort === "Close") return !available && matchCategory && matchKeyword;
-            if (sort === "Hot") return available && matchCategory && matchKeyword;
-
-            return matchCategory && matchKeyword;
-        })
-        .sort((a, b) => {
-            if (sort === "Newest") return b.id - a.id;
-            if (sort === "Oldest") return a.id - b.id;
-            if (sort === "Hot") {
-                const pa = pct(a.seatsBooked, a.seatsTotal);
-                const pb = pct(b.seatsBooked, b.seatsTotal);
-                return pb - pa || b.id - a.id;
-            }
-            return 0;
-        });
-
-    const totalPages = Math.ceil(filtered.length / perPage);
-    const currentData = filtered.slice((page - 1) * perPage, page * perPage);
-
     return (
         <section id="catalog" className="bg-white py-16">
             <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -88,83 +26,34 @@ export default function CatalogPage() {
                             <input
                                 type="text"
                                 placeholder="Search events…"
-                                value={keyword}
-                                onChange={(e) => setKeyword(e.target.value)}
                                 className="w-60 rounded-xl border border-slate-200 py-2 pr-3 pl-10 text-sm focus:ring-2 focus:ring-[#06b6d4]/50 focus:outline-none"
                             />
                         </div>
-                        <select
-                            value={category}
-                            onChange={(e) => {
-                                setCategory(e.target.value);
-                                setPage(1);
-                            }}
-                            className="rounded-xl border border-slate-200 px-3 py-2 text-sm focus:ring-2 focus:ring-[#06b6d4]/50"
-                        >
+                        <select className="rounded-xl border border-slate-200 px-3 py-2 text-sm focus:ring-2 focus:ring-[#06b6d4]/50">
                             <option>All</option>
                             <option>Technical</option>
                             <option>Business</option>
                             <option>Cultural</option>
                             <option>Sports</option>
                         </select>
-                        <select
-                            value={sort}
-                            onChange={(e) => {
-                                setSort(e.target.value);
-                                setPage(1);
-                            }}
-                            className="rounded-xl border border-slate-200 px-3 py-2 text-sm focus:ring-2 focus:ring-[#06b6d4]/50"
-                        >
+                        <select className="rounded-xl border border-slate-200 px-3 py-2 text-sm focus:ring-2 focus:ring-[#06b6d4]/50">
                             <option>Available</option>
                             <option>Close</option>
                             <option>Hot</option>
                         </select>
 
                         {/* Reset */}
-                        <button
-                            onClick={resetFilters}
-                            className="inline-flex items-center gap-1 rounded-xl border border-slate-200 px-3 py-2 text-sm hover:bg-slate-50"
-                        >
+                        <button className="inline-flex items-center gap-1 rounded-xl border border-slate-200 px-3 py-2 text-sm hover:bg-slate-50">
                             <RotateCcw className="h-4 w-4" /> Reset
                         </button>
                     </div>
 
                     {/* Count */}
-                    <span className="text-sm text-slate-500">{filtered.length} events found</span>
+                    <span className="text-sm text-slate-500">20 events found</span>
                 </div>
 
                 {/* Grid */}
-                <EventList currentData={currentData} />
-                {/* Pagination */}
-                {totalPages > 1 && (
-                    <div className="mt-10 flex justify-center gap-2">
-                        <button
-                            onClick={() => setPage((p) => Math.max(1, p - 1))}
-                            disabled={page === 1}
-                            className="rounded-lg border border-slate-200 px-3 py-1 text-sm disabled:opacity-50"
-                        >
-                            Prev
-                        </button>
-                        {Array.from({ length: totalPages }).map((_, i) => (
-                            <button
-                                key={i}
-                                onClick={() => setPage(i + 1)}
-                                className={`rounded-lg border px-3 py-1 text-sm ${
-                                    page === i + 1 ? "border-[#06b6d4] bg-[#06b6d4] text-white" : "border-slate-200"
-                                }`}
-                            >
-                                {i + 1}
-                            </button>
-                        ))}
-                        <button
-                            onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
-                            disabled={page === totalPages}
-                            className="rounded-lg border border-slate-200 px-3 py-1 text-sm disabled:opacity-50"
-                        >
-                            Next
-                        </button>
-                    </div>
-                )}
+                <EventList />
             </div>
         </section>
     );
