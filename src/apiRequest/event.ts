@@ -25,5 +25,10 @@ const eventApi = {
     getDetailEvent: (id: number) => {
         return publicApi.get<EventDetailResponseType>(`/events/${id}`);
     },
+
+    // đăng ký sự kiện
+    registerEvent: (id: number) => {
+        return publicApi.post(`/events/${id}/register`);
+    },
 };
 export default eventApi;

@@ -7,6 +7,7 @@ import { formatter } from "~/utils/format";
 import { Metadata } from "next";
 import AddCalendar from "./_components/AddCalendar";
 import { ShareButton } from "~/components/ShareButton";
+import { ConfirmRegister } from "./_components/ConfirmRegister";
 
 const getDetailEvent = cache(async (id: string) => {
     const {
@@ -188,19 +189,16 @@ export default async function EventDetailPage({ params }: { params: { id: string
 
                 {/* Actions */}
                 <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center">
-                    <Link
-                        href={`/events/${event.id}/register`}
-                        className="inline-flex items-center justify-center rounded-xl bg-cyan-600 px-6 py-3 font-medium text-white shadow hover:bg-cyan-700"
-                    >
-                        Register Now
-                    </Link>
-
-                    <Link
-                        href={`/events/${event.id}/reviews`}
-                        className="inline-flex items-center justify-center rounded-xl border border-slate-300 px-6 py-3 font-medium text-slate-700 hover:bg-slate-50"
-                    >
-                        View Reviews
-                    </Link>
+                    <ConfirmRegister event={event} />
+                    {/* Sự kiện kết thúc mới hiển thị */}
+                    {isClosed(event.start_time, left) && (
+                        <Link
+                            href={`/events/${event.id}/reviews`}
+                            className="inline-flex items-center justify-center rounded-xl border border-slate-300 px-6 py-3 font-medium text-slate-700 hover:bg-slate-50"
+                        >
+                            View Reviews
+                        </Link>
+                    )}
 
                     <AddCalendar event={event} />
 

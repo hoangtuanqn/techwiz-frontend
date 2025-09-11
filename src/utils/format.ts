@@ -7,6 +7,7 @@ export const formatter = {
         }
         return parsedDate.toLocaleDateString("en-US");
     },
+
     number: (amount: number) => Intl.NumberFormat("en-US").format(amount),
     duration: (seconds: number): string => {
         const d = Math.floor(seconds / (3600 * 24));
@@ -73,6 +74,21 @@ export const formatter = {
             return interval === 1 ? "1 minute left" : `${interval} minutes left`;
         }
         return "Just now";
+    },
+    formatDate: (dateString: string) => {
+        return new Date(dateString).toLocaleDateString("en-US", {
+            weekday: "long",
+            year: "numeric",
+            month: "long",
+            day: "numeric",
+        });
+    },
+
+    formatTime: (dateString: string) => {
+        return new Date(dateString).toLocaleTimeString("en-US", {
+            hour: "2-digit",
+            minute: "2-digit",
+        });
     },
 };
 

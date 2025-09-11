@@ -1,0 +1,287 @@
+"use client";
+import { Button } from "~/components/ui/button";
+import {
+    Dialog,
+    DialogClose,
+    DialogContent,
+    DialogDescription,
+    DialogFooter,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger,
+} from "~/components/ui/dialog";
+import { EventDetailResponseType } from "~/types/schemaZod/event.schema";
+import { useAuth } from "~/hooks/useAuth";
+import { Calendar, MapPin, User, Mail, Phone, Building, IdCard, Clock, LogIn, AlertCircle } from "lucide-react";
+import { formatter } from "~/utils/format";
+import Link from "next/link";
+import { toast } from "sonner";
+import eventApi from "~/apiRequest/event";
+import { notificationErrorApi } from "~/libs/apis/validationResponse";
+
+export function ConfirmRegister({ event: ev }: { event: EventDetailResponseType["data"] }) {
+    const { user } = useAuth();
+
+    // destructure đúng theo schema: { event, seating, organizer }
+
+    const seating = ev.seating;
+    const org = ev.organizer;
+
+    const totalSeats = seating?.total_seats ?? 0;
+    const booked = ev?.booked_count ?? 0;
+    const available = Math.max(totalSeats - booked, 0);
+    const progressPct = totalSeats > 0 ? Math.min(100, (booked / totalSeats) * 100) : 0;
+
+    const handleConfirmRegistration = async () => {
+        try {
+            await eventApi.registerEvent(ev.id);
+            window.location.reload();
+            toast.success("You have successfully registered for the event!");
+        } catch (error) {
+            notificationErrorApi(error);
+        }
+        // Optionally, you can add logic to refresh the event data or redirect the user
+    };
+
+    return (
+        <Dialog>
+            <DialogTrigger asChild>
+                <Button className="inline-flex items-center justify-center rounded-xl bg-gradient-to-r from-cyan-500 to-fuchsia-500 px-6 py-3 font-medium text-white shadow-lg transition-all duration-200 hover:scale-105 hover:shadow-cyan-500/25">
+                    Register Now
+                </Button>
+            </DialogTrigger>
+
+            <DialogContent className="max-h-[80vh] overflow-y-auto sm:max-w-[600px]">
+                <DialogHeader>
+                    <DialogTitle className="bg-gradient-to-r from-cyan-600 to-fuchsia-600 bg-clip-text text-2xl font-bold text-transparent">
+                        {!user ? "Login Required" : "Confirm Registration"}
+                    </DialogTitle>
+                    <DialogDescription className="text-slate-600">
+                        {!user
+                            ? "Please login to your account to register for this event."
+                            : "Please review your information and event details before confirming your registration."}
+                    </DialogDescription>
+                </DialogHeader>
+
+                {!user ? (
+                    // ======== Login Required Section ========
+                    <div className="space-y-6">
+                        <div className="rounded-2xl border border-slate-200 bg-gradient-to-br from-amber-50 to-orange-50 p-8 text-center">
+                            <AlertCircle className="mx-auto mb-4 h-16 w-16 text-amber-500" />
+                            <h3 className="mb-2 text-xl font-semibold text-slate-800">Authentication Required</h3>
+                            <p className="mb-6 text-slate-600">
+                                You need to be logged in to register for events. Please login to your account or create
+                                a new one if you dont have an account yet.
+                            </p>
+
+                            <div className="flex flex-col justify-center gap-3 sm:flex-row">
+                                <DialogClose asChild>
+                                    <Link href="/auth/login">
+                                        <Button className="inline-flex w-full items-center gap-2 bg-gradient-to-r from-cyan-500 to-fuchsia-500 text-white transition-all duration-200 hover:scale-105 sm:w-auto">
+                                            <LogIn className="h-4 w-4" />
+                                            Login to Continue
+                                        </Button>
+                                    </Link>
+                                </DialogClose>
+                                <DialogClose asChild>
+                                    <Link href="/auth/register">
+                                        <Button variant="outline" className="w-full sm:w-auto">
+                                            Create Account
+                                        </Button>
+                                    </Link>
+                                </DialogClose>
+                            </div>
+                        </div>
+
+                        {/* Event Preview - Limited Info */}
+                        <div className="rounded-2xl border border-slate-200 bg-gradient-to-br from-slate-50 to-gray-50 p-6">
+                            <h3 className="mb-4 flex items-center gap-2 text-lg font-semibold text-slate-800">
+                                <Calendar className="h-5 w-5 text-slate-600" />
+                                Event Preview
+                            </h3>
+
+                            <div className="space-y-3">
+                                <div className="flex items-start gap-3">
+                                    <div className="mt-2 h-2 w-2 rounded-full bg-slate-400" />
+                                    <div>
+                                        <p className="font-semibold text-slate-800">{ev.title}</p>
+                                        <p className="line-clamp-2 text-sm text-slate-600">{ev.description}</p>
+                                    </div>
+                                </div>
+
+                                <div className="mt-4 grid grid-cols-1 gap-3">
+                                    <div className="flex items-center gap-2">
+                                        <Calendar className="h-4 w-4 text-slate-500" />
+                                        <span className="text-sm text-slate-600">
+                                            {formatter.formatDate(ev.start_time)}
+                                        </span>
+                                    </div>
+
+                                    <div className="flex items-center gap-2">
+                                        <MapPin className="h-4 w-4 text-slate-500" />
+                                        <span className="text-sm text-slate-600">{ev.venue}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                ) : (
+                    // ======== Authenticated User - Full Registration Form ========
+                    <div className="space-y-6">
+                        {/* Event Information */}
+                        <div className="rounded-2xl border border-slate-200 bg-gradient-to-br from-cyan-50 to-fuchsia-50 p-6">
+                            <h3 className="mb-4 flex items-center gap-2 text-lg font-semibold text-slate-800">
+                                <Calendar className="h-5 w-5 text-cyan-600" />
+                                Event Information
+                            </h3>
+
+                            <div className="space-y-3">
+                                <div className="flex items-start gap-3">
+                                    <div className="mt-2 h-2 w-2 rounded-full bg-cyan-500" />
+                                    <div>
+                                        <p className="font-semibold text-slate-800">{ev.title}</p>
+                                        <p className="text-sm text-slate-600">{ev.description}</p>
+                                    </div>
+                                </div>
+
+                                <div className="mt-4 grid grid-cols-1 gap-4 md:grid-cols-2">
+                                    <div className="flex items-center gap-2">
+                                        <Calendar className="h-4 w-4 text-slate-500" />
+                                        <span className="text-sm text-slate-600">
+                                            {formatter.formatDate(ev.start_time)}
+                                        </span>
+                                    </div>
+
+                                    <div className="flex items-center gap-2">
+                                        <Clock className="h-4 w-4 text-slate-500" />
+                                        <span className="text-sm text-slate-600">
+                                            {formatter.formatTime(ev.start_time)} – {formatter.formatTime(ev.end_time)}
+                                        </span>
+                                    </div>
+
+                                    <div className="flex items-center gap-2">
+                                        <MapPin className="h-4 w-4 text-slate-500" />
+                                        <span className="text-sm text-slate-600">{ev.venue}</span>
+                                    </div>
+
+                                    <div className="flex items-center gap-2">
+                                        <User className="h-4 w-4 text-slate-500" />
+                                        <span className="text-sm text-slate-600">Organized by {org.full_name}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* User Information */}
+                        <div className="rounded-2xl border border-slate-200 bg-gradient-to-br from-slate-50 to-blue-50 p-6">
+                            <h3 className="mb-4 flex items-center gap-2 text-lg font-semibold text-slate-800">
+                                <User className="h-5 w-5 text-blue-600" />
+                                Your Information
+                            </h3>
+
+                            <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+                                <div className="flex items-center gap-3">
+                                    <User className="h-4 w-4 text-slate-500" />
+                                    <div>
+                                        <p className="text-xs tracking-wide text-slate-500 uppercase">Full Name</p>
+                                        <p className="text-sm font-medium text-slate-800">{user.full_name}</p>
+                                    </div>
+                                </div>
+
+                                <div className="flex items-center gap-3">
+                                    <Mail className="h-4 w-4 text-slate-500" />
+                                    <div>
+                                        <p className="text-xs tracking-wide text-slate-500 uppercase">Email</p>
+                                        <p className="text-sm font-medium text-slate-800">{user.email}</p>
+                                    </div>
+                                </div>
+
+                                <div className="flex items-center gap-3">
+                                    <Phone className="h-4 w-4 text-slate-500" />
+                                    <div>
+                                        <p className="text-xs tracking-wide text-slate-500 uppercase">Mobile</p>
+                                        <p className="text-sm font-medium text-slate-800">{user.mobile}</p>
+                                    </div>
+                                </div>
+
+                                <div className="flex items-center gap-3">
+                                    <Building className="h-4 w-4 text-slate-500" />
+                                    <div>
+                                        <p className="text-xs tracking-wide text-slate-500 uppercase">Department</p>
+                                        <p className="text-sm font-medium text-slate-800">{user.department}</p>
+                                    </div>
+                                </div>
+
+                                <div className="flex items-center gap-3 md:col-span-2">
+                                    <IdCard className="h-4 w-4 text-slate-500" />
+                                    <div>
+                                        <p className="text-xs tracking-wide text-slate-500 uppercase">
+                                            Enrollment Number
+                                        </p>
+                                        <p className="text-sm font-medium text-slate-800">{user.enrollment_no}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Seating Information */}
+                        <div className="rounded-2xl border border-slate-200 bg-gradient-to-br from-emerald-50 to-green-50 p-6">
+                            <h3 className="mb-4 text-lg font-semibold text-slate-800">Seating Information</h3>
+
+                            <div className="flex items-center justify-between">
+                                <div>
+                                    <p className="text-sm text-slate-600">Available Seats</p>
+                                    <p className="text-2xl font-bold text-emerald-600">{available}</p>
+                                </div>
+
+                                <div className="text-right">
+                                    <p className="text-sm text-slate-600">Total Capacity</p>
+                                    <p className="text-lg font-semibold text-slate-800">{totalSeats} seats</p>
+                                </div>
+                            </div>
+
+                            <div className="mt-4">
+                                <div className="mb-2 flex justify-between text-sm text-slate-600">
+                                    <span>Booking Progress</span>
+                                    <span>
+                                        {booked}/{totalSeats}
+                                    </span>
+                                </div>
+                                <div className="h-2 w-full rounded-full bg-slate-200">
+                                    <div
+                                        className="h-2 rounded-full bg-gradient-to-r from-emerald-500 to-green-500 transition-all duration-300"
+                                        style={{ width: `${progressPct}%` }}
+                                    />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                )}
+
+                <DialogFooter className="flex gap-3 pt-6">
+                    {!user ? (
+                        <DialogClose asChild>
+                            <Button variant="outline" className="w-full">
+                                Close
+                            </Button>
+                        </DialogClose>
+                    ) : (
+                        <>
+                            <DialogClose asChild>
+                                <Button variant="outline" className="flex-1">
+                                    Cancel
+                                </Button>
+                            </DialogClose>
+                            <Button
+                                onClick={handleConfirmRegistration}
+                                className="flex-1 bg-gradient-to-r from-cyan-500 to-fuchsia-500 text-white transition-all duration-200 hover:scale-105"
+                            >
+                                Confirm Registration
+                            </Button>
+                        </>
+                    )}
+                </DialogFooter>
+            </DialogContent>
+        </Dialog>
+    );
+}
