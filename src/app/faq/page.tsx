@@ -12,7 +12,6 @@ import {
     Users,
     Mail,
 } from "lucide-react";
-
 const faqs = [
     {
         question: "What is Techwiz?",
@@ -112,7 +111,7 @@ export default function FAQPage() {
 
             <div className="relative z-10 container mx-auto px-6 py-16 sm:px-8 lg:px-12">
                 {/* Header Section */}
-                <div className="mb-16 text-center" data-aos="fade-up">
+                <div className="mb-16 text-center">
                     <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-cyan-500/30 bg-gradient-to-r from-cyan-500/20 to-fuchsia-500/20 px-4 py-2">
                         <HelpCircle className="h-4 w-4 text-cyan-400" />
                         <span className="text-sm font-medium text-cyan-300">Support Center</span>
@@ -131,9 +130,9 @@ export default function FAQPage() {
                     </p>
 
                     {/* Search Bar */}
-                    <div className="relative mx-auto max-w-2xl" data-aos="fade-up" data-aos-delay="200">
+                    <div className="relative mx-auto max-w-2xl">
                         <div className="relative">
-                            <Search className="absolute top-1/2 left-4 h-5 w-5 -translate-y-1/2 transform text-slate-400" />
+                            <Search className="absolute top-1/2 left-4 z-20 h-5 w-5 -translate-y-1/2 transform text-slate-400" />
                             <input
                                 type="text"
                                 placeholder="Search FAQ..."
@@ -146,7 +145,7 @@ export default function FAQPage() {
                 </div>
 
                 {/* Category Filter */}
-                <div className="mb-12" data-aos="fade-up" data-aos-delay="300">
+                <div className="mb-12">
                     <div className="flex flex-wrap justify-center gap-3">
                         {categories.map((category) => (
                             <button
@@ -175,8 +174,6 @@ export default function FAQPage() {
                                 <div
                                     key={index}
                                     className="group relative overflow-hidden rounded-3xl border border-white/10 bg-white/5 backdrop-blur-xl transition-all duration-500 hover:border-cyan-400/30 hover:bg-white/10"
-                                    data-aos="fade-up"
-                                    data-aos-delay={index * 50}
                                 >
                                     {/* Gradient overlay */}
                                     <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/0 to-fuchsia-500/0 transition-all duration-500 group-hover:from-cyan-500/5 group-hover:to-fuchsia-500/5"></div>
@@ -225,7 +222,7 @@ export default function FAQPage() {
 
                     {/* No results */}
                     {filteredFaqs.length === 0 && (
-                        <div className="py-16 text-center" data-aos="fade-up">
+                        <div className="py-16 text-center">
                             <div className="mx-auto mb-6 flex h-24 w-24 items-center justify-center rounded-3xl border border-cyan-500/30 bg-gradient-to-r from-cyan-500/20 to-fuchsia-500/20">
                                 <Search className="h-12 w-12 text-cyan-400" />
                             </div>
@@ -236,7 +233,7 @@ export default function FAQPage() {
                 </div>
 
                 {/* Contact Support Section */}
-                <div className="mt-20 text-center" data-aos="fade-up">
+                <div className="mt-20 text-center">
                     <div className="mx-auto max-w-2xl rounded-3xl border border-white/10 bg-white/5 p-8 backdrop-blur-xl">
                         <h3 className="mb-4 text-2xl font-bold text-white">Still have questions?</h3>
                         <p className="mb-6 text-slate-300">
