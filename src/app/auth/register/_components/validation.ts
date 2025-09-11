@@ -17,15 +17,7 @@ export const registerSchema = z.object({
         .max(20, "Phone number is too long")
         .regex(/^[+]?[\d\s\-()]+$/, "Invalid phone number format"),
 
-    username: z
-        .string()
-        .min(1, "Username is required")
-        .min(3, "Username must be at least 3 characters")
-        .max(30, "Username is too long")
-        .regex(/^[a-zA-Z0-9_]+$/, "Username can only contain letters, numbers, and underscores")
-        .refine((val) => !val.startsWith("_") && !val.endsWith("_"), {
-            message: "Username cannot start or end with underscore",
-        }),
+
 
     password: z
         .string()

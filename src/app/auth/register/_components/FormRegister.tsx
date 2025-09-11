@@ -31,7 +31,7 @@ const FormRegister = () => {
             full_name: "",
             email: "",
             mobile: "",
-            username: "",
+
             password: "",
             department: "",
             enrollment_no: "",
@@ -114,23 +114,7 @@ const FormRegister = () => {
                     )}
                 />
 
-                {/* Username */}
-                <FormField
-                    control={form.control}
-                    name="username"
-                    render={({ field }) => (
-                        <FormItem>
-                            <FormLabel>Username</FormLabel>
-                            <FormControl>
-                                <div className="relative">
-                                    <UserIcon className="pointer-events-none absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-slate-400" />
-                                    <Input placeholder="Choose a username" {...field} className="pl-10" />
-                                </div>
-                            </FormControl>
-                            <FormMessage />
-                        </FormItem>
-                    )}
-                />
+
 
                 {/* Password */}
                 <FormField

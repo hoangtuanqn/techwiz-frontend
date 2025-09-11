@@ -2,7 +2,7 @@ import React from "react";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "~/components/ui/form";
 import { Input } from "~/components/ui/input";
 import { Button } from "~/components/ui/button";
-import { IdCard, Lock, LogIn } from "lucide-react";
+import { Mail, Lock, LogIn } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -14,7 +14,7 @@ import { useRouter } from "next/navigation";
 import { useAuth } from "~/hooks/useAuth";
 // Định nghĩa schema validation bằng zod
 const loginSchema = z.object({
-    username: z.string().min(1),
+    email: z.string().min(3,"Invalid email address"),
     password: z.string().min(6, "Password must be at least 6 characters long"),
 });
 type LoginType = z.infer<typeof loginSchema>;
@@ -27,13 +27,13 @@ const FormLogin = () => {
         resolver: zodResolver(loginSchema),
         mode: "onBlur",
         defaultValues: {
-            username: "",
+            email: "",
             password: "",
         },
     });
     // Khai báo mutation
     const loginMutation = useMutation({
-        mutationFn: (data: { username: string; password: string }) => authApi.login(data),
+        mutationFn: (data: { email: string; password: string }) => authApi.login(data),
 
         onSuccess: (res) => {
             router.refresh();
@@ -55,14 +55,14 @@ const FormLogin = () => {
                 {/* Username */}
                 <FormField
                     control={form.control}
-                    name="username"
+                    name="email"
                     render={({ field }) => (
                         <FormItem>
-                            <FormLabel>Usernamer</FormLabel>
+                            <FormLabel>Email</FormLabel>
                             <FormControl>
                                 <div className="relative">
-                                    <IdCard className="pointer-events-none absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-slate-400" />
-                                    <Input placeholder="" {...field} className="pl-10" />
+                                    <Mail className="pointer-events-none absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-slate-400" />
+                                    <Input placeholder="you@example.com" {...field} className="pl-10" />
                                 </div>
                             </FormControl>
                             <FormMessage />
