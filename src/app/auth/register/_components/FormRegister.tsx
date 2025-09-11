@@ -17,6 +17,7 @@ import { registerSchema } from "./validation";
 import authApi from "~/apiRequest/auth";
 import { notificationErrorApi } from "~/libs/apis/validationResponse";
 import { useAuth } from "~/hooks/useAuth";
+import PasswordStrengthMeter from "~/components/layout/Auth/PasswordStrengthMeter";
 
 type RegisterType = z.infer<typeof registerSchema>;
 
@@ -114,8 +115,6 @@ const FormRegister = () => {
                     )}
                 />
 
-
-
                 {/* Password */}
                 <FormField
                     control={form.control}
@@ -129,6 +128,7 @@ const FormRegister = () => {
                                     <Input type="password" placeholder="••••••••" {...field} className="pl-10" />
                                 </div>
                             </FormControl>
+                            <PasswordStrengthMeter password={form.watch("password")} />
                             <FormMessage />
                         </FormItem>
                     )}
@@ -177,7 +177,7 @@ const FormRegister = () => {
                             <FormControl>
                                 <div className="relative">
                                     <IdCard className="pointer-events-none absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-slate-400" />
-                                    <Input placeholder="e.g. SE2005-12345" {...field} className="pl-10" />
+                                    <Input placeholder="e.g. Student123456" {...field} className="pl-10" />
                                 </div>
                             </FormControl>
                             <p className="mt-1 text-xs text-slate-500">
