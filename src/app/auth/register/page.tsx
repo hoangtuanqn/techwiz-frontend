@@ -3,6 +3,13 @@ import Link from "next/link";
 
 import FormRegister from "./_components/FormRegister";
 import { GraduationCap } from "lucide-react";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+    title: "Register - EventSphere",
+    description:
+        "Join EventSphere today and unlock seamless event registration, attendance tracking, and digital certificates. Create your account now to start managing and participating in events with ease.",
+};
 
 const RegisterPage: React.FC = () => {
     return (

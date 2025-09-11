@@ -27,8 +27,8 @@ export default function PasswordStrengthMeter({ password }: PasswordStrengthMete
     return (
         <div className="space-y-1 pt-2">
             <Progress value={strengthPercent} className={progressClass} />
-            <p className="text-muted-foreground text-sm">Độ mạnh: {label}</p>
-            {suggestions.length > 0 && <p className="text-xs text-yellow-600">Gợi ý: {suggestions.join(" ")}</p>}
+            <p className="text-muted-foreground text-sm">Strength: {label}</p>
+            {suggestions.length > 0 && <p className="text-xs text-yellow-600">Suggestions: {suggestions.join(" ")}</p>}
         </div>
     );
 }

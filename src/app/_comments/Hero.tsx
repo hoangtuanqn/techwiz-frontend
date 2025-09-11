@@ -2,6 +2,8 @@
 import React, { useEffect } from "react";
 import { Play, Rocket, Search, SearchCheck } from "lucide-react";
 import AOS from "aos";
+import { Button } from "~/components/ui/button";
+import { WatchPreview } from "./WatchPreview";
 const Hero = () => {
     useEffect(() => {
         AOS.init({ once: true, duration: 420, easing: "ease-out", offset: 80 });
@@ -44,7 +46,7 @@ const Hero = () => {
                     {/* Faceted Search Form */}
                     <form
                         id="searchForm"
-                        className="glass shadow-soft mx-auto mt-8 max-w-4xl rounded-2xl border border-white/30 bg-white/20 p-3 backdrop-blur-md md:p-4"
+                        className="glass shadow-soft mx-auto mt-8 max-w-4xl rounded-2xl border border-cyan-300/30 bg-white/90 p-3 backdrop-blur-md md:p-4"
                         aria-label="Search events"
                         onSubmit={(e) => {
                             e.preventDefault();
@@ -54,16 +56,16 @@ const Hero = () => {
                         <div className="grid grid-cols-1 gap-3 md:grid-cols-4">
                             {/* Keyword input */}
                             <div className="relative">
-                                <Search className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-slate-400" />
+                                <Search className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-cyan-500" />
                                 <input
                                     type="text"
                                     placeholder="Keyword…"
-                                    className="w-full rounded-xl border border-white/20 bg-white/70 py-3 pr-3 pl-10 text-slate-800 placeholder-slate-500 focus:ring-2 focus:ring-cyan-400/50 focus:outline-none"
+                                    className="w-full rounded-xl border border-cyan-300/40 bg-white py-3 pr-3 pl-10 text-slate-900 placeholder-slate-500 focus:ring-2 focus:ring-cyan-400/50 focus:outline-none"
                                 />
                             </div>
 
                             {/* Category select */}
-                            <select className="w-full rounded-xl border border-white/20 bg-white/70 px-3 py-3 text-slate-800 focus:ring-2 focus:ring-cyan-400/50 focus:outline-none">
+                            <select className="w-full rounded-xl border border-cyan-300/40 bg-white px-3 py-3 text-slate-900 focus:ring-2 focus:ring-cyan-400/50 focus:outline-none">
                                 <option value="">Category</option>
                                 <option>Cultural Event</option>
                                 <option>Technical Festival</option>
@@ -74,7 +76,7 @@ const Hero = () => {
                             </select>
 
                             {/* Difficulty select */}
-                            <select className="w-full rounded-xl border border-white/20 bg-white/70 px-3 py-3 text-slate-800 focus:ring-2 focus:ring-cyan-400/50 focus:outline-none">
+                            <select className="w-full rounded-xl border border-cyan-300/40 bg-white px-3 py-3 text-slate-900 focus:ring-2 focus:ring-cyan-400/50 focus:outline-none">
                                 <option value="">Difficulty</option>
                                 <option>Beginner</option>
                                 <option>Intermediate</option>
@@ -82,12 +84,10 @@ const Hero = () => {
                             </select>
 
                             {/* Search button */}
-                            <button
-                                type="submit"
-                                className="inline-flex items-center justify-center gap-2 rounded-xl bg-cyan-500 px-5 py-3 text-white transition-all duration-300 hover:scale-105 hover:shadow-lg"
-                            >
+
+                            <Button className="h-full items-center justify-center gap-2 rounded-xl bg-cyan-500 px-5 py-3 font-semibold text-white transition-all duration-300">
                                 <SearchCheck className="h-4 w-4" /> Search
-                            </button>
+                            </Button>
                         </div>
                     </form>
 
@@ -102,12 +102,7 @@ const Hero = () => {
                         >
                             <Rocket className="h-5 w-5" /> Explore Events
                         </a>
-                        <a
-                            href="#"
-                            className="inline-flex items-center gap-2 rounded-2xl border border-white/20 px-6 py-3 hover:bg-white/10"
-                        >
-                            <Play className="h-5 w-5" /> Watch Preview
-                        </a>
+                        <WatchPreview />
                     </div>
                 </div>
             </div>
