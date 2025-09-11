@@ -46,6 +46,11 @@ const SearchFilterEvent = () => {
                             <SelectItem value="business">Business</SelectItem>
                             <SelectItem value="cultural">Cultural</SelectItem>
                             <SelectItem value="sports">Sports</SelectItem>
+                            <SelectItem value="workshop">Workshops & Seminars</SelectItem>
+                            <SelectItem value="academic">Academic</SelectItem>
+                            <SelectItem value="annual">Annual Functions</SelectItem>
+                            <SelectItem value="community">Community & Social</SelectItem>
+                            <SelectItem value="other">Other</SelectItem>
                         </SelectGroup>
                     </SelectContent>
                 </Select>

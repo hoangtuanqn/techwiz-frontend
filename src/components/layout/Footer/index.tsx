@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from "react";
 import { GraduationCap, Facebook, Twitter, Instagram, MapPin, Mail, Phone, ArrowUp } from "lucide-react";
 import { Toaster } from "sonner";
+import Link from "next/link";
 
 const Footer = () => {
     const [showScroll, setShowScroll] = useState(false);
@@ -44,21 +45,21 @@ const Footer = () => {
                             </p>
                             <div className="mt-6 flex items-center gap-4">
                                 <a
-                                    href="#"
+                                    href="https://www.facebook.com/phamhoangtuanqn"
                                     className="rounded-full bg-slate-800 p-2 transition hover:bg-cyan-600"
                                     aria-label="Facebook"
                                 >
                                     <Facebook className="h-5 w-5 text-cyan-300" />
                                 </a>
                                 <a
-                                    href="#"
+                                    href="https://twitter.com/intent/tweet?url=https://www.university.edu/events&text=Check%20out%20these%20events!"
                                     className="rounded-full bg-slate-800 p-2 transition hover:bg-cyan-600"
                                     aria-label="Twitter"
                                 >
                                     <Twitter className="h-5 w-5 text-cyan-300" />
                                 </a>
                                 <a
-                                    href="#"
+                                    href="https://www.instagram.com/university/"
                                     className="rounded-full bg-slate-800 p-2 transition hover:bg-cyan-600"
                                     aria-label="Instagram"
                                 >
@@ -109,14 +110,14 @@ const Footer = () => {
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="#" className="transition hover:text-cyan-400">
+                                    <Link href="/faq" className="transition hover:text-cyan-400">
                                         FAQ
-                                    </a>
+                                    </Link>
                                 </li>
                                 <li>
-                                    <a href="#" className="transition hover:text-cyan-400">
+                                    <Link href="/contact" className="transition hover:text-cyan-400">
                                         Support
-                                    </a>
+                                    </Link>
                                 </li>
                                 <li>
                                     <a href="#" className="transition hover:text-cyan-400">
@@ -136,11 +137,11 @@ const Footer = () => {
                                 </li>
                                 <li className="flex items-center gap-3">
                                     <Mail className="h-5 w-5 text-cyan-400" />
-                                    <span>events@university.edu</span>
+                                    <Link href="mailto:events@university.edu">events@university.edu</Link>
                                 </li>
                                 <li className="flex items-center gap-3">
                                     <Phone className="h-5 w-5 text-cyan-400" />
-                                    <span>(028) 1234 5678</span>
+                                    <Link href="tel:(028) 1234 5678">(028) 1234 5678</Link>
                                 </li>
                             </ul>
                         </div>

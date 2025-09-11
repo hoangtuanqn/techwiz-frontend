@@ -5,19 +5,28 @@ import Link from "next/link";
 import React from "react";
 import eventApi from "~/apiRequest/event";
 import { EventCardSkeleton } from "./EventitemSkeleton";
+import useGetSearchQuery from "~/hooks/useGetSearchQuery";
+import { buildLaravelFilterQuery } from "~/utils/helpers";
 
 const isAvailable = (endDate: string) => {
     return new Date(endDate) >= new Date();
 };
-
+const fields = ["search", "category", "status", "page"] as const;
 const EventList = () => {
+    const { search, category, status, page } = useGetSearchQuery(fields);
     const pct = (booked: number, total: number) => (total ? Math.min(100, Math.round((booked / total) * 100)) : 0);
     const barColor = (p: number) => (p > 95 ? "bg-red-500" : p > 60 ? "bg-amber-500" : "bg-emerald-500");
 
     const { data: events, isLoading } = useQuery({
-        queryKey: ["events"],
+        queryKey: ["events", { search, category, status }],
         queryFn: async () => {
-            const response = await eventApi.getEvent();
+            const response = await eventApi.getEvent(
+                +page || 1,
+                9,
+                search,
+                "",
+                buildLaravelFilterQuery({ category, status: status ? status : "available" }),
+            );
             return response.data.data;
         },
         staleTime: 1000 * 60 * 5, // 5 minutes
