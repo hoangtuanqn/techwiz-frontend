@@ -23,7 +23,7 @@ const ROLE_DETAIL: Record<
             "Media gallery (images/videos) from past events",
             "Featured banners & announcements on homepage",
         ],
-        cta: { label: "Explore Events", href: "/catalog" },
+        cta: { label: "Explore Events", href: "/events" },
     },
     participant: {
         title: "Participant",

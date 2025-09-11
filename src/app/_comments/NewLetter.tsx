@@ -2,6 +2,7 @@
 "use client";
 import { Send, Mail, Bell, Sparkles } from "lucide-react";
 import React, { useState } from "react";
+import { toast } from "sonner";
 
 const NewLetter = () => {
     const [email, setEmail] = useState("");
@@ -10,11 +11,9 @@ const NewLetter = () => {
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         if (email) {
+            toast.success("Subscribed successfully! Check your email.");
             setIsSubscribed(true);
-            setTimeout(() => {
-                setIsSubscribed(false);
-                setEmail("");
-            }, 3000);
+            setEmail("");
         }
     };
 
@@ -48,7 +47,7 @@ const NewLetter = () => {
                         </span>
                     </h2>
 
-                    <p className="mx-auto max-w-2xl text-xl leading-relaxed text-slate-300">
+                    <p className="mx-auto max-w-2xl text-base leading-relaxed text-slate-300">
                         Get the latest news, events, and exclusive content delivered straight to your inbox. Join our
                         community of innovators and tech enthusiasts.
                     </p>
@@ -56,7 +55,6 @@ const NewLetter = () => {
 
                 <div className="mx-auto max-w-2xl" data-aos="fade-up" data-aos-delay="200">
                     <div className="relative rounded-3xl border border-white/10 bg-white/5 p-8 shadow-2xl backdrop-blur-xl">
-                        {/* Glassmorphism effect */}
                         <div className="absolute inset-0 rounded-3xl bg-gradient-to-r from-cyan-500/5 to-fuchsia-500/5"></div>
 
                         <div className="relative">

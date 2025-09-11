@@ -19,7 +19,7 @@ const Header: React.FC = () => {
                         <Link className="transition hover:text-cyan-600" href="/">
                             Home
                         </Link>
-                        <Link className="transition hover:text-cyan-600" href="/catalog">
+                        <Link className="transition hover:text-cyan-600" href="/events">
                             Events
                         </Link>
                         <Link className="transition hover:text-cyan-600" href="#blog">
@@ -36,6 +36,8 @@ const Header: React.FC = () => {
                         </Link>
                         <Link className="transition hover:text-cyan-600" href="/faq">
                             FAQ
+                        <Link className="transition hover:text-cyan-600" href="/contact">
+                            Contact
                         </Link>
                     </nav>
 

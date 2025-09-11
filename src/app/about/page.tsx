@@ -1,5 +1,5 @@
 "use client";
-import { Users, Target, Sparkles, GraduationCap, BookOpen, Globe, Heart } from "lucide-react";
+import { Target, Sparkles, GraduationCap, BookOpen, Globe, Heart } from "lucide-react";
 
 export default function AboutPage() {
     return (

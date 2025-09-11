@@ -23,7 +23,7 @@ export default function EventDetailPage() {
         return (
             <div className="mx-auto max-w-4xl py-20 text-center">
                 <p className="text-slate-600">Event not found.</p>
-                <Link href="/catalog" className="mt-4 inline-block text-[#06b6d4] hover:underline">
+                <Link href="/events" className="mt-4 inline-block text-[#06b6d4] hover:underline">
                     ← Back to Catalog
                 </Link>
             </div>
@@ -35,7 +35,7 @@ export default function EventDetailPage() {
             <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
                 {/* Back link */}
                 <Link
-                    href="/catalog"
+                    href="/events"
                     className="mb-6 inline-flex items-center gap-1 text-slate-600 hover:text-[#06b6d4]"
                 >
                     <ArrowLeft className="h-4 w-4" /> Back to Catalog
