@@ -11,8 +11,8 @@ const ActionHeader = () => {
         <div className="group relative">
             {user ? (
                 <div className="relative">
-                    <button className="flex items-center gap-2 rounded-lg px-3 py-2 text-slate-700 transition-all duration-200 hover:bg-slate-100 hover:text-cyan-600">
-                        <div className="flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-r from-cyan-500 to-fuchsia-500 text-white">
+                    <button className="flex cursor-pointer items-center gap-2 rounded-lg px-3 py-2 text-slate-700 transition-all duration-200 hover:bg-slate-100 hover:text-cyan-600">
+                        <div className="flex h-8 w-8 cursor-pointer items-center justify-center rounded-full bg-gradient-to-r from-cyan-500 to-fuchsia-500 text-white">
                             <User className="h-4 w-4" />
                         </div>
                         <span className="font-medium">{user.full_name}</span>
@@ -28,7 +28,7 @@ const ActionHeader = () => {
 
                             <Link
                                 href="/profile"
-                                className="flex items-center gap-3 rounded-lg px-3 py-2 text-sm text-slate-700 transition-colors hover:bg-slate-100 hover:text-cyan-600"
+                                className="flex cursor-pointer items-center gap-3 rounded-lg px-3 py-2 text-sm text-slate-700 transition-colors hover:bg-slate-100 hover:text-cyan-600"
                             >
                                 <User className="h-4 w-4" />
                                 Profile
@@ -36,7 +36,7 @@ const ActionHeader = () => {
 
                             <Link
                                 href="/settings"
-                                className="flex items-center gap-3 rounded-lg px-3 py-2 text-sm text-slate-700 transition-colors hover:bg-slate-100 hover:text-cyan-600"
+                                className="flex cursor-pointer items-center gap-3 rounded-lg px-3 py-2 text-sm text-slate-700 transition-colors hover:bg-slate-100 hover:text-cyan-600"
                             >
                                 <Settings className="h-4 w-4" />
                                 Settings
@@ -45,7 +45,7 @@ const ActionHeader = () => {
                             {user.role === "admin" && (
                                 <Link
                                     href="/admin"
-                                    className="flex items-center gap-3 rounded-lg px-3 py-2 text-sm text-slate-700 transition-colors hover:bg-slate-100 hover:text-cyan-600"
+                                    className="flex cursor-pointer items-center gap-3 rounded-lg px-3 py-2 text-sm text-slate-700 transition-colors hover:bg-slate-100 hover:text-cyan-600"
                                 >
                                     <Shield className="h-4 w-4" />
                                     Admin Panel
@@ -56,7 +56,7 @@ const ActionHeader = () => {
 
                             <button
                                 onClick={logout}
-                                className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm text-red-600 transition-colors hover:bg-red-50 hover:text-red-700"
+                                className="flex w-full cursor-pointer items-center gap-3 rounded-lg px-3 py-2 text-sm text-red-600 transition-colors hover:bg-red-50 hover:text-red-700"
                             >
                                 <LogOut className="h-4 w-4" />
                                 Logout
@@ -65,7 +65,7 @@ const ActionHeader = () => {
                     </div>
                 </div>
             ) : (
-                <div className="flex items-center gap-3">
+                <div className="flex cursor-pointer items-center gap-3">
                     <Link
                         href="/auth/login"
                         className="rounded-lg px-4 py-2 text-slate-700 transition-all duration-200 hover:bg-slate-100 hover:text-cyan-600"
