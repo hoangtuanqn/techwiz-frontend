@@ -125,8 +125,14 @@ function slugify(s: string) {
         .replace(/(^-|-$)+/g, "");
 }
 
-function isAvailable(dateStr: string) {
-    return new Date(dateStr) >= new Date();
+// Thay isAvailable hiện tại bằng 2 hàm rõ nghĩa:
+function isPast(dateStr: string) {
+  return new Date(dateStr) < new Date();
+}
+
+function isClosed(dateStr: string, seatsLeft: number) {
+  // closed nếu đã qua ngày hoặc hết chỗ
+  return isPast(dateStr) || seatsLeft <= 0;
 }
 /* =========================
    Page
@@ -204,7 +210,7 @@ export default function EventDetailPage() {
                         </p>
                     </div>
                     {/* Quick rating (demo static) */}
-                    {isAvailable(event.date) && (
+                    {isClosed(event.date, left) && (
                         <div className="mt-2 flex items-center gap-1 text-amber-500">
                             <Star className="h-5 w-5 fill-current" />
                             <Star className="h-5 w-5 fill-current" />

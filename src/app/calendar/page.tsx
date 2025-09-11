@@ -198,7 +198,7 @@ const CalendarPage: React.FC = () => {
 
                 {/* Calendar */}
                 <div
-                    className="overflow-x-auto overflow-y-hidden rounded-2xl border border-slate-200 bg-white shadow-sm"
+                    className="overflow-x-auto overflow-y-hidden rounded-2xl border border-slate-200 bg-white shadow-sm mb-5"
                     data-aos="fade-up"
                 >
                     {/* Header Days (sticky) */}
@@ -303,24 +303,7 @@ const CalendarPage: React.FC = () => {
                         })}
                     </div>
                 </div>
-
-                <p className="mt-4 text-sm text-slate-500">
-                    Multi-day events expand horizontally to cover the corresponding days. Weekends are shaded; today is
-                    outlined.
-                </p>
             </main>
-
-            <footer className="mt-16 border-t border-slate-200 py-8">
-                <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-4 px-4 text-sm text-slate-500 sm:px-6 md:flex-row lg:px-8">
-                    <span>© 2025 EventSphere. All rights reserved.</span>
-                    <a href="#" className="inline-flex items-center gap-1 hover:text-cyan-600">
-                        <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" aria-hidden>
-                            <path d="M12 2v20M5 9l7-7 7 7" stroke="currentColor" strokeWidth="1.2" />
-                        </svg>
-                        Back to top
-                    </a>
-                </div>
-            </footer>
         </div>
     );
 };

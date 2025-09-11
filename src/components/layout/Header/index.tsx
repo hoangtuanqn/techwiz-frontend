@@ -22,10 +22,10 @@ const Header: React.FC = () => {
                         <Link className="transition hover:text-cyan-600" href="/events">
                             Events
                         </Link>
-                        <Link className="transition hover:text-cyan-600" href="#blog">
+                        <Link className="transition hover:text-cyan-600" href="/blog">
                             Blog
                         </Link>
-                        <Link className="transition hover:text-cyan-600" href="#contact">
+                        <Link className="transition hover:text-cyan-600" href="/about">
                             About Us
                         </Link>
                         <Link className="transition hover:text-cyan-600" href="/calendar">
@@ -53,11 +53,6 @@ const Header: React.FC = () => {
                             <Bell className="h-5 w-5" />
                             {/* Badge (optional) */}
                             {/* <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-red-500"></span> */}
-                        </Link>
-
-                        {/* Messages */}
-                        <Link href="#" className="relative text-slate-600 hover:text-cyan-600" title="Messages">
-                            <Mail className="h-5 w-5" />
                         </Link>
                     </div>
 

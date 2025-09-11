@@ -59,7 +59,7 @@ export default function GalleryPage() {
                             alt={img.alt}
                             className="w-full h-64 object-cover transform group-hover:scale-105 transition-transform duration-300"
                         />
-                        <div className="absolute inset-0 bg-black bg-opacity-40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4">
+                        <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4">
                             <p className="text-white text-sm font-medium">{img.caption}</p>
                         </div>
                     </div>
