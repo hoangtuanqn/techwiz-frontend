@@ -1,13 +1,13 @@
 export const formatter = {
     date: (date: Date | string, time: boolean = false) => {
-        // time = true: Có hiển thị H:i:s luông không
+        // time = true: Show H:i:s or not
         const parsedDate = new Date(date);
         if (time) {
-            return parsedDate.toLocaleString("vi-VN");
+            return parsedDate.toLocaleString("en-US");
         }
-        return parsedDate.toLocaleDateString("vi-VN");
+        return parsedDate.toLocaleDateString("en-US");
     },
-    number: (amount: number) => Intl.NumberFormat("vi-VN").format(amount),
+    number: (amount: number) => Intl.NumberFormat("en-US").format(amount),
     duration: (seconds: number): string => {
         const d = Math.floor(seconds / (3600 * 24));
         const h = Math.floor((seconds % (3600 * 24)) / 3600);
@@ -15,20 +15,20 @@ export const formatter = {
         const s = seconds % 60;
 
         const parts = [];
-        if (d > 0) parts.push(`${d} ngày`);
+        if (d > 0) parts.push(`${d} days`);
         if (h > 0) parts.push(`${h}h`);
-        if (m > 0) parts.push(`${m}p`);
+        if (m > 0) parts.push(`${m}m`);
         if (s > 0 || parts.length === 0) parts.push(`${s}s`);
 
         return parts.join(":");
     },
-    // Chuyển đổi giây sang số giờ
+    // Convert seconds to hours
     durationToHours: (seconds: number): string => {
         if (seconds == 0) return "0";
         const hours = Math.floor(seconds / 3600);
-        if (hours === 0) return "Dưới 1 giờ";
-        if (hours === 1) return "1 giờ";
-        return `${hours} giờ`;
+        if (hours === 0) return "Less than 1 hour";
+        if (hours === 1) return "1 hour";
+        return `${hours} hours`;
     },
     parseDateDMY: (dateStr: string) => {
         const parts = dateStr.split("/");
@@ -41,6 +41,38 @@ export const formatter = {
         const m = Math.floor(seconds / 60);
         const s = seconds % 60;
         return `${m}:${s.toString().padStart(2, "0")}`;
+    },
+
+    // Capitalize first letter, rest lowercase
+    capitalize: (str: string): string => {
+        return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+    },
+
+    // hàm đếm xem từ bây giờ đến thời gian trong tương lai là bao lâu
+    timeUntil: (date: Date | string): string => {
+        const parsedDate = new Date(date);
+        const seconds = Math.floor((parsedDate.getTime() - new Date().getTime()) / 1000);
+        let interval = Math.floor(seconds / 31536000);
+        if (interval >= 1) {
+            return interval === 1 ? "1 year left" : `${interval} years left`;
+        }
+        interval = Math.floor(seconds / 2592000);
+        if (interval >= 1) {
+            return interval === 1 ? "1 month left" : `${interval} months left`;
+        }
+        interval = Math.floor(seconds / 86400);
+        if (interval >= 1) {
+            return interval === 1 ? "1 day left" : `${interval} days left`;
+        }
+        interval = Math.floor(seconds / 3600);
+        if (interval >= 1) {
+            return interval === 1 ? "1 hour left" : `${interval} hours left`;
+        }
+        interval = Math.floor(seconds / 60);
+        if (interval >= 1) {
+            return interval === 1 ? "1 minute left" : `${interval} minutes left`;
+        }
+        return "Just now";
     },
 };
 

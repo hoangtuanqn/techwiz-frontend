@@ -1,48 +1,26 @@
-"use client";
-
 import Link from "next/link";
-import { useParams } from "next/navigation";
-import { ArrowLeft, Calendar, MapPin, Users, Share2, BookmarkPlus, Clock4, Star } from "lucide-react";
-import React from "react";
+import { ArrowLeft, Calendar, MapPin, Users, Clock4, Star } from "lucide-react";
+import React, { cache } from "react";
+import { redirect } from "next/navigation";
+import eventApi from "~/apiRequest/event";
+import { formatter } from "~/utils/format";
+import { Metadata } from "next";
+import AddCalendar from "./_components/AddCalendar";
+import { ShareButton } from "~/components/ShareButton";
 
-/* =========================
-   Fake catalog data (demo)
-========================= */
-const allEvents = Array.from({ length: 20 }).map((_, i) => ({
-    id: (i + 1).toString(),
-    title: `Event ${i + 1}`,
-    category: ["Technical", "Business", "Cultural", "Sports"][i % 4],
-    desc: "This is a longer description for the event. It explains what you will learn, what to prepare, and why you should join.",
-    image: `https://picsum.photos/seed/${i}/1200/600`,
-    date: "2025-09-10 09:00", // local time (demo)
-    durationMins: 120,
-    location: ["Auditorium", "Lab 1", "Hall A", "Open Ground"][i % 4],
-    seatsTotal: 120,
-    seatsBooked: Math.floor(Math.random() * 100) + 10,
-    organizer: ["CSE Dept.", "Business Club", "Cultural Committee", "Sports Cell"][i % 4],
-}));
-
-/* =========================
-   Helpers
-========================= */
-function formatDateTime(dt: string) {
-    try {
-        const d = new Date(dt.replace(" ", "T"));
-        return new Intl.DateTimeFormat(undefined, {
-            dateStyle: "full",
-            timeStyle: "short",
-        }).format(d);
-    } catch {
-        return dt;
-    }
-}
-
-function minutesToHHMM(mins: number) {
-    const h = Math.floor(mins / 60);
-    const m = mins % 60;
-    if (h && m) return `${h}h ${m}m`;
-    if (h) return `${h}h`;
-    return `${m}m`;
+const getDetailEvent = cache(async (id: string) => {
+    const {
+        data: { data: event },
+    } = await eventApi.getDetailEvent(+id);
+    return event;
+});
+export async function generateMetadata({ params }: { params: Promise<{ id: string }> }): Promise<Metadata> {
+    const { id } = await params;
+    const post = await getDetailEvent(id);
+    return {
+        title: post.title || "Event Detail",
+        description: post.description || "Event details and registration information.",
+    };
 }
 
 function seatStatus(seatsTotal: number, seatsBooked: number) {
@@ -54,100 +32,33 @@ function seatStatus(seatsTotal: number, seatsBooked: number) {
     return { left, percent, tone };
 }
 
-// Detect pdf vs image (for certificate preview)
-function isPdf(url: string) {
-    return /\.png($|\?)/i.test(url);
-}
-
-/* =========================
-   ICS generator (client)
-========================= */
-function downloadICS({
-    title,
-    description,
-    location,
-    start,
-    durationMins,
-}: {
-    title: string;
-    description: string;
-    location: string;
-    start: string; // "YYYY-MM-DD HH:mm"
-    durationMins: number;
-}) {
-    // Convert to UTC-ish format (simple demo)
-    const startDate = new Date(start.replace(" ", "T"));
-    const endDate = new Date(startDate.getTime() + durationMins * 60_000);
-
-    const dt = (d: Date) =>
-        d
-            .toISOString()
-            .replace(/[-:]/g, "")
-            .replace(/\.\d{3}Z$/, "Z"); // YYYYMMDDTHHMMSSZ
-
-    const ics = [
-        "BEGIN:VCALENDAR",
-        "VERSION:2.0",
-        "PRODID:-//EventSphere//EN",
-        "CALSCALE:GREGORIAN",
-        "METHOD:PUBLISH",
-        "BEGIN:VEVENT",
-        `UID:${(globalThis.crypto ?? window.crypto).randomUUID()}@eventsphere`,
-        `DTSTAMP:${dt(new Date())}`,
-        `DTSTART:${dt(startDate)}`,
-        `DTEND:${dt(endDate)}`,
-        `SUMMARY:${escapeICS(title)}`,
-        `DESCRIPTION:${escapeICS(description)}`,
-        `LOCATION:${escapeICS(location)}`,
-        "END:VEVENT",
-        "END:VCALENDAR",
-    ].join("\r\n");
-
-    const blob = new Blob([ics], { type: "text/calendar;charset=utf-8" });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = `${slugify(title)}.ics`;
-    document.body.appendChild(a);
-    a.click();
-    a.remove();
-    URL.revokeObjectURL(url);
-}
-
-function escapeICS(text: string) {
-    return text.replace(/,/g, "\\,").replace(/;/g, "\\;").replace(/\n/g, "\\n");
-}
-
-function slugify(s: string) {
-    return s
-        .toLowerCase()
-        .replace(/[^a-z0-9]+/g, "-")
-        .replace(/(^-|-$)+/g, "");
-}
-
 // Thay isAvailable hiện tại bằng 2 hàm rõ nghĩa:
 function isPast(dateStr: string) {
-  return new Date(dateStr) < new Date();
+    return new Date(dateStr) < new Date();
 }
 
 function isClosed(dateStr: string, seatsLeft: number) {
-  // closed nếu đã qua ngày hoặc hết chỗ
-  return isPast(dateStr) || seatsLeft <= 0;
+    // closed nếu đã qua ngày hoặc hết chỗ
+    return isPast(dateStr) || seatsLeft <= 0;
 }
+
 /* =========================
    Page
 ========================= */
-export default function EventDetailPage() {
-    const params = useParams() as { id?: string };
-    const id = params.id || "";
+export default async function EventDetailPage({ params }: { params: { id: string } }) {
+    const { id } = params;
+    // const event = allEvents.find((ev) => ev.id === id);
+    let event;
 
-    const event = allEvents.find((ev) => ev.id === id);
+    try {
+        event = await getDetailEvent(id);
+    } catch {
+        redirect("/events");
+    }
 
     // certificate demo files (put real files into public/certificates/)
-    const certPdfUrl = `/certificates/sample.png`;
+    const certPdfUrl = `/certificates/sample.jpg`;
     const certImgUrl = `/certificates/sample.jpg`; // optional thumbnail; fallback to placeholder if missing
-
-    const [showCert, setShowCert] = React.useState(false);
 
     if (!event) {
         return (
@@ -160,8 +71,10 @@ export default function EventDetailPage() {
         );
     }
 
-    const { left, percent, tone } = seatStatus(event.seatsTotal, event.seatsBooked);
-    const dateFormatted = formatDateTime(event.date);
+    const { left, percent, tone } = seatStatus(event.seating.total_seats, event.booked_count ?? 0);
+    console.log(event.start_time);
+
+    const dateFormatted = formatter.timeUntil(event.start_time);
 
     const toneClass =
         tone === "ok"
@@ -171,24 +84,6 @@ export default function EventDetailPage() {
               : "border-red-200 bg-red-50 text-red-800";
 
     const capacityBarClass = tone === "ok" ? "bg-emerald-500" : tone === "warn" ? "bg-amber-500" : "bg-red-500";
-
-    const handleShare = async () => {
-        const shareUrl = typeof window !== "undefined" ? window.location.href : "";
-        const title = event.title;
-        const text = `${event.title} — ${event.category} • ${dateFormatted}`;
-        if (navigator.share) {
-            try {
-                await navigator.share({ title, text, url: shareUrl });
-            } catch {
-                /* user cancelled */
-            }
-        } else if (navigator.clipboard) {
-            await navigator.clipboard.writeText(shareUrl);
-            alert("Link copied to clipboard!");
-        } else {
-            prompt("Copy this link:", shareUrl);
-        }
-    };
 
     return (
         <section className="bg-white py-12 md:py-16">
@@ -206,11 +101,12 @@ export default function EventDetailPage() {
                     <div>
                         <h1 className="text-3xl font-bold text-slate-900 md:text-4xl">{event.title}</h1>
                         <p className="text-slate-500">
-                            {event.category} Event • by {event.organizer}
+                            {formatter.capitalize(event.category)} Event • by {event.organizer.full_name} •{" "}
+                            {event.seating.total_seats} seats
                         </p>
                     </div>
                     {/* Quick rating (demo static) */}
-                    {isClosed(event.date, left) && (
+                    {isClosed(event.start_time, left) && (
                         <div className="mt-2 flex items-center gap-1 text-amber-500">
                             <Star className="h-5 w-5 fill-current" />
                             <Star className="h-5 w-5 fill-current" />
@@ -224,7 +120,7 @@ export default function EventDetailPage() {
 
                 {/* Cover */}
                 <img
-                    src={event.image}
+                    src={event.thumbnail}
                     alt={event.title}
                     className="mt-6 aspect-[16/7] w-full rounded-2xl object-cover shadow"
                 />
@@ -237,14 +133,14 @@ export default function EventDetailPage() {
                             <div className="font-medium">{dateFormatted}</div>
                             <div className="flex items-center gap-1 text-xs text-slate-500">
                                 <Clock4 className="h-3.5 w-3.5" />
-                                {minutesToHHMM(event.durationMins)}
+                                {formatter.date(event.start_time, true)}
                             </div>
                         </div>
                     </div>
                     <div className="flex items-center gap-2">
                         <MapPin className="h-5 w-5 text-cyan-600" />
                         <div>
-                            <div className="font-medium">{event.location}</div>
+                            <div className="font-medium">{event.venue}</div>
                             <div className="text-xs text-slate-500">On-campus venue</div>
                         </div>
                     </div>
@@ -253,7 +149,7 @@ export default function EventDetailPage() {
                         <div className="w-full">
                             <div className="flex items-center justify-between text-xs">
                                 <span className="text-slate-500">
-                                    {event.seatsBooked}/{event.seatsTotal} booked
+                                    {event.booked_count}/{event.seating.total_seats} booked
                                 </span>
                                 <span className="font-medium">{left} left</span>
                             </div>
@@ -282,7 +178,7 @@ export default function EventDetailPage() {
                 {/* Description */}
                 <div className="mt-8">
                     <h2 className="text-xl font-semibold">About this event</h2>
-                    <p className="mt-2 leading-relaxed text-slate-700">{event.desc}</p>
+                    <p className="mt-2 leading-relaxed text-slate-700">{event.description}</p>
                     <ul className="mt-4 list-disc space-y-1 pl-6 text-slate-600">
                         <li>Please arrive 15 minutes early for check-in.</li>
                         <li>Carry a valid student ID for verification.</li>
@@ -291,7 +187,7 @@ export default function EventDetailPage() {
                 </div>
 
                 {/* Actions */}
-                <div className="mt-8 flex flex-col items-stretch gap-3 sm:flex-row sm:items-center">
+                <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center">
                     <Link
                         href={`/events/${event.id}/register`}
                         className="inline-flex items-center justify-center rounded-xl bg-cyan-600 px-6 py-3 font-medium text-white shadow hover:bg-cyan-700"
@@ -306,28 +202,9 @@ export default function EventDetailPage() {
                         View Reviews
                     </Link>
 
-                    <button
-                        onClick={() =>
-                            downloadICS({
-                                title: event.title,
-                                description: event.desc,
-                                location: event.location,
-                                start: event.date,
-                                durationMins: event.durationMins,
-                            })
-                        }
-                        className="inline-flex items-center justify-center rounded-xl border border-slate-300 px-6 py-3 font-medium text-slate-700 hover:bg-slate-50"
-                    >
-                        Add to Calendar (.ics)
-                    </button>
+                    <AddCalendar event={event} />
 
-                    <button
-                        onClick={handleShare}
-                        className="inline-flex items-center justify-center gap-2 rounded-xl border border-slate-300 px-6 py-3 font-medium text-slate-700 hover:bg-slate-50"
-                    >
-                        <Share2 className="h-4 w-4" />
-                        Share
-                    </button>
+                    <ShareButton />
                 </div>
 
                 {/* Secondary info */}
@@ -344,8 +221,8 @@ export default function EventDetailPage() {
                     <div className="rounded-2xl border border-slate-200 p-5">
                         <h3 className="text-lg font-semibold">Organizer</h3>
                         <p className="mt-2 text-slate-700">
-                            Managed by <b>{event.organizer}</b>. For queries, visit the organizer’s desk 30 minutes
-                            before the event.
+                            Managed by <b>{event.organizer.full_name}</b>. For queries, visit the organizer’s desk 30
+                            minutes before the event.
                         </p>
                     </div>
                 </div>
@@ -355,12 +232,6 @@ export default function EventDetailPage() {
                     <div className="flex items-center justify-between">
                         <h3 className="text-lg font-semibold">Sample Certificate</h3>
                         <div className="flex gap-2">
-                            <button
-                                onClick={() => setShowCert(true)}
-                                className="rounded-xl border border-slate-300 px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50"
-                            >
-                                View
-                            </button>
                             <a
                                 href={certPdfUrl}
                                 download
@@ -376,11 +247,7 @@ export default function EventDetailPage() {
                             <img
                                 src={certImgUrl}
                                 alt="Certificate preview"
-                                className="h-[320px] w-full rounded object-contain"
-                                onError={(e) => {
-                                    (e.currentTarget as HTMLImageElement).src =
-                                        "https://picsum.photos/seed/cert/600/400";
-                                }}
+                                className="h-[600px] w-full rounded object-contain"
                             />
                         </div>
                         <div className="text-sm leading-6 text-slate-600">
@@ -407,45 +274,6 @@ export default function EventDetailPage() {
                     and help others decide.
                 </div>
             </div>
-
-            {/* Modal: Certificate Viewer */}
-            {showCert && (
-                <div
-                    className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4"
-                    role="dialog"
-                    aria-modal="true"
-                    onClick={() => setShowCert(false)}
-                >
-                    <div
-                        className="relative h-[85vh] w-full max-w-5xl rounded-xl bg-white shadow-xl"
-                        onClick={(e) => e.stopPropagation()}
-                    >
-                        <div className="flex items-center justify-between border-b border-slate-200 px-4 py-3">
-                            <h4 className="text-sm font-semibold text-slate-800">Certificate Preview</h4>
-                            <button
-                                onClick={() => setShowCert(false)}
-                                className="rounded-lg border border-slate-200 px-3 py-1.5 text-sm hover:bg-slate-50"
-                            >
-                                Close
-                            </button>
-                        </div>
-
-                        <div className="h-[calc(85vh-56px)] w-full">
-                            {isPdf(certPdfUrl) ? (
-                                <object
-                                    data={`${certPdfUrl}#zoom=page-width`}
-                                    type="application/pdf"
-                                    className="h-full w-full"
-                                >
-                                    <iframe src={certPdfUrl} className="h-full w-full" />
-                                </object>
-                            ) : (
-                                <img src={certImgUrl} alt="Certificate" className="h-full w-full object-contain" />
-                            )}
-                        </div>
-                    </div>
-                </div>
-            )}
         </section>
     );
 }

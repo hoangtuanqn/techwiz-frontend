@@ -1,6 +1,11 @@
 import z from "zod";
 import { paginationMetaSchemaFn } from "./common.schema";
-export const seatingSchema = z.object({
+const organizerSchema = z.object({
+    id: z.number(),
+    full_name: z.string(),
+    email: z.string().email(),
+});
+const seatingSchema = z.object({
     id: z.number(),
     event_id: z.number(),
     total_seats: z.number(),
@@ -33,3 +38,13 @@ export const eventListSchema = z.object({
 });
 
 export type EventListResponseType = z.infer<typeof eventListSchema>;
+
+export const eventDetailSchema = z.object({
+    success: z.boolean(),
+    message: z.string(),
+    data: eventItemSchema.extend({
+        seating: seatingSchema,
+        organizer: organizerSchema,
+    }),
+});
+export type EventDetailResponseType = z.infer<typeof eventDetailSchema>;

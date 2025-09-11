@@ -1,5 +1,5 @@
 "use client";
-
+import { Tooltip } from "react-tooltip";
 import React, { useEffect, useState } from "react";
 import { GraduationCap, Facebook, Twitter, Instagram, MapPin, Mail, Phone, ArrowUp } from "lucide-react";
 import { Toaster } from "sonner";
@@ -155,6 +155,7 @@ const Footer = () => {
                         </span>
                     </div>
                 </div>
+                <Tooltip anchorSelect=".view_tooltip" className="z-300" />
                 <Toaster position="top-center" expand={true} richColors duration={5000} />
             </footer>
         </>

@@ -1,5 +1,5 @@
 import publicApi from "~/libs/apis/publicApi";
-import { EventListResponseType } from "~/types/schemaZod/event.schema";
+import { EventDetailResponseType, EventListResponseType } from "~/types/schemaZod/event.schema";
 
 const eventApi = {
     getEvent: (
@@ -20,6 +20,10 @@ const eventApi = {
             query += `&${queryOther}`; // Các value khác nếu cần
         }
         return publicApi.get<EventListResponseType>(query);
+    },
+
+    getDetailEvent: (id: number) => {
+        return publicApi.get<EventDetailResponseType>(`/events/${id}`);
     },
 };
 export default eventApi;
