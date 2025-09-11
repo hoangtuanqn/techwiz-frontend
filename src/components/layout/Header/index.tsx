@@ -36,6 +36,8 @@ const Header: React.FC = () => {
                         </Link>
                         <Link className="transition hover:text-cyan-600" href="/faq">
                             FAQ
+                        </Link>
+
                         <Link className="transition hover:text-cyan-600" href="/contact">
                             Contact
                         </Link>

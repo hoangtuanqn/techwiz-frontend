@@ -6,65 +6,74 @@ import { Toaster } from "sonner";
 
 const Footer: React.FC = () => {
     return (
-        <footer id="contact" className="border-t border-slate-200">
-            <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
-                <div className="grid gap-8 md:grid-cols-4">
+        <footer
+            id="contact"
+            className="border-t border-slate-800 bg-gradient-to-t from-slate-900 via-slate-800 to-slate-700 text-slate-100"
+        >
+            <div className="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8">
+                <div className="grid gap-12 md:grid-cols-4">
                     {/* Logo + intro */}
                     <div>
-                        <div className="flex items-center gap-2">
-                            <GraduationCap className="h-6 w-6 text-cyan-500" />
-                            <span className="text-lg font-semibold">EVENTSPHERE</span>
+                        <div className="flex items-center gap-3">
+                            <GraduationCap className="h-8 w-8 text-cyan-400 drop-shadow" />
+                            <span className="text-2xl font-bold tracking-wide text-cyan-300">EVENTSPHERE</span>
                         </div>
-                        <p className="mt-3 text-sm text-slate-600">
-                            A centralized platform for campus events — from discovery to certificates.
+                        <p className="mt-4 text-base leading-relaxed text-slate-300">
+                            Discover, join, and celebrate campus events. Your gateway to vibrant student life and
+                            achievements.
                         </p>
-                        <div className="mt-4 flex items-center gap-3">
+                        <div className="mt-6 flex items-center gap-4">
                             <a
                                 href="#"
-                                className="rounded-lg border border-slate-200 p-2 hover:bg-slate-50"
+                                className="rounded-full bg-slate-800 p-2 transition hover:bg-cyan-600"
                                 aria-label="Facebook"
                             >
-                                <Facebook className="h-4 w-4" />
+                                <Facebook className="h-5 w-5 text-cyan-300" />
                             </a>
                             <a
                                 href="#"
-                                className="rounded-lg border border-slate-200 p-2 hover:bg-slate-50"
+                                className="rounded-full bg-slate-800 p-2 transition hover:bg-cyan-600"
                                 aria-label="Twitter"
                             >
-                                <Twitter className="h-4 w-4" />
+                                <Twitter className="h-5 w-5 text-cyan-300" />
                             </a>
                             <a
                                 href="#"
-                                className="rounded-lg border border-slate-200 p-2 hover:bg-slate-50"
+                                className="rounded-full bg-slate-800 p-2 transition hover:bg-cyan-600"
                                 aria-label="Instagram"
                             >
-                                <Instagram className="h-4 w-4" />
+                                <Instagram className="h-5 w-5 text-cyan-300" />
                             </a>
                         </div>
                     </div>
 
                     {/* Explore */}
                     <div>
-                        <h4 className="font-semibold">Explore</h4>
-                        <ul className="mt-3 space-y-2 text-sm">
+                        <h4 className="mb-3 text-lg font-semibold text-cyan-200">Explore</h4>
+                        <ul className="space-y-3 text-base">
                             <li>
-                                <a href="#" className="hover:text-cyan-600">
+                                <a href="#" className="transition hover:text-cyan-400">
                                     All Events
                                 </a>
                             </li>
                             <li>
-                                <a href="#" className="hover:text-cyan-600">
+                                <a href="#" className="transition hover:text-cyan-400">
                                     Workshops
                                 </a>
                             </li>
                             <li>
-                                <a href="#" className="hover:text-cyan-600">
+                                <a href="#" className="transition hover:text-cyan-400">
                                     Seminars
                                 </a>
                             </li>
                             <li>
-                                <a href="#" className="hover:text-cyan-600">
+                                <a href="#" className="transition hover:text-cyan-400">
                                     Cultural Nights
+                                </a>
+                            </li>
+                            <li>
+                                <a href="sitemap/" className="transition hover:text-cyan-400">
+                                    Site Map
                                 </a>
                             </li>
                         </ul>
@@ -72,25 +81,25 @@ const Footer: React.FC = () => {
 
                     {/* Resources */}
                     <div>
-                        <h4 className="font-semibold">Resources</h4>
-                        <ul className="mt-3 space-y-2 text-sm">
+                        <h4 className="mb-3 text-lg font-semibold text-cyan-200">Resources</h4>
+                        <ul className="space-y-3 text-base">
                             <li>
-                                <a href="#" className="hover:text-cyan-600">
+                                <a href="#" className="transition hover:text-cyan-400">
                                     Guides
                                 </a>
                             </li>
                             <li>
-                                <a href="#" className="hover:text-cyan-600">
+                                <a href="#" className="transition hover:text-cyan-400">
                                     FAQ
                                 </a>
                             </li>
                             <li>
-                                <a href="#" className="hover:text-cyan-600">
+                                <a href="#" className="transition hover:text-cyan-400">
                                     Support
                                 </a>
                             </li>
                             <li>
-                                <a href="#" className="hover:text-cyan-600">
+                                <a href="#" className="transition hover:text-cyan-400">
                                     Policies
                                 </a>
                             </li>
@@ -99,25 +108,33 @@ const Footer: React.FC = () => {
 
                     {/* Contact */}
                     <div>
-                        <h4 className="font-semibold">Contact</h4>
-                        <ul className="mt-3 space-y-2 text-sm">
-                            <li className="flex items-center gap-2">
-                                <MapPin className="h-4 w-4" /> 268 Ly Thuong Kiet, District 10
+                        <h4 className="mb-3 text-lg font-semibold text-cyan-200">Contact</h4>
+                        <ul className="space-y-4 text-base">
+                            <li className="flex items-center gap-3">
+                                <MapPin className="h-5 w-5 text-cyan-400" />
+                                <span>268 Ly Thuong Kiet, District 10</span>
                             </li>
-                            <li className="flex items-center gap-2">
-                                <Mail className="h-4 w-4" /> events@university.edu
+                            <li className="flex items-center gap-3">
+                                <Mail className="h-5 w-5 text-cyan-400" />
+                                <span>events@university.edu</span>
                             </li>
-                            <li className="flex items-center gap-2">
-                                <Phone className="h-4 w-4" /> (028) 1234 5678
+                            <li className="flex items-center gap-3">
+                                <Phone className="h-5 w-5 text-cyan-400" />
+                                <span>(028) 1234 5678</span>
                             </li>
                         </ul>
                     </div>
                 </div>
 
                 {/* Bottom bar */}
-                <div className="mt-8 flex items-center justify-between border-t border-slate-200 pt-6 text-sm text-slate-500">
-                    <span>© 2025 EventSphere. All rights reserved.</span>
-                    <a href="#home" className="inline-flex items-center gap-1 hover:text-cyan-600">
+                <div className="mt-12 flex flex-col items-center justify-between gap-4 border-t border-slate-700 pt-8 text-sm text-slate-400 md:flex-row">
+                    <span>
+                        © 2025 <span className="font-semibold text-cyan-300">EventSphere</span>. All rights reserved.
+                    </span>
+                    <a
+                        href="#home"
+                        className="inline-flex items-center gap-2 rounded-full bg-cyan-600 px-4 py-2 font-medium text-white shadow transition hover:bg-cyan-500"
+                    >
                         <ArrowUp className="h-4 w-4" /> Back to top
                     </a>
                 </div>
