@@ -3,19 +3,35 @@ import { Search, RotateCcw } from "lucide-react";
 import EventList from "./_components/EventList";
 import { useState } from "react";
 
+const isAvailable = (endDate: string) => {
+    return new Date(endDate) >= new Date();
+};
+
 // Fake data demo
-const allEvents = Array.from({ length: 20 }).map((_, i) => ({
-    id: i + 1,
-    title: `Event ${i + 1}`,
-    category: ["Technical", "Business", "Cultural", "Sports"][i % 4],
-    desc: "Short description for this event, including what you can expect to learn and enjoy.",
-    image: `https://picsum.photos/seed/${i}/400/250`,
-}));
+const allEvents = Array.from({ length: 20 }).map((_, i) => {
+    // Random số ngày từ -15 đến +15
+    const randomDays = Math.floor(Math.random() * 31) - 15;
+    const endDate = new Date();
+    endDate.setDate(endDate.getDate() + randomDays);
+
+    return {
+        id: i + 1,
+        title: `Event ${i + 1}`,
+        category: ["Technical", "Business", "Cultural", "Sports"][i % 4],
+        desc: "Short description for this event, including what you can expect to learn and enjoy.",
+        image: `https://picsum.photos/seed/${i}/400/250`,
+        seatsBooked: Math.floor(Math.random() * 100),
+        seatsTotal: 120,
+        endDate: endDate.toISOString().split("T")[0], // YYYY-MM-DD format
+    };
+});
+
+const pct = (booked: number, total: number) => (total ? Math.min(100, Math.round((booked / total) * 100)) : 0);
 
 export default function CatalogPage() {
     const [keyword, setKeyword] = useState("");
     const [category, setCategory] = useState("All");
-    const [sort, setSort] = useState("Newest");
+    const [sort, setSort] = useState("Available");
     const [page, setPage] = useState(1);
 
     const perPage = 12;
@@ -28,15 +44,26 @@ export default function CatalogPage() {
     };
 
     const filtered = allEvents
-        .filter(
-            (ev) =>
-                (category === "All" || ev.category === category) &&
-                ev.title.toLowerCase().includes(keyword.toLowerCase()),
-        )
+        .filter((ev) => {
+            const matchCategory = category === "All" || ev.category === category;
+            const matchKeyword = ev.title.toLowerCase().includes(keyword.toLowerCase());
+            const available = isAvailable(ev.endDate);
+
+            if (sort === "Available") return available && matchCategory && matchKeyword;
+            if (sort === "Close") return !available && matchCategory && matchKeyword;
+            if (sort === "Hot") return available && matchCategory && matchKeyword;
+
+            return matchCategory && matchKeyword;
+        })
         .sort((a, b) => {
             if (sort === "Newest") return b.id - a.id;
             if (sort === "Oldest") return a.id - b.id;
-            return a.title.localeCompare(b.title);
+            if (sort === "Hot") {
+                const pa = pct(a.seatsBooked, a.seatsTotal);
+                const pb = pct(b.seatsBooked, b.seatsTotal);
+                return pb - pa || b.id - a.id;
+            }
+            return 0;
         });
 
     const totalPages = Math.ceil(filtered.length / perPage);
@@ -82,12 +109,15 @@ export default function CatalogPage() {
                         </select>
                         <select
                             value={sort}
-                            onChange={(e) => setSort(e.target.value)}
+                            onChange={(e) => {
+                                setSort(e.target.value);
+                                setPage(1);
+                            }}
                             className="rounded-xl border border-slate-200 px-3 py-2 text-sm focus:ring-2 focus:ring-[#06b6d4]/50"
                         >
-                            <option>Newest</option>
-                            <option>Oldest</option>
-                            <option>A-Z</option>
+                            <option>Available</option>
+                            <option>Close</option>
+                            <option>Hot</option>
                         </select>
 
                         {/* Reset */}
