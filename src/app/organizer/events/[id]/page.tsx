@@ -1,8 +1,8 @@
 "use client";
 
 import { useSearchParams, useParams } from "next/navigation";
-import EventEditorShell from "../../_comments/EventEditorShell";
-import { EventFormValues } from "../../_comments/EventForm";
+import EventEditorShell from "../../_components/EventEditorShell";
+import { EventFormValues } from "../../_components/EventForm";
 
 // Demo data – thay bằng fetch từ API
 const DEMO_EVENTS: Record<string, EventFormValues> = {

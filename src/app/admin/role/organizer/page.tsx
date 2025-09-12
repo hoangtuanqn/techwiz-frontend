@@ -1,5 +1,5 @@
 "use client";
-import RoleList, { RoleRow } from "../../_comments/RoleList";
+import RoleList, { RoleRow } from "../../_components/RoleList";
 
 const DATA: RoleRow[] = [
     { id: 101, name: "EventPro Team", email: "team@eventpro.com", role: "Organizer" },

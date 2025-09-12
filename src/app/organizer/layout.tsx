@@ -1,7 +1,7 @@
 "use client";
 
 import type { ReactNode } from "react";
-import AdminSidebar from "./_comments/OrganizerSidebar";
+import AdminSidebar from "./_components/OrganizerSidebar";
 
 export default function AdminLayout({ children }: { children: ReactNode }) {
     return (

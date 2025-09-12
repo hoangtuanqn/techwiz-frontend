@@ -3,8 +3,8 @@
 import React, { useMemo } from "react";
 import Link from "next/link";
 import { CheckCircle2, Clock4, ArrowRight, ListChecks, PlayCircle } from "lucide-react";
-import EventTable from "../_comments/EventTable";
-import { DEMO_APPROVED, DEMO_PENDING, DEMO_ONGOING } from "../_comments/eventConstants";
+import EventTable from "../_components/EventTable";
+import { DEMO_APPROVED, DEMO_PENDING, DEMO_ONGOING } from "../_components/eventConstants";
 
 export default function ApprovalsIndexPage() {
     const approvedCount = DEMO_APPROVED.length;

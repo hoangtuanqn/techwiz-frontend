@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { Save, ArrowLeft } from "lucide-react";
 import Link from "next/link";
-import CoverUploader from "../../_comments/CoverUploader";
+import CoverUploader from "../../_components/CoverUploader";
 
 const LS_KEY = "demo_blogs";
 

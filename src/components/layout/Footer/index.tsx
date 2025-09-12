@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { GraduationCap, Facebook, Twitter, Instagram, MapPin, Mail, Phone, ArrowUp } from "lucide-react";
 import { Toaster } from "sonner";
+import ChatBotAI from "~/components/ChatBotAI";
 
 const Footer: React.FC = () => {
     const [showScroll, setShowScroll] = useState(false);
@@ -162,6 +163,7 @@ const Footer: React.FC = () => {
                 </div>
                 <Toaster position="top-center" expand={true} richColors duration={5000} />
             </footer>
+            <ChatBotAI />
         </>
     );
 };

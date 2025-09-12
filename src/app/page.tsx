@@ -1,14 +1,14 @@
 import React from "react";
 
-import Hero from "./_comments/Hero";
-import Features from "./_comments/Features";
-import Categories from "./_comments/Categories";
-import Stats from "./_comments/Stats";
-import Testimonials from "./_comments/Testimonials";
-import Blogs from "./_comments/Blogs";
-import Cta from "./_comments/Cta";
-import UpcomingEvents from "./_comments/UpcomingEvents";
-import NewLetter from "./_comments/NewLetter";
+import Hero from "./_components/Hero";
+import Features from "./_components/Features";
+import Categories from "./_components/Categories";
+import Stats from "./_components/Stats";
+import Testimonials from "./_components/Testimonials";
+import Blogs from "./_components/Blogs";
+import Cta from "./_components/Cta";
+import UpcomingEvents from "./_components/UpcomingEvents";
+import NewLetter from "./_components/NewLetter";
 
 export default function Home() {
     return (

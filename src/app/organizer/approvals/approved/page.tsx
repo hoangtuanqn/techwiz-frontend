@@ -1,8 +1,8 @@
 "use client";
 
 import React from "react";
-import EventTable, { EventRow } from "../../_comments/EventTable";
-import { DEMO_APPROVED } from "../../_comments/eventConstants";
+import EventTable, { EventRow } from "../../_components/EventTable";
+import { DEMO_APPROVED } from "../../_components/eventConstants";
 
 export default function ApprovedPage() {
     return (

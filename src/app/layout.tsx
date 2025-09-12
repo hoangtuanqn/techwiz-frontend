@@ -8,6 +8,7 @@ import Footer from "~/components/layout/Footer";
 import QueryProvider from "~/wrapper/QueryProvider";
 import LayoutGetInfoMe from "~/components/layout/LayoutGetInfoMe";
 import { ReduxProvider } from "~/wrapper/ReduxProvider";
+import ChatBotAI from "~/components/ChatBotAI";
 const geistSans = Geist({
     variable: "--font-geist-sans",
     subsets: ["latin"],
@@ -39,8 +40,8 @@ export default function RootLayout({
                         <LayoutGetInfoMe>
                             <Header />
                             {children}
-
                             <Footer />
+                            <ChatBotAI />
                         </LayoutGetInfoMe>
                     </QueryProvider>
                 </ReduxProvider>
