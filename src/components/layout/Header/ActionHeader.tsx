@@ -44,7 +44,7 @@ const ActionHeader = () => {
 
                             {user.role === "admin" && (
                                 <Link
-                                    href="/admin"
+                                    href="/admin/dashboard"
                                     className="flex cursor-pointer items-center gap-3 rounded-lg px-3 py-2 text-sm text-slate-700 transition-colors hover:bg-slate-100 hover:text-cyan-600"
                                 >
                                     <Shield className="h-4 w-4" />

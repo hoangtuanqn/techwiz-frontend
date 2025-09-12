@@ -36,9 +36,9 @@ const routes = {
     { href: "/organizer/announcements", label: "Announcements" },
   ],
   admin: [
-    { href: "/admin", label: "Admin (Overview)" },
+    { href: "/admin/dashboard", label: "Admin (Overview)" },
     { href: "/admin/moderation", label: "Moderation" },
-    { href: "/admin/users", label: "Users & Roles" },
+    { href: "/admin/manage-users", label: "Users & Roles" },
     { href: "/admin/reports", label: "Reports" },
     { href: "/admin/settings", label: "Settings" },
   ],
