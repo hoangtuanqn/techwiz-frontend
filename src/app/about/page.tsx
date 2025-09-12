@@ -6,11 +6,7 @@ export default function AboutPage() {
         <section id="about" className="bg-white">
             {/* Hero */}
             <div className="relative">
-                <img
-                    src="https://images.unsplash.com/photo-1523050854058-8df90110c9f1?q=80&w=1974&auto=format&fit=crop"
-                    alt="Campus"
-                    className="h-80 w-full object-cover"
-                />
+                <img src="/images/events/event-1.jpg" alt="Campus" className="h-80 w-full object-cover" />
                 <div className="absolute inset-0 flex items-center justify-center bg-slate-900/70 px-4">
                     <div className="max-w-3xl text-center">
                         <h1 className="text-4xl font-bold text-white md:text-5xl">

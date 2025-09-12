@@ -4,6 +4,7 @@ import {
     EventListResponseType,
     GetEventScheduleResponseType,
 } from "~/types/schemaZod/event.schema";
+import { MediaEventResponseType } from "~/types/schemaZod/mediaEvent.schema";
 
 const eventApi = {
     getEvent: (
@@ -38,6 +39,24 @@ const eventApi = {
     // get lịch trình sự kiện
     getEventSchedule: () => {
         return publicApi.get<GetEventScheduleResponseType>(`/events/schedules`);
+    },
+
+    // get hình ảnh sự kiện theo sự kiện cụ thể
+    getEventImages: (id: number) => {
+        return publicApi.get<MediaEventResponseType>(`/events/${id}/media`);
+    },
+
+    // get tất cả hình ảnh sự kiện
+    getAllEventImages: (page: number = 1, limit: number = 16, querySortOther: string = "", queryOther: string = "") => {
+        let query = `/media-galleries?page=${page}&limit=${limit}`;
+
+        if (querySortOther) {
+            query += `&sort=${querySortOther}`; // Các value cần sort: -created_at, download_count, ...
+        }
+        if (queryOther) {
+            query += `&${queryOther}`; // Các value khác nếu cần
+        }
+        return publicApi.get<EventListResponseType>(query);
     },
 };
 export default eventApi;
