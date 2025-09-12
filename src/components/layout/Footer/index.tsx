@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import Link from "next/link";
 import { GraduationCap, Facebook, Twitter, Instagram, MapPin, Mail, Phone, ArrowUp } from "lucide-react";
 import { Toaster } from "sonner";
 
@@ -52,29 +53,29 @@ const Footer: React.FC = () => {
                         <h4 className="mb-3 text-lg font-semibold text-cyan-200">Explore</h4>
                         <ul className="space-y-3 text-base">
                             <li>
-                                <a href="#" className="transition hover:text-cyan-400">
+                                <Link href="/events" className="transition hover:text-cyan-400">
                                     All Events
-                                </a>
+                                </Link>
                             </li>
                             <li>
-                                <a href="#" className="transition hover:text-cyan-400">
-                                    Workshops
-                                </a>
+                                <Link href="/calendar" className="transition hover:text-cyan-400">
+                                    Calendar
+                                </Link>
                             </li>
                             <li>
-                                <a href="#" className="transition hover:text-cyan-400">
-                                    Seminars
-                                </a>
+                                <Link href="/blog" className="transition hover:text-cyan-400">
+                                    Blog
+                                </Link>
                             </li>
                             <li>
-                                <a href="#" className="transition hover:text-cyan-400">
-                                    Cultural Nights
-                                </a>
+                                <Link href="/gallery" className="transition hover:text-cyan-400">
+                                    Gallery
+                                </Link>
                             </li>
                             <li>
-                                <a href="sitemap/" className="transition hover:text-cyan-400">
+                                <Link href="/sitemap" className="transition hover:text-cyan-400">
                                     Site Map
-                                </a>
+                                </Link>
                             </li>
                         </ul>
                     </div>
@@ -84,24 +85,25 @@ const Footer: React.FC = () => {
                         <h4 className="mb-3 text-lg font-semibold text-cyan-200">Resources</h4>
                         <ul className="space-y-3 text-base">
                             <li>
-                                <a href="#" className="transition hover:text-cyan-400">
-                                    Guides
-                                </a>
+                                <Link href="/about" className="transition hover:text-cyan-400">
+                                    About
+                                </Link>
                             </li>
                             <li>
-                                <a href="#" className="transition hover:text-cyan-400">
+                                <Link href="/faq" className="transition hover:text-cyan-400">
                                     FAQ
-                                </a>
+                                </Link>
                             </li>
                             <li>
-                                <a href="#" className="transition hover:text-cyan-400">
+                                <Link href="/contact" className="transition hover:text-cyan-400">
                                     Support
-                                </a>
+                                </Link>
                             </li>
                             <li>
-                                <a href="#" className="transition hover:text-cyan-400">
+                                {/* Trong /app/about/page.tsx nhớ đặt id="policies" cho anchor này nếu cần */}
+                                <Link href="/about#policies" className="transition hover:text-cyan-400">
                                     Policies
-                                </a>
+                                </Link>
                             </li>
                         </ul>
                     </div>
@@ -116,11 +118,15 @@ const Footer: React.FC = () => {
                             </li>
                             <li className="flex items-center gap-3">
                                 <Mail className="h-5 w-5 text-cyan-400" />
-                                <span>events@university.edu</span>
+                                <a href="mailto:events@university.edu" className="transition hover:text-cyan-400">
+                                    events@university.edu
+                                </a>
                             </li>
                             <li className="flex items-center gap-3">
                                 <Phone className="h-5 w-5 text-cyan-400" />
-                                <span>(028) 1234 5678</span>
+                                <a href="tel:+842812345678" className="transition hover:text-cyan-400">
+                                    (028) 1234 5678
+                                </a>
                             </li>
                         </ul>
                     </div>
@@ -131,6 +137,7 @@ const Footer: React.FC = () => {
                     <span>
                         © 2025 <span className="font-semibold text-cyan-300">EventSphere</span>. All rights reserved.
                     </span>
+                    {/* Nếu layout có id="home" ở header, giữ #home; nếu không, đổi thành "#top" và đặt id="top" ở <body/> hoặc wrapper */}
                     <a
                         href="#home"
                         className="inline-flex items-center gap-2 rounded-full bg-cyan-600 px-4 py-2 font-medium text-white shadow transition hover:bg-cyan-500"
