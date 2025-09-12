@@ -27,7 +27,13 @@ const ChatBotAI = () => {
     const [isTyping, setIsTyping] = useState(false);
     const messagesEndRef = useRef<HTMLDivElement>(null);
     const inputRef = useRef<HTMLInputElement>(null);
-    const [chatHistories, setChatHistories] = useState<ChatHistoriesType[]>([]);
+    const [chatHistories, setChatHistories] = useState<ChatHistoriesType[]>([
+        {
+            role: "model",
+            parts: [{ text: "Hello! How can I assist you today?" }],
+            createdAt: new Date(),
+        },
+    ]);
     const [ids, setIds] = useState<{ id: number; event_id: number[] }[]>([]);
     const { playSound } = useNotificationSound();
 
@@ -142,7 +148,7 @@ const ChatBotAI = () => {
                             </div>
                             <button
                                 onClick={() => setIsOpen(false)}
-                                className="rounded-full p-1 transition-colors hover:bg-white/20"
+                                className="cursor-pointer rounded-full p-1 transition-colors hover:bg-white/20"
                             >
                                 <X className="h-4 w-4" />
                             </button>

@@ -1,18 +1,17 @@
-"use client";
-
-import EventEditorShell from "~/app/organizer/_components/EventEditorShell";
-import { EMPTY_EVENT } from "~/app/organizer/_components/EventForm";
-
+import EventForm from "../_components/EventForm";
+import { Metadata } from "next";
+export const metadata: Metadata = {
+    title: "Create Event - EventSphere",
+    description: "Create and manage your campus events with EventSphere's intuitive event creation tools.",
+};
 export default function CreateEventPage() {
     return (
-        <EventEditorShell
-            title="Event"
-            initialValues={EMPTY_EVENT}
-            mode="create"
-            onCreate={async (v) => {
-                // TODO: call API create
-                alert("Created event:\n" + JSON.stringify(v, null, 2));
-            }}
-        />
+        <div className="max-w mx-auto space-y-6 p-6">
+            <header className="flex items-center justify-between">
+                <h1 className="text-xl font-semibold">Create Event</h1>
+            </header>
+
+            <EventForm />
+        </div>
     );
 }

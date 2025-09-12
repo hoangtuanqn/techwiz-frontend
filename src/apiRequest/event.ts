@@ -58,5 +58,10 @@ const eventApi = {
         }
         return publicApi.get<MediaEventResponseType>(query);
     },
+
+    // admin - origanizer tạo sự kiện
+    createEvent: (data: { [key: string]: any }) => {
+        return publicApi.post(`/events`, data);
+    },
 };
 export default eventApi;

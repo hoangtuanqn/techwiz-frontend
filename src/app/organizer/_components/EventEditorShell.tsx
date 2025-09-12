@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import EventForm, { EventFormValues } from "./EventForm";
+import { Button } from "~/components/ui/button";
 
 type Mode = "create" | "review" | "edit";
 type ReviewToolbar = "full" | "viewOnly";
@@ -81,7 +82,7 @@ export default function EventEditorShell({
     };
 
     return (
-        <div className="mx-auto max-w space-y-6 p-6">
+        <div className="max-w mx-auto space-y-6 p-6">
             <header className="flex items-center justify-between">
                 <h1 className="text-xl font-semibold">
                     {title} {mode === "create" ? "(Create)" : mode === "edit" ? "(Edit)" : "(Review)"}
@@ -137,13 +138,13 @@ export default function EventEditorShell({
                             Reset
                         </button>
 
-                        <button
+                        <Button
                             onClick={handleSave}
                             className="rounded-lg bg-cyan-600 px-3 py-2 text-white disabled:opacity-60"
                             disabled={isBusy}
                         >
                             Save
-                        </button>
+                        </Button>
                     </div>
                 )}
             </header>
