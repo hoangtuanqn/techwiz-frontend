@@ -27,20 +27,21 @@ const ActionHeader = () => {
                             </div>
 
                             <Link
-                                href="/profile"
+                                href="/personal-information"
                                 className="flex cursor-pointer items-center gap-3 rounded-lg px-3 py-2 text-sm text-slate-700 transition-colors hover:bg-slate-100 hover:text-cyan-600"
                             >
                                 <User className="h-4 w-4" />
                                 Profile
                             </Link>
 
+                            {user.role === "organizer" && (
                             <Link
-                                href="/settings"
-                                className="flex cursor-pointer items-center gap-3 rounded-lg px-3 py-2 text-sm text-slate-700 transition-colors hover:bg-slate-100 hover:text-cyan-600"
-                            >
-                                <Settings className="h-4 w-4" />
-                                Settings
-                            </Link>
+                                    href="/organizer/dashboard"
+                                    className="flex cursor-pointer items-center gap-3 rounded-lg px-3 py-2 text-sm text-slate-700 transition-colors hover:bg-slate-100 hover:text-cyan-600"
+                                >
+                                    <Settings className="h-4 w-4" />
+                                    Event Management
+                            </Link>)}
 
                             {user.role === "admin" && (
                                 <Link
