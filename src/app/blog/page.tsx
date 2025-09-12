@@ -1,6 +1,8 @@
 "use client";
+import NextLink from "next/link";
 import { useMemo, useState } from "react";
 import { ArrowRight, Search, X } from "lucide-react";
+import { id } from "zod/v4/locales";
 
 // ===== Mock data =========================================================
 const TAG_POOL = ["Hackathon", "Robotics", "AI", "Design", "Startup", "Marketing", "Culture", "Sports"] as const;
@@ -17,6 +19,12 @@ type Post = {
     read: number; // minutes
     tags: (typeof TAG_POOL)[number][];
 };
+
+const slugify = (s: string) =>
+    s
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, "-")
+        .replace(/(^-|-$)+/g, "");
 
 const RAW_POSTS: Post[] = Array.from({ length: 60 }).map((_, i) => {
     const category = ["Technical", "Cultural", "Business", "Design"][i % 4] as Post["category"];
@@ -84,14 +92,16 @@ export default function BlogPage() {
         const fromTime = from ? new Date(from).getTime() : Number.NEGATIVE_INFINITY;
         const toTime = to ? new Date(to).getTime() : Number.POSITIVE_INFINITY;
 
-        let arr = RAW_POSTS.filter((p) => {
+        const arr = RAW_POSTS.filter((p) => {
             const matchCat = category === "All" || p.category === category;
             const matchQ =
                 !q || p.title.toLowerCase().includes(q.toLowerCase()) || p.desc.toLowerCase().includes(q.toLowerCase());
             const time = new Date(p.date).getTime();
             const matchDate = time >= fromTime && time <= toTime;
             const matchRead = p.read >= minRead;
-            const matchTags = selectedTags.size === 0 || [...selectedTags].every((t) => p.tags.includes(t as any));
+            const matchTags =
+                selectedTags.size === 0 ||
+                [...selectedTags].every((t) => p.tags.includes(t as (typeof TAG_POOL)[number]));
 
             return matchCat && matchQ && matchDate && matchRead && matchTags;
         });
@@ -150,7 +160,7 @@ export default function BlogPage() {
                         <select
                             value={category}
                             onChange={(e) => {
-                                setCategory(e.target.value as any);
+                                setCategory(e.target.value as (typeof CATEGORIES)[number]);
                                 setVisible(12);
                             }}
                             className="w-full rounded-xl border border-slate-200 px-3 py-2 text-sm focus:ring-2 focus:ring-[#06b6d4]/50"
@@ -241,7 +251,7 @@ export default function BlogPage() {
 
                         <select
                             value={sort}
-                            onChange={(e) => setSort(e.target.value as any)}
+                            onChange={(e) => setSort(e.target.value as "Newest" | "Oldest" | "A-Z" | "Z-A")}
                             className="rounded-xl border border-slate-200 px-3 py-2 text-sm focus:ring-2 focus:ring-[#06b6d4]/50"
                         >
                             <option>Newest</option>
@@ -264,6 +274,13 @@ export default function BlogPage() {
                             key={post.id}
                             className="group relative overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-lg"
                         >
+                            {/* overlay Link bao phủ toàn card */}
+                            <NextLink
+                                href={`/blog/${post.id}`}
+                                className="absolute inset-0 z-10"
+                                aria-label={post.title}
+                            />
+
                             <div className="overflow-hidden">
                                 <img
                                     src={post.image}
@@ -298,14 +315,13 @@ export default function BlogPage() {
 
                                 <div className="mt-3 flex items-center justify-between text-xs text-slate-500">
                                     <span>~ {post.read} min read</span>
-                                    <a
-                                        href={`/blog/${post.id}`}
-                                        className="relative inline-flex items-center gap-1 overflow-hidden rounded-lg border border-slate-200 px-3 py-1.5 text-[#06b6d4] transition hover:-translate-y-0.5 hover:border-[#06b6d4] hover:bg-[#06b6d4]/5 active:translate-y-0"
-                                    >
+
+                                    {/* nút chỉ là visual (overlay Link đã bắt click) */}
+                                    <span className="relative inline-flex items-center gap-1 overflow-hidden rounded-lg border border-slate-200 px-3 py-1.5 text-[#06b6d4] transition group-hover:-translate-y-0.5 group-hover:border-[#06b6d4] group-hover:bg-[#06b6d4]/5">
                                         <span className="relative z-10">Read more</span>
                                         <ArrowRight className="relative z-10 h-4 w-4 transition-transform group-hover:translate-x-0.5" />
                                         <span className="pointer-events-none absolute inset-0 -z-0 bg-gradient-to-r from-transparent via-white/30 to-transparent opacity-0 transition group-hover:opacity-100" />
-                                    </a>
+                                    </span>
                                 </div>
                             </div>
                         </article>

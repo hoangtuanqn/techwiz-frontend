@@ -1,13 +1,27 @@
 "use client";
-import React, { useEffect } from "react";
-import { Play, Rocket, Search, SearchCheck } from "lucide-react";
+import React, { useEffect, useState } from "react";
+import { Rocket, Search, SearchCheck } from "lucide-react";
 import AOS from "aos";
 import { Button } from "~/components/ui/button";
 import { WatchPreview } from "./WatchPreview";
+import { useRouter } from "next/navigation";
 const Hero = () => {
+    const router = useRouter();
+    const [keyword, setKeyword] = useState("");
+    const [category, setCategory] = useState("");
+
     useEffect(() => {
         AOS.init({ once: true, duration: 420, easing: "ease-out", offset: 80 });
     }, []);
+
+    const handleSearch = (e: React.FormEvent) => {
+        e.preventDefault();
+        const params = new URLSearchParams();
+        if (keyword.trim()) params.set("search", keyword.trim());
+        if (category) params.set("category", category);
+        router.push(`/events?${params.toString()}`);
+    };
+
     return (
         <section id="home" className="relative">
             <div className="absolute inset-0">
@@ -48,43 +62,41 @@ const Hero = () => {
                         id="searchForm"
                         className="glass shadow-soft mx-auto mt-8 max-w-4xl rounded-2xl border border-cyan-300/30 bg-white/90 p-3 backdrop-blur-md md:p-4"
                         aria-label="Search events"
-                        onSubmit={(e) => {
-                            e.preventDefault();
-                            alert("Search submitted");
-                        }}
+                        onSubmit={handleSearch}
                     >
-                        <div className="grid grid-cols-1 gap-3 md:grid-cols-4">
+                        <div className="grid grid-cols-1 gap-3 md:grid-cols-3">
                             {/* Keyword input */}
                             <div className="relative">
                                 <Search className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-cyan-500" />
                                 <input
                                     type="text"
                                     placeholder="Keyword…"
+                                    value={keyword}
+                                    onChange={(e) => setKeyword(e.target.value)}
                                     className="w-full rounded-xl border border-cyan-300/40 bg-white py-3 pr-3 pl-10 text-slate-900 placeholder-slate-500 focus:ring-2 focus:ring-cyan-400/50 focus:outline-none"
                                 />
                             </div>
 
                             {/* Category select */}
-                            <select className="w-full rounded-xl border border-cyan-300/40 bg-white px-3 py-3 text-slate-900 focus:ring-2 focus:ring-cyan-400/50 focus:outline-none">
-                                <option value="">Category</option>
-                                <option>Cultural Event</option>
-                                <option>Technical Festival</option>
-                                <option>Sports Competition</option>
-                                <option>Annual Function</option>
-                                <option>Seminars and Workshops</option>
-                                <option>Inter-school Competition</option>
-                            </select>
-
-                            {/* Difficulty select */}
-                            <select className="w-full rounded-xl border border-cyan-300/40 bg-white px-3 py-3 text-slate-900 focus:ring-2 focus:ring-cyan-400/50 focus:outline-none">
-                                <option value="">Difficulty</option>
-                                <option>Beginner</option>
-                                <option>Intermediate</option>
-                                <option>Advanced</option>
+                            <select
+                                value={category}
+                                onChange={(e) => setCategory(e.target.value)}
+                                className="w-full rounded-xl border border-cyan-300/40 bg-white px-3 py-3 text-slate-900 focus:ring-2 focus:ring-cyan-400/50 focus:outline-none"
+                            >
+                                <option>Category</option>
+                                <option value="all">All</option>
+                                <option value="technical">Technical</option>
+                                <option value="business">Business</option>
+                                <option value="cultural">Cultural</option>
+                                <option value="sports">Sports</option>
+                                <option value="workshop">Workshops & Seminars</option>
+                                <option value="academic">Academic</option>
+                                <option value="annual">Annual Functions</option>
+                                <option value="community">Community & Social</option>
+                                <option value="other">Other</option>
                             </select>
 
                             {/* Search button */}
-
                             <Button className="h-full items-center justify-center gap-2 rounded-xl bg-cyan-500 px-5 py-3 font-semibold text-white transition-all duration-300">
                                 <SearchCheck className="h-4 w-4" /> Search
                             </Button>
