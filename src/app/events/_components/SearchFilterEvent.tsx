@@ -18,24 +18,6 @@ import { useFilterQuery } from "~/hooks/useFilterQuery";
 const fields = ["search", "category", "status"] as const;
 const SearchFilterEvent = () => {
     const { formValues, setFieldValue, handleSubmit, isFiltered, resetFields } = useFilterQuery(fields);
-    const searchParams = useSearchParams();
-    const didInitRef = useRef(false);
-
-    useEffect(() => {
-        if (didInitRef.current) return;
-
-        const Search = searchParams.get("search") ?? "";
-        const Category = searchParams.get("category") ?? "";
-
-        if (Search && formValues.filter.search !== Search) {
-            setFieldValue("search", Search, "filter"); // không push URL ở đây
-        }
-        if (Category && formValues.filter.category !== Category) {
-            setFieldValue("category", Category, "filter");
-        }
-
-        didInitRef.current = true;
-    }, []);
 
     return (
         <div className="mb-8 flex flex-col items-center gap-4">
