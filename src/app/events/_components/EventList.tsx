@@ -7,6 +7,7 @@ import eventApi from "~/apiRequest/event";
 import { EventCardSkeleton } from "./EventitemSkeleton";
 import useGetSearchQuery from "~/hooks/useGetSearchQuery";
 import { buildLaravelFilterQuery } from "~/utils/helpers";
+import { PaginationNav } from "~/components/Pagination";
 
 const isAvailable = (endDate: string) => {
     return new Date(endDate) >= new Date();
@@ -18,7 +19,7 @@ const EventList = () => {
     const barColor = (p: number) => (p > 95 ? "bg-red-500" : p > 60 ? "bg-amber-500" : "bg-emerald-500");
 
     const { data: events, isLoading } = useQuery({
-        queryKey: ["events", { search, category, status }],
+        queryKey: ["events", { search, category, status, page }],
         queryFn: async () => {
             const response = await eventApi.getEvent(
                 +page || 1,
@@ -123,6 +124,9 @@ const EventList = () => {
                     </>
                 )}
             </div>
+            {events && events.total > 9 && !isLoading && (
+                <PaginationNav totalPages={events?.last_page ?? 9} basePath="/events" />
+            )}
         </>
     );
 };
