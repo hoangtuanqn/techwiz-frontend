@@ -22,10 +22,9 @@ export default function CatalogPage() {
                 {/* Search & Filter */}
                 <Suspense>
                     <SearchFilterEvent />
+                    {/* Grid */}
+                    <EventList />
                 </Suspense>
-
-                {/* Grid */}
-                <EventList />
             </div>
         </section>
     );

@@ -16,7 +16,7 @@ const Header: React.FC = () => {
 
                     {/* Desktop Nav */}
                     <nav className="hidden items-center gap-8 md:flex" aria-label="Main">
-                        <Link className="transition hover:text-cyan-600" href="/">
+                        <Link className="font-semibold text-cyan-600 transition hover:text-cyan-600" href="/">
                             Home
                         </Link>
                         <Link className="transition hover:text-cyan-600" href="/events">
@@ -37,7 +37,6 @@ const Header: React.FC = () => {
                         <Link className="transition hover:text-cyan-600" href="/faq">
                             FAQ
                         </Link>
-
                         <Link className="transition hover:text-cyan-600" href="/contact">
                             Contact
                         </Link>

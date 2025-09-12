@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import { ArrowRight, Send } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 
 const Blogs = () => {
     return (
