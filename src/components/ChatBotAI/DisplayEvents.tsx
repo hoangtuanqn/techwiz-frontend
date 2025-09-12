@@ -4,13 +4,11 @@ import React from "react";
 import publicApi from "~/libs/apis/publicApi";
 import { EventLinkSkeleton } from "./EventLinkSkeleton";
 
-const DisplayEvents = ({ ids }: { ids: { id: number; event_id: number[] }[] }) => {
+const DisplayEvents = ({ eventIds }: { eventIds: number[] }) => {
     const { data, isLoading } = useQuery({
-        queryKey: ["list-event-chatbot-ai", ids],
+        queryKey: ["list-event-chatbot-ai", eventIds],
         queryFn: async () => {
-            if (ids.length === 0) return []; // Return empty array if no events
-
-            const eventIds = ids.flatMap((item) => item.event_id);
+            if (eventIds.length === 0) return []; // Return empty array if no events
             const response = await publicApi.post(`/events/for-ai`, { event_ids: eventIds });
             return response.data?.data || []; // Return event list
         },
@@ -19,8 +17,8 @@ const DisplayEvents = ({ ids }: { ids: { id: number; event_id: number[] }[] }) =
         <div className="mt-2 flex flex-col gap-3">
             {isLoading ? (
                 <>
-                    {ids.map((item) => (
-                        <EventLinkSkeleton key={item.id} />
+                    {eventIds.map((item) => (
+                        <EventLinkSkeleton key={item} />
                     ))}
                 </>
             ) : (

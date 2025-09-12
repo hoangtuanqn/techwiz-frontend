@@ -181,7 +181,15 @@ const ChatBotAI = () => {
                                                 {formatTime(message.createdAt)}
                                             </p>
                                         </div>
-                                        {message.role === "model" && <DisplayEvents ids={ids} />}
+                                        {message.role === "model" && (
+                                            <DisplayEvents
+                                                eventIds={
+                                                    ids
+                                                        .filter((item) => item.id === index + 1)
+                                                        .flatMap((item) => item.event_id) || []
+                                                }
+                                            />
+                                        )}
                                     </div>
 
                                     {message.role === "user" && (
