@@ -14,6 +14,7 @@ import {
     SelectValue,
 } from "~/components/ui/select";
 import { Input } from "~/components/ui/input";
+import Link from "next/link";
 
 const PALETTE = [
     "#EF4444",
@@ -542,17 +543,19 @@ const Calendar: React.FC = () => {
                                                     boxShadow: "0 3px 10px rgba(15,23,42,0.06)",
                                                 }}
                                             />
-                                            <div className="min-w-0 flex-1">
-                                                <div className="truncate text-sm font-semibold tracking-tight">
-                                                    {ev.title}
+                                            <Link href={`/events/${ev.id}`} className="flex min-w-0 items-center gap-3">
+                                                <div className="min-w-0 flex-1">
+                                                    <div className="truncate text-sm font-semibold tracking-tight">
+                                                        {ev.title}
+                                                    </div>
+                                                    <div
+                                                        className={`text-[11px] ${faded ? "text-slate-600/90" : "text-white/90"}`}
+                                                    >
+                                                        {startDate}
+                                                        {endDate !== startDate ? ` → ${endDate}` : ""} • {ev.venue}
+                                                    </div>
                                                 </div>
-                                                <div
-                                                    className={`text-[11px] ${faded ? "text-slate-600/90" : "text-white/90"}`}
-                                                >
-                                                    {startDate}
-                                                    {endDate !== startDate ? ` → ${endDate}` : ""} • {ev.venue}
-                                                </div>
-                                            </div>
+                                            </Link>
                                             <div className="ml-auto flex items-center gap-2">
                                                 {ev.is_booked && (
                                                     <span className="rounded-full bg-white/20 px-2 py-1 text-xs">
