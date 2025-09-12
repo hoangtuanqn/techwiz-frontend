@@ -12,10 +12,7 @@ export default function OrganizerLayout({ children }: { children: React.ReactNod
           <ul className="space-y-2">
             <li><Link href="/organizer/dashboard" className="block p-2 hover:bg-gray-700 rounded">Dashboard</Link></li>
             <li><Link href="/organizer/events" className="block p-2 hover:bg-gray-700 rounded">Manage Events</Link></li>
-            <li><Link href="/organizer/attendances" className="block p-2 hover:bg-gray-700 rounded">Attendance</Link></li>
             <li><Link href="/organizer/certificates" className="block p-2 hover:bg-gray-700 rounded">Certificates</Link></li>
-            <li><Link href="/organizer/media" className="block p-2 hover:bg-gray-700 rounded">Media</Link></li>
-            <li><Link href="/organizer/announcements" className="block p-2 hover:bg-gray-700 rounded">Announcements</Link></li>
           </ul>
         </nav>
       </aside>
