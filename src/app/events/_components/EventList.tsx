@@ -1,6 +1,6 @@
 "use client";
 import { useQuery } from "@tanstack/react-query";
-import { SlidersHorizontal, Users } from "lucide-react";
+import { SlidersHorizontal, Users, CheckCircle } from "lucide-react";
 import Link from "next/link";
 import React from "react";
 import eventApi from "~/apiRequest/event";
@@ -53,15 +53,36 @@ const EventList = () => {
                                 <Link
                                     key={ev.id}
                                     href={`/events/${ev.id}`}
-                                    className="group overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-lg"
+                                    className={`group relative overflow-hidden rounded-2xl border bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-lg ${
+                                        ev.is_booked
+                                            ? "ring-opacity-50 border-emerald-300 ring-2 ring-emerald-200"
+                                            : "border-slate-200"
+                                    }`}
                                 >
+                                    {/* Registered Badge */}
+                                    {ev.is_booked && (
+                                        <div className="absolute top-3 right-3 z-10">
+                                            <div className="flex items-center gap-1 rounded-full bg-emerald-500 px-2 py-1 text-xs font-semibold text-white shadow-lg">
+                                                <CheckCircle className="h-3 w-3" />
+                                                Registered
+                                            </div>
+                                        </div>
+                                    )}
+
                                     <img
                                         src={ev.thumbnail}
                                         alt={ev.title}
                                         className="h-40 w-full object-cover transition-transform duration-300 group-hover:scale-105"
                                     />
                                     <div className="p-4">
-                                        <h3 className="font-semibold text-slate-800 group-hover:text-[#06b6d4]">
+                                        <h3
+                                            className={`font-semibold transition-colors ${
+                                                ev.is_booked
+                                                    ? "text-emerald-700 group-hover:text-emerald-600"
+                                                    : "text-slate-800 group-hover:text-[#06b6d4]"
+                                            }`}
+                                        >
+                                            {ev.is_booked && "✓ "}
                                             {ev.title}
                                         </h3>
                                         <div className="mt-2">
