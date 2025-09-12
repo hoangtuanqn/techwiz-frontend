@@ -1,210 +1,231 @@
 "use client";
 
-import Link from "next/link";
-import {
-    Inbox,
-    Send,
-    Clock,
-    AlertTriangle,
-    ChevronRight,
-    BellPlus,
-    CheckSquare,
-    Users,
-    CalendarPlus,
-    ChartBar,
-} from "lucide-react";
+import React from "react";
+import { Users, UserPlus } from "lucide-react";
 
-function Stat({
-    icon: Icon,
+/* =========================
+   Donut KPI (pure CSS)
+   ========================= */
+function DonutCard({
+    title,
+    percent,
+    color = "#3b82f6",
+    footnote,
+}: {
+    title: string;
+    percent: number;
+    color?: string;
+    footnote?: string;
+}) {
+    const p = Math.max(0, Math.min(100, percent));
+    return (
+        <article className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+            <h3 className="mb-3 text-xs font-semibold text-slate-500">{title}</h3>
+            <div className="flex items-center justify-center">
+                <div
+                    className="relative grid h-36 w-36 place-items-center rounded-full"
+                    style={{
+                        background: `conic-gradient(${color} ${p}%, #e5e7eb ${p}% 100%)`,
+                    }}
+                    aria-label={`${p}%`}
+                    role="img"
+                >
+                    <div className="h-20 w-20 rounded-full bg-white ring-8 ring-white" />
+                    <span className="pointer-events-none absolute text-lg font-bold text-slate-800">{p}%</span>
+                </div>
+            </div>
+            {footnote && <p className="mt-3 text-[11px] text-slate-500">{footnote}</p>}
+        </article>
+    );
+}
+
+/* =========================
+   Number KPI
+   ========================= */
+function NumberCard({
     title,
     value,
-    subtitle,
-    href,
+    caption,
+    icon: Icon,
 }: {
-    icon: any;
     title: string;
     value: string;
-    subtitle?: string;
-    href: string;
+    caption?: string;
+    icon?: React.ElementType;
 }) {
     return (
-        <Link
-            href={href}
-            className="flex items-center gap-4 rounded-xl border border-slate-200 bg-white p-4 shadow-sm transition hover:shadow-md"
-        >
-            <div className="rounded-lg bg-slate-100 p-3">
-                <Icon className="h-5 w-5 text-slate-600" />
+        <article className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+            <h3 className="mb-1 text-[11px] font-semibold text-slate-500">{title}</h3>
+            <div className="flex items-center gap-2">
+                {Icon && (
+                    <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-[#06b6d4]/10 text-[#06b6d4]">
+                        <Icon className="h-5 w-5" />
+                    </div>
+                )}
+                <div className="text-2xl font-extrabold text-slate-800">{value}</div>
             </div>
-            <div className="min-w-0 flex-1">
-                <div className="text-lg font-semibold text-slate-900">{value}</div>
-                <div className="truncate text-sm text-slate-600">{title}</div>
-                {subtitle && <div className="text-xs text-slate-400">{subtitle}</div>}
-            </div>
-            <ChevronRight className="h-4 w-4 text-slate-400" />
-        </Link>
+            {caption && <p className="mt-1 text-[11px] text-slate-500">{caption}</p>}
+        </article>
     );
 }
 
-function Row({
+/* =========================
+   Bar Chart (0..100%)
+   ========================= */
+function BarChartCard({
     title,
-    desc,
-    href,
-    badge,
+    values,
+    labels,
+    note,
 }: {
     title: string;
-    desc: string;
-    href: string;
-    badge?: { text: string; tone: "ok" | "info" | "warn" | "error" };
+    values: number[];
+    labels: string[];
+    note?: string;
 }) {
-    const tone =
-        badge?.tone === "ok"
-            ? "bg-emerald-50 text-emerald-700"
-            : badge?.tone === "info"
-              ? "bg-blue-50 text-blue-700"
-              : badge?.tone === "warn"
-                ? "bg-amber-50 text-amber-700"
-                : badge?.tone === "error"
-                  ? "bg-rose-50 text-rose-700"
-                  : "bg-slate-100 text-slate-700";
-
     return (
-        <Link
-            href={href}
-            className="flex items-center justify-between gap-3 border-t border-slate-100 px-3 py-2 transition hover:bg-slate-50"
-        >
-            <div className="min-w-0">
-                <div className="truncate text-sm font-medium text-slate-800">{title}</div>
-                <div className="text-xs text-slate-500">{desc}</div>
+        <article className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+            <h3 className="mb-3 text-xs font-semibold text-slate-500">{title}</h3>
+            <div className="h-64 w-full rounded-md border border-slate-200 bg-white p-4">
+                <div
+                    className="h-full w-full"
+                    style={{
+                        background:
+                            "repeating-linear-gradient(to top, #eef2f7 0, #eef2f7 1px, transparent 1px, transparent 32px)",
+                    }}
+                >
+                    <div className="flex h-full items-end gap-6 px-2">
+                        {values.map((v, i) => (
+                            <div key={i} className="flex w-12 flex-col items-center justify-end">
+                                <div
+                                    className="w-full rounded-md bg-[#93c5fd]"
+                                    style={{ height: `${Math.max(0, Math.min(100, v))}%` }}
+                                    aria-label={`${labels[i]}: ${v}%`}
+                                />
+                                <span className="mt-1 translate-y-2 text-[10px] text-slate-500">{labels[i]}</span>
+                            </div>
+                        ))}
+                    </div>
+                </div>
             </div>
-            {badge && <span className={`rounded-full px-2 py-0.5 text-xs font-medium ${tone}`}>{badge.text}</span>}
-        </Link>
+            {note && <p className="mt-2 text-[11px] text-slate-500">{note}</p>}
+        </article>
     );
 }
 
-export default function OverviewPage() {
-    return (
-        <section className="grid gap-6">
-            {/* Intro */}
-            <article className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
-                <h1 className="text-2xl font-bold text-slate-900">Hộp thư sự kiện</h1>
-                <p className="mt-1 text-sm text-slate-600">
-                    Quản lý email và thông báo gửi đến người tham gia. Xem tổng quan trạng thái, hoạt động gần đây và
-                    chuyển nhanh tới các mục quản trị.
-                </p>
-                <div className="mt-4 flex flex-wrap gap-2">
-                    <Link
-                        href="/admin/notifications"
-                        className="inline-flex items-center gap-2 rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-sm font-medium text-slate-700 hover:bg-slate-50"
-                    >
-                        <BellPlus className="h-4 w-4" /> Tạo thông báo
-                    </Link>
-                    <Link
-                        href="/admin/approvals"
-                        className="inline-flex items-center gap-2 rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-sm font-medium text-slate-700 hover:bg-slate-50"
-                    >
-                        <CheckSquare className="h-4 w-4" /> Duyệt yêu cầu
-                    </Link>
-                    <Link
-                        href="/admin/events/create"
-                        className="inline-flex items-center gap-2 rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-sm font-medium text-slate-700 hover:bg-slate-50"
-                    >
-                        <CalendarPlus className="h-4 w-4" /> Tạo sự kiện
-                    </Link>
-                </div>
-            </article>
+/* =========================
+   Line + Area Chart (SVG)
+   ========================= */
+function AreaLineChartCard({
+    title,
+    values,
+    labels,
+    noteTop,
+    noteBottom,
+    stroke = "#16a34a",
+    fill = "rgba(22,163,74,0.15)",
+}: {
+    title: string;
+    values: number[];
+    labels: string[];
+    noteTop?: string;
+    noteBottom?: string;
+    stroke?: string;
+    fill?: string;
+}) {
+    const W = 1100;
+    const H = 260;
+    const P = 24;
+    const max = Math.max(...values, 1);
+    const stepX = (W - P * 2) / (values.length - 1);
+    const scaleY = (n: number) => H - P - (n / max) * (H - P * 2);
 
-            {/* Stats (text tĩnh – chỉ điều hướng) */}
-            <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
-                <Stat icon={Inbox} title="Inbox" value="120" subtitle="5 chưa đọc" href="/admin/notifications" />
-                <Stat icon={Send} title="Đã gửi" value="320" subtitle="email & push" href="/admin/notifications" />
-                <Stat icon={Clock} title="Đã lên lịch" value="8" subtitle="sắp gửi" href="/admin/notifications" />
-                <Stat icon={AlertTriangle} title="Thất bại" value="2" subtitle="cần xử lý" href="/admin/status" />
+    const pts = values.map((v, i) => `${P + i * stepX},${scaleY(v)}`).join(" ");
+    const area = `M ${P},${H - P} L ${pts} L ${P + (values.length - 1) * stepX},${H - P} Z`;
+
+    return (
+        <article className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+            <h3 className="mb-3 text-xs font-semibold text-slate-500">{title}</h3>
+            <div className="w-full overflow-hidden rounded-md border border-slate-200 bg-white p-3">
+                <svg viewBox={`0 0 ${W} ${H}`} width="100%" height="320" role="img" aria-label={title}>
+                    {[0, 0.2, 0.4, 0.6, 0.8, 1].map((p) => {
+                        const y = P + (1 - p) * (H - P * 2);
+                        return <line key={p} x1={P} x2={W - P} y1={y} y2={y} stroke="#eef2f7" strokeWidth="1" />;
+                    })}
+                    <path d={area} fill={fill} />
+                    <polyline
+                        points={pts}
+                        fill="none"
+                        stroke={stroke}
+                        strokeWidth={3}
+                        strokeLinejoin="round"
+                        strokeLinecap="round"
+                    />
+                    {labels.map((lb, i) => {
+                        const x = P + i * stepX;
+                        return (
+                            <text key={i} x={x} y={H - 6} fontSize="11" fill="#64748b" textAnchor="middle">
+                                {lb}
+                            </text>
+                        );
+                    })}
+                </svg>
+            </div>
+            {noteTop && <p className="mt-2 text-[11px] text-slate-500">{noteTop}</p>}
+            {noteBottom && <p className="text-[11px] text-slate-500">{noteBottom}</p>}
+        </article>
+    );
+}
+
+/* =========================
+   Admin Dashboard Page
+   ========================= */
+export default function AdminDashboardPage() {
+    const months = ["Sep", "Oct", "Nov", "Dec", "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug"];
+    const feedbackPct = [32, 38, 36, 41, 39, 45, 42, 49, 52, 47, 44, 50];
+    const certs = [120, 110, 98, 130, 142, 150, 162, 170, 155, 148, 160, 175];
+
+    return (
+        <section className="min-h-screen space-y-6 bg-slate-50 p-6">
+            {/* KPI row */}
+            <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-4">
+                <DonutCard
+                    title="Feedback • Average rate (latest month)"
+                    percent={50}
+                    color="#60a5fa"
+                    footnote="Latest month: August 2025"
+                />
+                <DonutCard
+                    title="Certificates • Average rate"
+                    percent={62}
+                    color="#34d399"
+                    footnote="Based on participants per event"
+                />
+                <NumberCard title="Users • Total" value="4,520" caption="Total registered users" icon={Users} />
+                <NumberCard
+                    title="Users • New (30 days)"
+                    value="+120"
+                    caption="vs previous term: +12%"
+                    icon={UserPlus}
+                />
             </div>
 
-            {/* Recent (text + link tới các trang trong sidebar) */}
-            <article className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
-                <div className="flex items-center justify-between border-b border-slate-200 px-4 py-3">
-                    <h2 className="text-lg font-semibold text-slate-900">Hoạt động gần đây</h2>
-                    <Link href="/admin/status" className="text-xs font-medium text-slate-600 hover:text-slate-900">
-                        Xem tình trạng &rarr;
-                    </Link>
-                </div>
-                <div className="divide-y divide-slate-100">
-                    <Row
-                        title="Reminder: Hackathon 2025"
-                        desc="Gửi lúc 18:00 — Email"
-                        href="/admin/notifications"
-                        badge={{ text: "Sent", tone: "ok" }}
-                    />
-                    <Row
-                        title="Check-in mở cửa"
-                        desc="Gửi lúc 08:30 — Push"
-                        href="/admin/notifications"
-                        badge={{ text: "Sent", tone: "ok" }}
-                    />
-                    <Row
-                        title="Cultural Night update"
-                        desc="Hẹn 19:00 — Email"
-                        href="/admin/notifications"
-                        badge={{ text: "Scheduled", tone: "info" }}
-                    />
-                    <Row
-                        title="Workshop tài liệu"
-                        desc="09:00 — Email"
-                        href="/admin/status"
-                        badge={{ text: "Failed", tone: "error" }}
-                    />
-                    <Row
-                        title="Phân quyền Organizer mới"
-                        desc="Cập nhật vai trò — Admin"
-                        href="/admin/role"
-                        badge={{ text: "Info", tone: "warn" }}
-                    />
-                </div>
-            </article>
+            {/* Bar chart */}
+            <BarChartCard
+                title="Bar chart • Avg. Feedback / Participants (12 months)"
+                values={feedbackPct}
+                labels={months}
+                note="Each bar is a monthly average across that month's events."
+            />
 
-            {/* Quick links tới các mục trong sidebar */}
-            <article className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
-                <h2 className="mb-3 text-lg font-semibold text-slate-900">Điều hướng nhanh</h2>
-                <div className="grid grid-cols-1 gap-2 sm:grid-cols-2 md:grid-cols-3">
-                    <Link
-                        className="rounded-lg border border-slate-200 px-3 py-2 text-sm text-slate-700 hover:bg-slate-50"
-                        href="/admin/approvals"
-                    >
-                        Approvals
-                    </Link>
-                    <Link
-                        className="rounded-lg border border-slate-200 px-3 py-2 text-sm text-slate-700 hover:bg-slate-50"
-                        href="/admin/role"
-                    >
-                        Roles
-                    </Link>
-                    <Link
-                        className="rounded-lg border border-slate-200 px-3 py-2 text-sm text-slate-700 hover:bg-slate-50"
-                        href="/admin/notifications"
-                    >
-                        Notifications
-                    </Link>
-                    <Link
-                        className="rounded-lg border border-slate-200 px-3 py-2 text-sm text-slate-700 hover:bg-slate-50"
-                        href="/admin/status"
-                    >
-                        Status
-                    </Link>
-                    <Link
-                        className="rounded-lg border border-slate-200 px-3 py-2 text-sm text-slate-700 hover:bg-slate-50"
-                        href="/admin/events/create"
-                    >
-                        Create Event
-                    </Link>
-                    <Link
-                        className="rounded-lg border border-slate-200 px-3 py-2 text-sm text-slate-700 hover:bg-slate-50"
-                        href="/admin/profile"
-                    >
-                        Profile
-                    </Link>
-                </div>
-            </article>
+            {/* Line chart */}
+            <AreaLineChartCard
+                title="Line chart • Certificates issued monthly"
+                values={certs}
+                labels={months}
+                noteTop="Total certificates issued per month of the academic year."
+                noteBottom="Latest month: August • Count: 175"
+            />
         </section>
     );
 }

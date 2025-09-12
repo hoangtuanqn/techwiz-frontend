@@ -31,7 +31,7 @@ export default function AdminSidebar() {
 
             {/* Menu */}
             <nav className="space-y-1">
-                <SidebarLink href="/admin/profile" icon={UserCircle} label="Profile" activePath={pathname} />
+                <SidebarLink href="/admin" icon={Home} label="Dashboard" activePath={pathname} />
 
                 {/* Approvals submenu */}
                 <details open={approvalsOpen} className="group">
@@ -65,7 +65,7 @@ export default function AdminSidebar() {
                 </details>
 
                 <SidebarLink href="/admin/notifications" icon={BellPlus} label="Notifications" activePath={pathname} />
-                <SidebarLink href="/admin/status" icon={ChartBar} label="Status" activePath={pathname} />
+                
                 <SidebarLink
                     href="/admin/events/create"
                     icon={CalendarPlus}

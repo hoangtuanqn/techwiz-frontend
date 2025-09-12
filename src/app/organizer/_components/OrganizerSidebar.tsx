@@ -15,7 +15,7 @@ import {
 } from "lucide-react";
 import { usePathname } from "next/navigation";
 
-export default function AdminSidebar() {
+export default function OrganizerSidebar() {
     const pathname = usePathname();
 
     const approvalsOpen = pathname.startsWith("/organizer/approvals");
@@ -30,6 +30,7 @@ export default function AdminSidebar() {
 
             {/* Menu */}
             <nav className="space-y-1">
+                <SidebarLink href="/organizer" icon={Home} label="Dashboard" activePath={pathname} />
                 <SidebarLink href="/organizer/profile" icon={UserCircle} label="Profile" activePath={pathname} />
 
                 {/* Approvals submenu */}
