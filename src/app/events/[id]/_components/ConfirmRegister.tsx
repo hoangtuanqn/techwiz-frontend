@@ -42,12 +42,16 @@ export function ConfirmRegister({ event: ev }: { event: EventDetailResponseType[
         }
         // Optionally, you can add logic to refresh the event data or redirect the user
     };
+    console.log(ev);
 
     return (
         <Dialog>
             <DialogTrigger asChild>
-                <Button className="inline-flex items-center justify-center rounded-xl bg-gradient-to-r from-cyan-500 to-fuchsia-500 px-6 py-3 font-medium text-white shadow-lg transition-all duration-200 hover:scale-105 hover:shadow-cyan-500/25">
-                    Register Now
+                <Button
+                    disabled={ev.is_booked || available === 0}
+                    className="inline-flex items-center justify-center rounded-xl bg-gradient-to-r from-cyan-500 to-fuchsia-500 px-6 py-3 font-medium text-white shadow-lg transition-all duration-200 hover:scale-105 hover:shadow-cyan-500/25 disabled:cursor-not-allowed disabled:opacity-60"
+                >
+                    {ev.is_booked ? "Already Registered" : available === 0 ? "Sold Out" : "Register Now"}
                 </Button>
             </DialogTrigger>
 

@@ -2,17 +2,16 @@ import Link from "next/link";
 import { ArrowLeft, Calendar, MapPin, Users, Clock4, Star } from "lucide-react";
 import React, { cache } from "react";
 import { redirect } from "next/navigation";
-import eventApi from "~/apiRequest/event";
 import { formatter } from "~/utils/format";
 import { Metadata } from "next";
-import AddCalendar from "./_components/AddCalendar";
 import { ShareButton } from "~/components/ShareButton";
 import { ConfirmRegister } from "./_components/ConfirmRegister";
+import eventServerApi from "~/apiRequest/server/event";
 
 const getDetailEvent = cache(async (id: string) => {
     const {
         data: { data: event },
-    } = await eventApi.getDetailEvent(+id);
+    } = await eventServerApi.getDetailEvent(+id);
     return event;
 });
 export async function generateMetadata({ params }: { params: Promise<{ id: string }> }): Promise<Metadata> {
@@ -99,12 +98,15 @@ export default async function EventDetailPage({ params }: { params: { id: string
 
                 {/* Title */}
                 <div className="flex flex-col gap-2 md:flex-row md:items-end md:justify-between">
-                    <div>
-                        <h1 className="text-3xl font-bold text-slate-900 md:text-4xl">{event.title}</h1>
-                        <p className="text-slate-500">
-                            {formatter.capitalize(event.category)} Event • by {event.organizer.full_name} •{" "}
-                            {event.seating.total_seats} seats
-                        </p>
+                    <div className="flex w-full justify-between">
+                        <div>
+                            <h1 className="text-3xl font-bold text-slate-900 md:text-4xl">{event.title}</h1>
+                            <p className="text-slate-500">
+                                {formatter.capitalize(event.category)} Event • by {event.organizer.full_name} •{" "}
+                                {event.seating.total_seats} seats
+                            </p>
+                        </div>
+                        <ShareButton />
                     </div>
                     {/* Quick rating (demo static) */}
                     {isClosed(event.start_time, left) && (
@@ -199,10 +201,6 @@ export default async function EventDetailPage({ params }: { params: { id: string
                             View Reviews
                         </Link>
                     )}
-
-                    <AddCalendar event={event} />
-
-                    <ShareButton />
                 </div>
 
                 {/* Secondary info */}

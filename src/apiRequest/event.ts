@@ -21,9 +21,9 @@ const eventApi = {
         }
         return publicApi.get<EventListResponseType>(query);
     },
-
-    getDetailEvent: (id: number) => {
-        return publicApi.get<EventDetailResponseType>(`/events/${id}`);
+    //
+    getDetailEvent: (id: number, headers?: { [key: string]: string }) => {
+        return publicApi.get<EventDetailResponseType>(`/events/${id}`, headers ? { headers } : undefined);
     },
 
     // đăng ký sự kiện

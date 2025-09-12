@@ -28,6 +28,7 @@ export const eventItemSchema = z.object({
     created_at: z.string(),
     updated_at: z.string(),
     booked_count: z.number(),
+    is_booked: z.boolean(),
     seating: seatingSchema,
 });
 

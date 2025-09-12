@@ -2,7 +2,7 @@ import axios from "axios";
 import { APP } from "~/config/env";
 
 const serverApi = axios.create({
-    baseURL: APP.API.FULL_URL,
+    baseURL: APP.URL,
     withCredentials: true,
 });
 
