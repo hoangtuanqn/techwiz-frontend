@@ -1,5 +1,9 @@
 import publicApi from "~/libs/apis/publicApi";
-import { EventDetailResponseType, EventListResponseType } from "~/types/schemaZod/event.schema";
+import {
+    EventDetailResponseType,
+    EventListResponseType,
+    GetEventScheduleResponseType,
+} from "~/types/schemaZod/event.schema";
 
 const eventApi = {
     getEvent: (
@@ -29,6 +33,11 @@ const eventApi = {
     // đăng ký sự kiện
     registerEvent: (id: number) => {
         return publicApi.post(`/events/${id}/register`);
+    },
+
+    // get lịch trình sự kiện
+    getEventSchedule: () => {
+        return publicApi.get<GetEventScheduleResponseType>(`/events/schedules`);
     },
 };
 export default eventApi;

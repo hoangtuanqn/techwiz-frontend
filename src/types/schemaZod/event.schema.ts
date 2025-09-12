@@ -49,3 +49,21 @@ export const eventDetailSchema = z.object({
     }),
 });
 export type EventDetailResponseType = z.infer<typeof eventDetailSchema>;
+
+const getEventScheduleItemSchema = z.object({
+    id: z.number(),
+    title: z.string(),
+    start_time: z.string(),
+    end_time: z.string(),
+    venue: z.string(),
+    category: z.string(),
+    booked_count: z.number(),
+    is_booked: z.boolean(),
+});
+
+export const getEventScheduleSchema = z.object({
+    success: z.boolean(),
+    message: z.string(),
+    data: z.array(getEventScheduleItemSchema),
+});
+export type GetEventScheduleResponseType = z.infer<typeof getEventScheduleSchema>;

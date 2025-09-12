@@ -22,20 +22,20 @@ const SearchFilterEvent = () => {
     const didInitRef = useRef(false);
 
     useEffect(() => {
-    if (didInitRef.current) return;
+        if (didInitRef.current) return;
 
-    const Search = searchParams.get("search") ?? "";
-    const Category = searchParams.get("category") ?? "";
+        const Search = searchParams.get("search") ?? "";
+        const Category = searchParams.get("category") ?? "";
 
-    if (Search && formValues.filter.search !== Search) {
-      setFieldValue("search", Search, "filter"); // không push URL ở đây
-    }
-    if (Category && formValues.filter.category !== Category) {
-      setFieldValue("category", Category, "filter");
-    }
+        if (Search && formValues.filter.search !== Search) {
+            setFieldValue("search", Search, "filter"); // không push URL ở đây
+        }
+        if (Category && formValues.filter.category !== Category) {
+            setFieldValue("category", Category, "filter");
+        }
 
-    didInitRef.current = true;
-  }, []);
+        didInitRef.current = true;
+    }, []);
 
     return (
         <div className="mb-8 flex flex-col items-center gap-4">
