@@ -47,7 +47,7 @@ function isClosed(dateStr: string, seatsLeft: number) {
    Page
 ========================= */
 export default async function EventDetailPage({ params }: { params: { id: string } }) {
-    const { id } = params;
+    const { id } = await params;
     // const event = allEvents.find((ev) => ev.id === id);
     let event;
 
