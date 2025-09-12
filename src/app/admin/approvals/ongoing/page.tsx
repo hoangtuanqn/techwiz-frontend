@@ -2,14 +2,14 @@
 
 import React from "react";
 import EventTable, { EventRow } from "../../_comments/EventTable";
-import { DEMO_APPROVED } from "../../_comments/eventConstants";
+import { DEMO_ONGOING } from "../../_comments/eventConstants";
 
-export default function ApprovedPage() {
+export default function OngoingPage() {
     return (
         <EventTable
-            title="Approved events"
-            data={DEMO_APPROVED as EventRow[]}
-            actionLabel="View"
+            title="Ongoing events"
+            data={DEMO_ONGOING as EventRow[]}
+            actionLabel="Manage"
             actionLinkPrefix="/organizer/events"
             showCheckbox={false}
         />
