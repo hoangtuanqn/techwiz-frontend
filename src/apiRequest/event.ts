@@ -56,7 +56,7 @@ const eventApi = {
         if (queryOther) {
             query += `&${queryOther}`; // Các value khác nếu cần
         }
-        return publicApi.get<EventListResponseType>(query);
+        return publicApi.get<MediaEventResponseType>(query);
     },
 };
 export default eventApi;

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useMemo, useState } from "react";
+import React, { useState } from "react";
 import { Search, Grid3X3, Grid as GridIcon, Eye, Download, ImageIcon } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import eventApi from "~/apiRequest/event";
@@ -279,15 +279,6 @@ export default function GalleryPage() {
                         </div>
                         <h3 className="mb-2 text-lg font-medium text-slate-900">No photos found</h3>
                         <p className="mb-4 text-slate-600">Try adjusting your search or filter criteria</p>
-                        <button
-                            onClick={() => {
-                                setSearchQuery("");
-                                setSelectedCategory("all"); // fix: đồng bộ "all"
-                            }}
-                            className="inline-flex items-center rounded-lg bg-cyan-500 px-4 py-2 text-sm font-medium text-white hover:bg-cyan-600"
-                        >
-                            Clear filters
-                        </button>
                     </div>
                 )}
 
