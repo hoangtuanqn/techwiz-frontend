@@ -8,6 +8,8 @@ import { ShareButton } from "~/components/ShareButton";
 import { ConfirmRegister } from "./_components/ConfirmRegister";
 import eventServerApi from "~/apiRequest/server/event";
 import Certificate from "~/components/Certificate";
+import { useAuth } from "~/hooks/useAuth";
+import CertificateEvent from "../_components/CertificateEvent";
 
 const getDetailEvent = cache(async (id: string) => {
     const {
@@ -63,17 +65,8 @@ export default async function EventDetailPage({ params }: { params: { id: string
     }
 
     const { left, percent, tone } = seatStatus(event.seating.total_seats, event.booked_count ?? 0);
-    console.log(event.start_event);
 
     const dateFormatted = formatter.timeUntil(event.start_event);
-
-    const toneClass =
-        tone === "ok"
-            ? "border-emerald-200 bg-emerald-50 text-emerald-800"
-            : tone === "warn"
-              ? "border-amber-200 bg-amber-50 text-amber-800"
-              : "border-red-200 bg-red-50 text-red-800";
-
     const capacityBarClass = tone === "ok" ? "bg-emerald-500" : tone === "warn" ? "bg-amber-500" : "bg-red-500";
 
     return (
@@ -215,12 +208,7 @@ export default async function EventDetailPage({ params }: { params: { id: string
                         <li>Q&A and networking after the main session.</li>
                     </ul>
                 </div>
-                <Certificate
-                    fullName="Phạm Hoàng Tuấn"
-                    eventName="EventSphere Hackathon 2025"
-                    eventDate="13 September 2025"
-                />
-
+                <CertificateEvent />
                 {/* Actions */}
                 <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center">
                     <ConfirmRegister event={event} />

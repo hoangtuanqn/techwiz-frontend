@@ -42,7 +42,7 @@ export default function EventTable({
     }, [q, events]);
 
     const total = filtered.length;
-    const pages = Math.max(1, Math.ceil(total / perPage));
+
     const startIdx = (page - 1) * perPage;
     const rows = filtered.slice(startIdx, startIdx + perPage);
 
@@ -95,21 +95,6 @@ export default function EventTable({
         <section className="rounded-2xl border border-slate-200 bg-white">
             {/* Header + search */}
             <div className="flex flex-wrap items-center justify-between gap-3 p-4">
-                <div className="flex items-center gap-3">
-                    {title ? <h2 className="text-base font-semibold text-slate-800">{title}</h2> : null}
-                    <div className="relative">
-                        <Search className="pointer-events-none absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-slate-400" />
-                        <input
-                            value={q}
-                            onChange={(e) => {
-                                setQ(e.target.value);
-                                setPage(1);
-                            }}
-                            placeholder="Search events…"
-                            className="w-64 rounded-lg border border-slate-200 py-2 pr-3 pl-9 text-sm outline-none focus:ring-2 focus:ring-cyan-200"
-                        />
-                    </div>
-                </div>
                 <div className="text-xs text-slate-500">
                     Showing <b className="mx-1">{rows.length}</b> of {total}
                 </div>
@@ -211,44 +196,6 @@ export default function EventTable({
                         )}
                     </tbody>
                 </table>
-            </div>
-
-            {/* Pagination */}
-            <div className="flex items-center justify-between border-t border-slate-200 p-3">
-                <div className="flex items-center gap-2 text-sm">
-                    Rows per page:
-                    <select
-                        value={perPage}
-                        onChange={(e) => {
-                            setPerPage(Number(e.target.value));
-                            setPage(1);
-                        }}
-                        className="rounded-lg border border-slate-200 px-2 py-1"
-                    >
-                        {[10, 20, 50].map((n) => (
-                            <option key={n} value={n}>
-                                {n}
-                            </option>
-                        ))}
-                    </select>
-                </div>
-                <div className="flex items-center gap-2 text-sm">
-                    <button
-                        onClick={() => setPage((p) => Math.max(1, p - 1))}
-                        className="rounded-lg border px-2 py-1 hover:bg-slate-50"
-                    >
-                        ‹
-                    </button>
-                    <span>
-                        {page} / {pages}
-                    </span>
-                    <button
-                        onClick={() => setPage((p) => Math.min(pages, p + 1))}
-                        className="rounded-lg border px-2 py-1 hover:bg-slate-50"
-                    >
-                        ›
-                    </button>
-                </div>
             </div>
         </section>
     );

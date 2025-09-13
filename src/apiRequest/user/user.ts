@@ -48,7 +48,7 @@ const userApi = {
     },
 
     // change password
-    changePassword: (data: { current_password: string; new_password: string; new_password_confirmation: string }) =>
+    changePassword: (data: { current_password: string; new_password: string; confirm_password: string }) =>
         privateApi.post("/profile/change-password", data),
 };
 

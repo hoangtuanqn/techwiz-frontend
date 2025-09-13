@@ -14,18 +14,13 @@ import { Lock, Eye, EyeOff } from "lucide-react";
 import userApi from "~/apiRequest/user/user";
 import { notificationErrorApi } from "~/libs/apis/validationResponse";
 import PasswordStrengthMeter from "~/components/layout/Auth/PasswordStrengthMeter";
+import { useAuth } from "~/hooks/useAuth";
 
 // Schema validation
 const changePasswordSchema = z
     .object({
         currentPassword: z.string().min(1, "Current password is required"),
-        newPassword: z
-            .string()
-            .min(8, "Password must be at least 8 characters")
-            .regex(/[A-Z]/, "Password must contain at least one uppercase letter")
-            .regex(/[a-z]/, "Password must contain at least one lowercase letter")
-            .regex(/[0-9]/, "Password must contain at least one number")
-            .regex(/[^A-Za-z0-9]/, "Password must contain at least one special character"),
+        newPassword: z.string().min(6, "Password must be at least 6 characters"),
         confirmPassword: z.string().min(1, "Please confirm your password"),
     })
     .refine((data) => data.newPassword === data.confirmPassword, {
@@ -50,16 +45,20 @@ const ChangePasswordPage = () => {
         mode: "onBlur",
     });
 
+    const { logout } = useAuth();
+
     const mutation = useMutation({
         mutationFn: async (_data: ChangePasswordFormValues) => {
             await userApi.changePassword({
                 current_password: _data.currentPassword,
                 new_password: _data.newPassword,
-                new_password_confirmation: _data.confirmPassword,
+                confirm_password: _data.confirmPassword,
             });
         },
         onSuccess: () => {
             form.reset();
+            logout();
+
             toast.success("Password changed successfully!");
         },
         onError: notificationErrorApi,

@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import { CheckSquare, Users, Home, ShieldCheck, ChevronDown, CalendarPlus, FilePlus, BellPlus } from "lucide-react";
 import { usePathname } from "next/navigation";
 import SidebarLink from "~/components/shared/SidebarLink";
@@ -23,7 +22,12 @@ export default function AdminSidebar() {
                 <SidebarLink href="/admin" icon={Home} label="Dashboard" activePath={pathname} exact={true} />
 
                 {/* Approvals submenu */}
-                <SidebarLink href="/admin/approvals" icon={CheckSquare} label="Approvals" activePath={pathname} />
+                <SidebarLink
+                    href="/admin/approvals"
+                    icon={CheckSquare}
+                    label="Event Management"
+                    activePath={pathname}
+                />
 
                 {/* Role submenu */}
                 <details open={rolesOpen} className="group">
@@ -40,8 +44,6 @@ export default function AdminSidebar() {
                         <SidebarLink href="/admin/role/admin" label="Admin" activePath={pathname} />
                     </div>
                 </details>
-
-                <SidebarLink href="/admin/mail" icon={BellPlus} label="Create Mail" activePath={pathname} />
 
                 <SidebarLink
                     href="/admin/events/create"
