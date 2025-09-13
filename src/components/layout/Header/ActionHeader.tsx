@@ -1,5 +1,5 @@
 "use client";
-import { UserPlus, User, Settings, LogOut, ChevronDown, Shield } from "lucide-react";
+import { UserPlus, User, Settings, LogOut, ChevronDown, Shield, History } from "lucide-react";
 import Link from "next/link";
 import React from "react";
 import { useAuth } from "~/hooks/useAuth";
@@ -33,15 +33,23 @@ const ActionHeader = () => {
                                 <User className="h-4 w-4" />
                                 Profile
                             </Link>
+                            <Link
+                                href="/profile/registered-events"
+                                className="flex cursor-pointer items-center gap-3 rounded-lg px-3 py-2 text-sm text-slate-700 transition-colors hover:bg-slate-100 hover:text-cyan-600"
+                            >
+                                <History className="h-4 w-4" />
+                                Registered Events
+                            </Link>
 
                             {user.role === "organizer" && (
-                            <Link
+                                <Link
                                     href="/organizer/"
                                     className="flex cursor-pointer items-center gap-3 rounded-lg px-3 py-2 text-sm text-slate-700 transition-colors hover:bg-slate-100 hover:text-cyan-600"
                                 >
                                     <Settings className="h-4 w-4" />
                                     Event Management
-                            </Link>)}
+                                </Link>
+                            )}
 
                             {user.role === "admin" && (
                                 <Link

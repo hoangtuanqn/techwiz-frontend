@@ -6,7 +6,6 @@ import { Button } from "~/components/ui/button";
 import { WatchPreview } from "./WatchPreview";
 import { useRouter } from "next/navigation";
 import NextLink from "next/link";
-
 const Hero = () => {
   const router = useRouter();
   const [keyword, setKeyword] = useState("");
@@ -209,6 +208,7 @@ const Hero = () => {
               >
                 <SearchCheck className="h-4 w-4" /> Search
               </Button>
+
             </div>
           </form>
 

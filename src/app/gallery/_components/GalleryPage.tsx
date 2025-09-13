@@ -110,8 +110,8 @@ export default function GalleryPage() {
             <section id="categories" className="border-b border-slate-200">
                 <div className="mx-auto w-full max-w-[1600px] px-3 sm:px-4 lg:px-6 2xl:max-w-[1760px]">
                     <div className="py-8">
-                        <h1 className="text-2xl font-extrabold tracking-tight md:text-3xl">Media Gallery</h1>
-                        <p className="mt-2 max-w-3xl text-slate-600">
+                        <h1 className="text-2xl font-extrabold tracking-tight md:text-3xl text-center">Media Gallery</h1>
+                        <p className="mt-2 max-w-3xl text-slate-600 mx-auto text-center">
                             Chọn danh mục để xem bộ sưu tập ảnh/video theo từng chủ đề.
                         </p>
                     </div>
