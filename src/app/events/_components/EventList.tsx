@@ -87,6 +87,20 @@ const EventList = () => {
                                             {ev.is_booked && "✓ "}
                                             {ev.title}
                                         </h3>
+                                        {/* Event Start Time */}
+                                        <div className="mt-1 text-xs font-bold">
+                                            <span className="text-slate-500">Starts at: </span>
+                                            <span className="text-[#06b6d4]">   
+                                                {new Date(ev.start_event).toLocaleString("en-US", {
+                                                    weekday: "short",
+                                                    year: "numeric",
+                                                    month: "short",
+                                                    day: "numeric",
+                                                    hour: "2-digit",
+                                                    minute: "2-digit",
+                                                })}
+                                            </span>
+                                        </div>
                                         <div className="mt-2">
                                             <div className="flex items-center justify-between text-xs text-slate-600">
                                                 <span className="mb-3 flex items-center gap-1">
