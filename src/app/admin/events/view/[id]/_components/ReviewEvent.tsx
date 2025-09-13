@@ -21,6 +21,9 @@ import eventApi from "~/apiRequest/event";
 import { formatter } from "~/utils/format";
 import Link from "next/link";
 import { Button } from "~/components/ui/button";
+import { ConfirmDialog } from "~/components/ConfirmDialog";
+import { DangerConfirm } from "~/components/DangerConfirm";
+import { RejectEvent } from "./RejectEvent";
 
 const ReviewEvent = ({ id }: { id: number }) => {
     const router = useRouter();
@@ -76,10 +79,6 @@ const ReviewEvent = ({ id }: { id: number }) => {
             setIsSubmitting(true);
             rejectMutation.mutate();
         }
-    };
-
-    const handleEdit = () => {
-        router.push(`/admin/events/${id}`);
     };
 
     if (isLoading) {
@@ -140,22 +139,16 @@ const ReviewEvent = ({ id }: { id: number }) => {
 
                     {event.status === "pending" && (
                         <>
-                            <Button
-                                onClick={handleReject}
-                                className="inline-flex cursor-pointer items-center gap-2 rounded-lg border border-red-300 bg-red-50 px-4 py-2 text-sm font-medium text-red-700 transition-colors hover:bg-red-100"
-                                disabled={isSubmitting}
+                            <RejectEvent id={event.id} />
+                            <ConfirmDialog
+                                message="Are you sure you want to approve this event?"
+                                action={handleApprove}
                             >
-                                <XCircle className="h-4 w-4" />
-                                {isSubmitting ? "Processing..." : "Reject"}
-                            </Button>
-                            <Button
-                                onClick={handleApprove}
-                                className="inline-flex items-center gap-2 rounded-lg bg-green-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-green-700"
-                                disabled={isSubmitting}
-                            >
-                                <CheckCircle className="h-4 w-4" />
-                                {isSubmitting ? "Processing..." : "Approve"}
-                            </Button>
+                                <Button className="inline-flex items-center gap-2 rounded-lg bg-green-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-green-700">
+                                    <CheckCircle className="h-4 w-4" />
+                                    {isSubmitting ? "Processing..." : "Approve"}
+                                </Button>
+                            </ConfirmDialog>
                         </>
                     )}
                 </div>

@@ -409,7 +409,7 @@ export default function ApprovalsIndexPage() {
                                                 )}
                                             </div>
                                             <Link
-                                                href={`/admin/events/${event.id}`}
+                                                href={`/admin/events/view/${event.id}`}
                                                 className="inline-flex items-center gap-1 rounded-lg bg-emerald-600 px-3 py-1.5 text-xs font-medium text-white transition-colors hover:bg-emerald-700"
                                             >
                                                 View →
