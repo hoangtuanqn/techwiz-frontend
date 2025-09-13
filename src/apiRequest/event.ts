@@ -5,7 +5,7 @@ import {
     GetEventScheduleResponseType,
 } from "~/types/schemaZod/event.schema";
 import { MediaEventResponseType } from "~/types/schemaZod/mediaEvent.schema";
-import { ParticipantType } from "~/types/schemaZod/participant.schema";
+import { ParticipantListResponseType } from "~/types/schemaZod/participant.schema";
 
 const eventApi = {
     getEvent: (
@@ -72,7 +72,7 @@ const eventApi = {
 
     // lấy danh sách thành viên đã đăng ký
     getRegisteredUsers: (id: number, page: number = 1, limit: number = 20) => {
-        return publicApi.get<ParticipantType>(`/events/${id}/participants`);
+        return publicApi.get<ParticipantListResponseType>(`/events/${id}/participants`);
     },
 
     // update status event (approve/reject)
