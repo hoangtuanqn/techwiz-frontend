@@ -14,6 +14,7 @@ import {
     BellPlus,
 } from "lucide-react";
 import { usePathname } from "next/navigation";
+import SidebarLink from "~/components/shared/SidebarLink";
 
 export default function AdminSidebar() {
     const pathname = usePathname();
@@ -66,32 +67,3 @@ export default function AdminSidebar() {
     );
 }
 
-function SidebarLink({
-    href,
-    label,
-    icon: Icon,
-    activePath,
-    exact = false,
-}: {
-    href: string;
-    label: string;
-    icon?: React.ElementType;
-    activePath: string;
-    exact?: boolean;
-}) {
-    const active = exact ? activePath === href : activePath.startsWith(href);
-
-    return (
-        <Link
-            href={href}
-            className={`flex items-center gap-2 rounded-lg px-3 py-2 text-sm transition ${
-                active
-                    ? "bg-slate-100 font-medium text-slate-900"
-                    : "text-slate-600 hover:bg-slate-50 hover:text-slate-900"
-            }`}
-        >
-            {Icon && <Icon className="h-4 w-4" />}
-            {label}
-        </Link>
-    );
-}
