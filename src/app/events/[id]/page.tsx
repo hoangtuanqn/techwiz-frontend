@@ -11,6 +11,8 @@ import { ConfirmCollaborator } from "./_components/ConfirmCollaborator";
 import eventServerApi from "~/apiRequest/server/event";
 import QRCode from "react-qr-code";
 import { ConfirmWishlist } from "./_components/ConfirmWishlist";
+import { APP } from "~/config/env";
+import QrCodeCheckIn from "./_components/QrCodeCheckIn";
 
 const getDetailEvent = cache(async (id: string) => {
     const {
@@ -218,42 +220,30 @@ export default async function EventDetailPage({ params }: { params: { id: string
                         <li>Q&A and networking after the main session.</li>
                     </ul>
                 </div>
-                {isCheckOneDay() && event.is_booked && (
-                    <div className="mt-8 flex flex-col items-center justify-center">
-                        <div className="rounded-xl border border-cyan-200 bg-cyan-50 p-6 shadow">
-                            <div className="mb-3 text-center text-lg font-semibold text-cyan-700">Check-in QR Code</div>
-                            <QRCode
-                                value={"https://chatgpt.com/c/68c5cb8c-e7b4-832e-a657-db9ee2147a85"}
-                                size={160}
-                                className="mx-auto rounded-lg border border-cyan-100 bg-white p-2"
-                            />
-                            <div className="mt-3 text-center text-sm text-cyan-600">
-                                Please present this QR code at the event check-in desk.
-                            </div>
-                        </div>
-                    </div>
-                )}
+                {isCheckOneDay() && event.is_booked && <QrCodeCheckIn id_event={event.id} />}
                 {/* <CertificateEvent /> */}
                 {/* Actions */}
-                <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center">
-                    <div className="flex gap-3">
-                        {event.seating.total_seats === event.booked_count && event.seating.waitlist_enabled ? (
-                            <ConfirmWishlist event={event} />
-                        ) : (
-                            <ConfirmRegister event={event} />
+                {isCheckOneDay() && event.is_booked ? null : (
+                    <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center">
+                        <div className="flex gap-3">
+                            {event.seating.total_seats === event.booked_count && event.seating.waitlist_enabled ? (
+                                <ConfirmWishlist event={event} />
+                            ) : (
+                                <ConfirmRegister event={event} />
+                            )}
+                            {!event.is_booked && <ConfirmCollaborator event={event} />}
+                        </div>
+                        {/* Sự kiện kết thúc mới hiển thị */}
+                        {Date.now() > new Date(event.end_event).getTime() && (
+                            <Link
+                                href={`/events/${event.id}/reviews`}
+                                className="inline-flex items-center justify-center rounded-xl border border-slate-300 px-6 py-3 font-medium text-slate-700 hover:bg-slate-50"
+                            >
+                                View Reviews
+                            </Link>
                         )}
-                        {!event.is_booked && <ConfirmCollaborator event={event} />}
                     </div>
-                    {/* Sự kiện kết thúc mới hiển thị */}
-                    {Date.now() > new Date(event.end_event).getTime() && (
-                        <Link
-                            href={`/events/${event.id}/reviews`}
-                            className="inline-flex items-center justify-center rounded-xl border border-slate-300 px-6 py-3 font-medium text-slate-700 hover:bg-slate-50"
-                        >
-                            View Reviews
-                        </Link>
-                    )}
-                </div>
+                )}
 
                 {/* Secondary info */}
                 <div className="mt-10 grid gap-6 md:grid-cols-2">
