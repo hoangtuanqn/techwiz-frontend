@@ -6,6 +6,8 @@ import { formatter } from "~/utils/format";
 import { Metadata } from "next";
 import { ShareButton } from "~/components/ShareButton";
 import { ConfirmRegister } from "./_components/ConfirmRegister";
+import { ConfirmCollaborator } from "./_components/ConfirmCollaborator";
+
 import eventServerApi from "~/apiRequest/server/event";
 import Certificate from "~/components/Certificate";
 import { useAuth } from "~/hooks/useAuth";
@@ -211,7 +213,10 @@ export default async function EventDetailPage({ params }: { params: { id: string
                 <CertificateEvent />
                 {/* Actions */}
                 <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center">
-                    <ConfirmRegister event={event} />
+                    <div className="flex gap-3">
+                        <ConfirmRegister event={event} />
+                    <ConfirmCollaborator event={event} />
+                    </div>
                     {/* Sự kiện kết thúc mới hiển thị */}
                     {Date.now() > new Date(event.end_event).getTime() && (
                         <Link
@@ -222,6 +227,8 @@ export default async function EventDetailPage({ params }: { params: { id: string
                         </Link>
                     )}
                 </div>
+
+                
 
                 {/* Secondary info */}
                 <div className="mt-10 grid gap-6 md:grid-cols-2">

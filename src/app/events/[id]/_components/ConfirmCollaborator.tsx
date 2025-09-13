@@ -36,7 +36,7 @@ import { Checkbox } from "~/components/ui/checkbox";
 import { Label } from "~/components/ui/label";
 import { useState } from "react";
 import { getGoogleCalendarLink } from "~/libs/googleCalendar";
-export function ConfirmRegister({ event: ev }: { event: EventDetailResponseType["data"] }) {
+export function ConfirmCollaborator({ event: ev }: { event: EventDetailResponseType["data"] }) {
     const { user } = useAuth();
     const [isAddToCalendar, setIsAddToCalendar] = useState(true);
 
@@ -71,7 +71,7 @@ export function ConfirmRegister({ event: ev }: { event: EventDetailResponseType[
         onError: notificationErrorApi,
     });
 
-    const handleConfirmRegistration = async () => {
+    const handleConfirmCollaborator = async () => {
         await mutationRegisterEvent.mutateAsync();
     };
 
@@ -102,7 +102,7 @@ export function ConfirmRegister({ event: ev }: { event: EventDetailResponseType[
                                 : "bg-gradient-to-r from-cyan-500 to-fuchsia-500 hover:shadow-cyan-500/25"
                         }`}
                     >
-                        {ev.is_booked ? "✓ Already Registered" : available === 0 ? "Sold Out" : "Register Now"}
+                        {ev.is_booked ? "✓ Already Registered" : available === 0 ? "Sold Out" : "Confirm Collaborator"}
                     </Button>
                 </DialogTrigger>
 
@@ -115,7 +115,7 @@ export function ConfirmRegister({ event: ev }: { event: EventDetailResponseType[
                         <DialogDescription className="text-slate-600">
                             {!user
                                 ? "Please login to your account to register for this event."
-                                : "Please review your information and event details before confirming your registration."}
+                                : "Please review your information and event details before confirming your Collaborator."}
                         </DialogDescription>
                     </DialogHeader>
 
@@ -182,7 +182,7 @@ export function ConfirmRegister({ event: ev }: { event: EventDetailResponseType[
                             </div>
                         </div>
                     ) : (
-                        // ======== Authenticated User - Full Registration Form ========
+                        // ======== Authenticated User - Full Collaborator Form ========
                         <div className="space-y-6">
                             {/* Event Information */}
                             <div className="rounded-2xl border border-slate-200 bg-gradient-to-br from-cyan-50 to-fuchsia-50 p-6">
@@ -347,10 +347,10 @@ export function ConfirmRegister({ event: ev }: { event: EventDetailResponseType[
                                     </Button>
                                 </DialogClose>
                                 <Button
-                                    onClick={handleConfirmRegistration}
+                                    onClick={handleConfirmCollaborator}
                                     className="flex-1 bg-gradient-to-r from-cyan-500 to-fuchsia-500 text-white transition-all duration-200 hover:scale-105"
                                 >
-                                    Confirm Registration
+                                    Confirm Collaborator
                                 </Button>
                             </>
                         )}
