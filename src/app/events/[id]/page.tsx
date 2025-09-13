@@ -210,12 +210,12 @@ export default async function EventDetailPage({ params }: { params: { id: string
                         <li>Q&A and networking after the main session.</li>
                     </ul>
                 </div>
-                <CertificateEvent />
+                {/* <CertificateEvent /> */}
                 {/* Actions */}
                 <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center">
                     <div className="flex gap-3">
                         <ConfirmRegister event={event} />
-                    <ConfirmCollaborator event={event} />
+                        <ConfirmCollaborator event={event} />
                     </div>
                     {/* Sự kiện kết thúc mới hiển thị */}
                     {Date.now() > new Date(event.end_event).getTime() && (
@@ -227,8 +227,6 @@ export default async function EventDetailPage({ params }: { params: { id: string
                         </Link>
                     )}
                 </div>
-
-                
 
                 {/* Secondary info */}
                 <div className="mt-10 grid gap-6 md:grid-cols-2">

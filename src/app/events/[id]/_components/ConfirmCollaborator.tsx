@@ -24,6 +24,9 @@ import {
     LogIn,
     AlertCircle,
     CalendarPlus,
+    Star,
+    Award,
+    Users,
 } from "lucide-react";
 import { formatter } from "~/utils/format";
 import Link from "next/link";
@@ -48,7 +51,6 @@ export function ConfirmCollaborator({ event: ev }: { event: EventDetailResponseT
     const totalSeats = seating?.total_seats ?? 0;
     const booked = ev?.booked_count ?? 0;
     const available = Math.max(totalSeats - booked, 0);
-    const progressPct = totalSeats > 0 ? Math.min(100, (booked / totalSeats) * 100) : 0;
 
     const mutationRegisterEvent = useMutation({
         mutationFn: () => eventApi.registerEvent(ev.id),
@@ -98,24 +100,24 @@ export function ConfirmCollaborator({ event: ev }: { event: EventDetailResponseT
                         disabled={ev.is_booked || available === 0}
                         className={`inline-flex items-center justify-center rounded-xl px-6 py-3 font-medium text-white shadow-lg transition-all duration-200 hover:scale-105 disabled:cursor-not-allowed disabled:opacity-60 ${
                             ev.is_booked
-                                ? "bg-gradient-to-r from-emerald-500 to-green-500 hover:shadow-emerald-500/25"
-                                : "bg-gradient-to-r from-cyan-500 to-fuchsia-500 hover:shadow-cyan-500/25"
+                                ? "bg-gradient-to-r from-purple-500 to-indigo-600 hover:shadow-purple-500/25"
+                                : "bg-gradient-to-r from-orange-500 to-red-500 hover:shadow-orange-500/25"
                         }`}
                     >
-                        {ev.is_booked ? "✓ Already Registered" : available === 0 ? "Sold Out" : "Confirm Collaborator"}
+                        {ev.is_booked ? "✓ Already Volunteering" : available === 0 ? "Event Full" : "Volunteer Now"}
                     </Button>
                 </DialogTrigger>
 
                 <DialogContent className="max-h-[80vh] overflow-y-auto sm:max-w-[600px]">
                     {mutationRegisterEvent.isPending && <Loading />}
                     <DialogHeader>
-                        <DialogTitle className="bg-gradient-to-r from-cyan-600 to-fuchsia-600 bg-clip-text text-2xl font-bold text-transparent">
-                            {!user ? "Login Required" : "Confirm Collaborator"}
+                        <DialogTitle className="bg-gradient-to-r from-orange-600 to-red-600 bg-clip-text text-2xl font-bold text-transparent">
+                            {!user ? "Login Required" : "Become a Volunteer"}
                         </DialogTitle>
                         <DialogDescription className="text-slate-600">
                             {!user
-                                ? "Please login to your account to register for this event."
-                                : "Please review your information and event details before confirming your Collaborator."}
+                                ? "Please login to your account to volunteer for this event."
+                                : "Join us as a volunteer to help make this event successful. Please review the details below."}
                         </DialogDescription>
                     </DialogHeader>
 
@@ -126,16 +128,16 @@ export function ConfirmCollaborator({ event: ev }: { event: EventDetailResponseT
                                 <AlertCircle className="mx-auto mb-4 h-16 w-16 text-amber-500" />
                                 <h3 className="mb-2 text-xl font-semibold text-slate-800">Authentication Required</h3>
                                 <p className="mb-6 text-slate-600">
-                                    You need to be logged in to register for events. Please login to your account or
+                                    You need to be logged in to volunteer for events. Please login to your account or
                                     create a new one if you dont have an account yet.
                                 </p>
 
                                 <div className="flex flex-col justify-center gap-3 sm:flex-row">
                                     <DialogClose asChild>
                                         <Link href="/auth/login">
-                                            <Button className="inline-flex w-full items-center gap-2 bg-gradient-to-r from-cyan-500 to-fuchsia-500 text-white transition-all duration-200 hover:scale-105 sm:w-auto">
+                                            <Button className="inline-flex w-full items-center gap-2 bg-gradient-to-r from-orange-500 to-red-500 text-white transition-all duration-200 hover:scale-105 sm:w-auto">
                                                 <LogIn className="h-4 w-4" />
-                                                Login to Continue
+                                                Login to Volunteer
                                             </Button>
                                         </Link>
                                     </DialogClose>
@@ -185,15 +187,15 @@ export function ConfirmCollaborator({ event: ev }: { event: EventDetailResponseT
                         // ======== Authenticated User - Full Collaborator Form ========
                         <div className="space-y-6">
                             {/* Event Information */}
-                            <div className="rounded-2xl border border-slate-200 bg-gradient-to-br from-cyan-50 to-fuchsia-50 p-6">
+                            <div className="rounded-2xl border border-slate-200 bg-gradient-to-br from-orange-50 to-red-50 p-6">
                                 <h3 className="mb-4 flex items-center gap-2 text-lg font-semibold text-slate-800">
-                                    <Calendar className="h-5 w-5 text-cyan-600" />
-                                    Event Information
+                                    <Calendar className="h-5 w-5 text-orange-600" />
+                                    Event You&apos;ll Support
                                 </h3>
 
                                 <div className="space-y-3">
                                     <div className="flex items-start gap-3">
-                                        <div className="mt-2 h-2 w-2 rounded-full bg-cyan-500" />
+                                        <div className="mt-2 h-2 w-2 rounded-full bg-orange-500" />
                                         <div>
                                             <p className="font-semibold text-slate-800">{ev.title}</p>
                                             <p className="text-sm text-slate-600">{ev.description}</p>
@@ -230,10 +232,10 @@ export function ConfirmCollaborator({ event: ev }: { event: EventDetailResponseT
                             </div>
 
                             {/* User Information */}
-                            <div className="rounded-2xl border border-slate-200 bg-gradient-to-br from-slate-50 to-blue-50 p-6">
+                            <div className="rounded-2xl border border-slate-200 bg-gradient-to-br from-slate-50 to-orange-50 p-6">
                                 <h3 className="mb-4 flex items-center gap-2 text-lg font-semibold text-slate-800">
-                                    <User className="h-5 w-5 text-blue-600" />
-                                    Your Information
+                                    <User className="h-5 w-5 text-orange-600" />
+                                    Volunteer Information
                                 </h3>
 
                                 <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
@@ -281,34 +283,41 @@ export function ConfirmCollaborator({ event: ev }: { event: EventDetailResponseT
                                 </div>
                             </div>
 
-                            {/* Seating Information */}
-                            <div className="rounded-2xl border border-slate-200 bg-gradient-to-br from-emerald-50 to-green-50 p-6">
-                                <h3 className="mb-4 text-lg font-semibold text-slate-800">Seating Information</h3>
+                            {/* Volunteer Benefits */}
+                            <div className="rounded-2xl border border-slate-200 bg-gradient-to-br from-amber-50 to-yellow-50 p-6">
+                                <h3 className="mb-4 text-lg font-semibold text-slate-800">Volunteer Benefits</h3>
 
-                                <div className="flex items-center justify-between">
-                                    <div>
-                                        <p className="text-sm text-slate-600">Available Seats</p>
-                                        <p className="text-2xl font-bold text-emerald-600">{available}</p>
+                                <div className="space-y-4">
+                                    <div className="flex items-center gap-3">
+                                        <div className="flex h-10 w-10 items-center justify-center rounded-full bg-amber-100">
+                                            <Star className="h-5 w-5 text-amber-600" />
+                                        </div>
+                                        <div>
+                                            <p className="font-medium text-slate-800">Community Service Hours</p>
+                                            <p className="text-sm text-slate-600">Earn valuable volunteer experience</p>
+                                        </div>
                                     </div>
 
-                                    <div className="text-right">
-                                        <p className="text-sm text-slate-600">Total Capacity</p>
-                                        <p className="text-lg font-semibold text-slate-800">{totalSeats} seats</p>
+                                    <div className="flex items-center gap-3">
+                                        <div className="flex h-10 w-10 items-center justify-center rounded-full bg-green-100">
+                                            <Award className="h-5 w-5 text-green-600" />
+                                        </div>
+                                        <div>
+                                            <p className="font-medium text-slate-800">Certificate of Appreciation</p>
+                                            <p className="text-sm text-slate-600">Recognition for your contribution</p>
+                                        </div>
                                     </div>
-                                </div>
 
-                                <div className="mt-4">
-                                    <div className="mb-2 flex justify-between text-sm text-slate-600">
-                                        <span>Booking Progress</span>
-                                        <span>
-                                            {booked}/{totalSeats}
-                                        </span>
-                                    </div>
-                                    <div className="h-2 w-full rounded-full bg-slate-200">
-                                        <div
-                                            className="h-2 rounded-full bg-gradient-to-r from-emerald-500 to-green-500 transition-all duration-300"
-                                            style={{ width: `${progressPct}%` }}
-                                        />
+                                    <div className="flex items-center gap-3">
+                                        <div className="flex h-10 w-10 items-center justify-center rounded-full bg-blue-100">
+                                            <Users className="h-5 w-5 text-blue-600" />
+                                        </div>
+                                        <div>
+                                            <p className="font-medium text-slate-800">Networking Opportunities</p>
+                                            <p className="text-sm text-slate-600">
+                                                Connect with organizers and participants
+                                            </p>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -348,9 +357,9 @@ export function ConfirmCollaborator({ event: ev }: { event: EventDetailResponseT
                                 </DialogClose>
                                 <Button
                                     onClick={handleConfirmCollaborator}
-                                    className="flex-1 bg-gradient-to-r from-cyan-500 to-fuchsia-500 text-white transition-all duration-200 hover:scale-105"
+                                    className="flex-1 bg-gradient-to-r from-orange-500 to-red-500 text-white transition-all duration-200 hover:scale-105"
                                 >
-                                    Confirm Collaborator
+                                    Confirm Volunteer
                                 </Button>
                             </>
                         )}
@@ -358,12 +367,12 @@ export function ConfirmCollaborator({ event: ev }: { event: EventDetailResponseT
                 </DialogContent>
             </Dialog>
 
-            {/* Add to Calendar button - only show if already registered */}
+            {/* Add to Calendar button - only show if already volunteering */}
             {ev.is_booked && (
                 <Button
                     onClick={handleAddToCalendar}
                     variant="outline"
-                    className="inline-flex items-center gap-2 rounded-xl border-2 border-emerald-200 bg-emerald-50 px-6 py-3 font-medium text-emerald-700 shadow-sm transition-all duration-200 hover:scale-105 hover:border-emerald-300 hover:bg-emerald-100"
+                    className="inline-flex items-center gap-2 rounded-xl border-2 border-orange-200 bg-orange-50 px-6 py-3 font-medium text-orange-700 shadow-sm transition-all duration-200 hover:scale-105 hover:border-orange-300 hover:bg-orange-100"
                 >
                     <CalendarPlus className="h-5 w-5" />
                     Add to Calendar
