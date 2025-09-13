@@ -79,5 +79,14 @@ const eventApi = {
     updateEventStatus: (id: number, status: "approved" | "rejected", reason?: string) => {
         return publicApi.post(`/events/${id}/status`, { status, reason });
     },
+
+    addToWishlist: (id: number) => {
+        return publicApi.post(`/events/${id}/wishlist`);
+    },
+
+    // đăng ký tình nguyện viên
+    registerVolunteer: (id: number) => {
+        return publicApi.post(`/events/${id}/volunteer`);
+    },
 };
 export default eventApi;

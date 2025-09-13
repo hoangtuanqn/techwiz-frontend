@@ -9,9 +9,8 @@ import { ConfirmRegister } from "./_components/ConfirmRegister";
 import { ConfirmCollaborator } from "./_components/ConfirmCollaborator";
 
 import eventServerApi from "~/apiRequest/server/event";
-import Certificate from "~/components/Certificate";
-import { useAuth } from "~/hooks/useAuth";
-import CertificateEvent from "../_components/CertificateEvent";
+import QRCode from "react-qr-code";
+import { ConfirmWishlist } from "./_components/ConfirmWishlist";
 
 const getDetailEvent = cache(async (id: string) => {
     const {
@@ -70,6 +69,15 @@ export default async function EventDetailPage({ params }: { params: { id: string
 
     const dateFormatted = formatter.timeUntil(event.start_event);
     const capacityBarClass = tone === "ok" ? "bg-emerald-500" : tone === "warn" ? "bg-amber-500" : "bg-red-500";
+
+    const isCheckOneDay = () => {
+        const eventDate = new Date(event.start_event);
+        const now = new Date();
+        const oneDayBefore = new Date(eventDate);
+        oneDayBefore.setDate(eventDate.getDate() - 1);
+
+        return now >= oneDayBefore && now < eventDate;
+    };
 
     return (
         <section className="bg-white py-12 md:py-16">
@@ -210,12 +218,31 @@ export default async function EventDetailPage({ params }: { params: { id: string
                         <li>Q&A and networking after the main session.</li>
                     </ul>
                 </div>
+                {isCheckOneDay() && event.is_booked && (
+                    <div className="mt-8 flex flex-col items-center justify-center">
+                        <div className="rounded-xl border border-cyan-200 bg-cyan-50 p-6 shadow">
+                            <div className="mb-3 text-center text-lg font-semibold text-cyan-700">Check-in QR Code</div>
+                            <QRCode
+                                value={"https://chatgpt.com/c/68c5cb8c-e7b4-832e-a657-db9ee2147a85"}
+                                size={160}
+                                className="mx-auto rounded-lg border border-cyan-100 bg-white p-2"
+                            />
+                            <div className="mt-3 text-center text-sm text-cyan-600">
+                                Please present this QR code at the event check-in desk.
+                            </div>
+                        </div>
+                    </div>
+                )}
                 {/* <CertificateEvent /> */}
                 {/* Actions */}
                 <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center">
                     <div className="flex gap-3">
-                        <ConfirmRegister event={event} />
-                        <ConfirmCollaborator event={event} />
+                        {event.seating.total_seats === event.booked_count && event.seating.waitlist_enabled ? (
+                            <ConfirmWishlist event={event} />
+                        ) : (
+                            <ConfirmRegister event={event} />
+                        )}
+                        {!event.is_booked && <ConfirmCollaborator event={event} />}
                     </div>
                     {/* Sự kiện kết thúc mới hiển thị */}
                     {Date.now() > new Date(event.end_event).getTime() && (

@@ -24,9 +24,9 @@ import {
     LogIn,
     AlertCircle,
     CalendarPlus,
-    Star,
-    Award,
-    Users,
+    Heart,
+    Bell,
+    CheckCircle,
 } from "lucide-react";
 import { formatter } from "~/utils/format";
 import Link from "next/link";
@@ -39,7 +39,7 @@ import { Checkbox } from "~/components/ui/checkbox";
 import { Label } from "~/components/ui/label";
 import { useState } from "react";
 import { getGoogleCalendarLink } from "~/libs/googleCalendar";
-export function ConfirmCollaborator({ event: ev }: { event: EventDetailResponseType["data"] }) {
+export function ConfirmWishlist({ event: ev }: { event: EventDetailResponseType["data"] }) {
     const { user } = useAuth();
     const [isAddToCalendar, setIsAddToCalendar] = useState(true);
 
@@ -52,29 +52,43 @@ export function ConfirmCollaborator({ event: ev }: { event: EventDetailResponseT
     const booked = ev?.booked_count ?? 0;
     const available = Math.max(totalSeats - booked, 0);
 
-    const mutationRegisterEvent = useMutation({
-        mutationFn: () => eventApi.registerVolunteer(ev.id),
+    const mutationAddToWishlist = useMutation({
+        mutationFn: () => eventApi.registerEvent(ev.id), // Temporary: using registerEvent until addToWishlist API is implemented
         onSuccess: () => {
-            toast.success("You have successfully registered for the event!");
+            toast.success("Added to wishlist! You'll be notified when a spot becomes available.");
             if (isAddToCalendar && ev.start_event && ev.end_event) {
                 const gcalLink = getGoogleCalendarLink({
-                    title: ev.title,
-                    start: ev.start_event, // ví dụ "2025-09-28 17:15:14" hoặc "2025-09-28T17:15:14.000000Z"
+                    title: `[WISHLIST] ${ev.title}`,
+                    start: ev.start_event,
                     end: ev.end_event,
-                    details: ev.description ?? "",
+                    details: `You're on the waitlist for this event. ${ev.description ?? ""}`,
                     location: ev.venue ?? "",
-                    // timezone: "Asia/Ho_Chi_Minh",
+                    timezone: "Asia/Ho_Chi_Minh",
                 });
-                // Mở 1 tab mới
                 window.open(gcalLink, "_blank");
-                window.location.reload();
             }
+            window.location.reload();
         },
         onError: notificationErrorApi,
     });
 
-    const handleConfirmCollaborator = async () => {
-        await mutationRegisterEvent.mutateAsync();
+    const handleAddToWishlist = async () => {
+        await mutationAddToWishlist.mutateAsync();
+    };
+
+    // Handle Add to Calendar for already registered events
+    const handleAddToCalendar = () => {
+        if (ev.start_event && ev.end_event) {
+            const gcalLink = getGoogleCalendarLink({
+                title: ev.title,
+                start: ev.start_event,
+                end: ev.end_event,
+                details: ev.description ?? "",
+                location: ev.venue ?? "",
+                timezone: "Asia/Ho_Chi_Minh",
+            });
+            window.open(gcalLink, "_blank");
+        }
     };
 
     return (
@@ -82,27 +96,31 @@ export function ConfirmCollaborator({ event: ev }: { event: EventDetailResponseT
             <Dialog>
                 <DialogTrigger asChild>
                     <Button
-                        disabled={ev.is_booked || available === 0}
+                        disabled={ev.is_booked}
                         className={`inline-flex items-center justify-center rounded-xl px-6 py-3 font-medium text-white shadow-lg transition-all duration-200 hover:scale-105 disabled:cursor-not-allowed disabled:opacity-60 ${
                             ev.is_booked
-                                ? "bg-gradient-to-r from-purple-500 to-indigo-600 hover:shadow-purple-500/25"
-                                : "bg-gradient-to-r from-orange-500 to-red-500 hover:shadow-orange-500/25"
+                                ? "bg-gradient-to-r from-pink-500 to-rose-600 hover:shadow-pink-500/25"
+                                : available === 0
+                                  ? "bg-gradient-to-r from-amber-500 to-orange-500 hover:shadow-amber-500/25"
+                                  : "bg-gradient-to-r from-purple-500 to-pink-500 hover:shadow-purple-500/25"
                         }`}
                     >
-                        {ev.is_booked ? "✓ Already Volunteering" : available === 0 ? "Event Full" : "Volunteer Now"}
+                        {ev.is_booked ? "✓ On Wishlist" : available === 0 ? "Join Waitlist" : "Add to Wishlist"}
                     </Button>
                 </DialogTrigger>
 
                 <DialogContent className="max-h-[80vh] overflow-y-auto sm:max-w-[600px]">
-                    {mutationRegisterEvent.isPending && <Loading />}
+                    {mutationAddToWishlist.isPending && <Loading />}
                     <DialogHeader>
-                        <DialogTitle className="bg-gradient-to-r from-orange-600 to-red-600 bg-clip-text text-2xl font-bold text-transparent">
-                            {!user ? "Login Required" : "Become a Volunteer"}
+                        <DialogTitle className="bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-2xl font-bold text-transparent">
+                            {!user ? "Login Required" : available === 0 ? "Join Waitlist" : "Add to Wishlist"}
                         </DialogTitle>
                         <DialogDescription className="text-slate-600">
                             {!user
-                                ? "Please login to your account to volunteer for this event."
-                                : "Join us as a volunteer to help make this event successful. Please review the details below."}
+                                ? "Please login to your account to add this event to your wishlist."
+                                : available === 0
+                                  ? "This event is full, but you can join the waitlist. We'll notify you if a spot becomes available."
+                                  : "Add this event to your wishlist to stay updated about any changes or availability."}
                         </DialogDescription>
                     </DialogHeader>
 
@@ -113,16 +131,16 @@ export function ConfirmCollaborator({ event: ev }: { event: EventDetailResponseT
                                 <AlertCircle className="mx-auto mb-4 h-16 w-16 text-amber-500" />
                                 <h3 className="mb-2 text-xl font-semibold text-slate-800">Authentication Required</h3>
                                 <p className="mb-6 text-slate-600">
-                                    You need to be logged in to volunteer for events. Please login to your account or
-                                    create a new one if you dont have an account yet.
+                                    You need to be logged in to add events to your wishlist. Please login to your
+                                    account or create a new one if you dont have an account yet.
                                 </p>
 
                                 <div className="flex flex-col justify-center gap-3 sm:flex-row">
                                     <DialogClose asChild>
                                         <Link href="/auth/login">
-                                            <Button className="inline-flex w-full items-center gap-2 bg-gradient-to-r from-orange-500 to-red-500 text-white transition-all duration-200 hover:scale-105 sm:w-auto">
+                                            <Button className="inline-flex w-full items-center gap-2 bg-gradient-to-r from-purple-500 to-pink-500 text-white transition-all duration-200 hover:scale-105 sm:w-auto">
                                                 <LogIn className="h-4 w-4" />
-                                                Login to Volunteer
+                                                Login to Continue
                                             </Button>
                                         </Link>
                                     </DialogClose>
@@ -172,15 +190,15 @@ export function ConfirmCollaborator({ event: ev }: { event: EventDetailResponseT
                         // ======== Authenticated User - Full Collaborator Form ========
                         <div className="space-y-6">
                             {/* Event Information */}
-                            <div className="rounded-2xl border border-slate-200 bg-gradient-to-br from-orange-50 to-red-50 p-6">
+                            <div className="rounded-2xl border border-slate-200 bg-gradient-to-br from-purple-50 to-pink-50 p-6">
                                 <h3 className="mb-4 flex items-center gap-2 text-lg font-semibold text-slate-800">
-                                    <Calendar className="h-5 w-5 text-orange-600" />
-                                    Event You&apos;ll Support
+                                    <Heart className="h-5 w-5 text-purple-600" />
+                                    Event Details
                                 </h3>
 
                                 <div className="space-y-3">
                                     <div className="flex items-start gap-3">
-                                        <div className="mt-2 h-2 w-2 rounded-full bg-orange-500" />
+                                        <div className="mt-2 h-2 w-2 rounded-full bg-purple-500" />
                                         <div>
                                             <p className="font-semibold text-slate-800">{ev.title}</p>
                                             <p className="text-sm text-slate-600">{ev.description}</p>
@@ -217,10 +235,10 @@ export function ConfirmCollaborator({ event: ev }: { event: EventDetailResponseT
                             </div>
 
                             {/* User Information */}
-                            <div className="rounded-2xl border border-slate-200 bg-gradient-to-br from-slate-50 to-orange-50 p-6">
+                            <div className="rounded-2xl border border-slate-200 bg-gradient-to-br from-slate-50 to-purple-50 p-6">
                                 <h3 className="mb-4 flex items-center gap-2 text-lg font-semibold text-slate-800">
-                                    <User className="h-5 w-5 text-orange-600" />
-                                    Volunteer Information
+                                    <User className="h-5 w-5 text-purple-600" />
+                                    Your Information
                                 </h3>
 
                                 <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
@@ -268,43 +286,63 @@ export function ConfirmCollaborator({ event: ev }: { event: EventDetailResponseT
                                 </div>
                             </div>
 
-                            {/* Volunteer Benefits */}
-                            <div className="rounded-2xl border border-slate-200 bg-gradient-to-br from-amber-50 to-yellow-50 p-6">
-                                <h3 className="mb-4 text-lg font-semibold text-slate-800">Volunteer Benefits</h3>
+                            {/* Wishlist Benefits */}
+                            <div className="rounded-2xl border border-slate-200 bg-gradient-to-br from-blue-50 to-indigo-50 p-6">
+                                <h3 className="mb-4 text-lg font-semibold text-slate-800">Wishlist Benefits</h3>
 
                                 <div className="space-y-4">
                                     <div className="flex items-center gap-3">
-                                        <div className="flex h-10 w-10 items-center justify-center rounded-full bg-amber-100">
-                                            <Star className="h-5 w-5 text-amber-600" />
+                                        <div className="flex h-10 w-10 items-center justify-center rounded-full bg-blue-100">
+                                            <Bell className="h-5 w-5 text-blue-600" />
                                         </div>
                                         <div>
-                                            <p className="font-medium text-slate-800">Community Service Hours</p>
-                                            <p className="text-sm text-slate-600">Earn valuable volunteer experience</p>
+                                            <p className="font-medium text-slate-800">Instant Notifications</p>
+                                            <p className="text-sm text-slate-600">
+                                                Get notified immediately when spots open up
+                                            </p>
                                         </div>
                                     </div>
 
                                     <div className="flex items-center gap-3">
                                         <div className="flex h-10 w-10 items-center justify-center rounded-full bg-green-100">
-                                            <Award className="h-5 w-5 text-green-600" />
+                                            <CheckCircle className="h-5 w-5 text-green-600" />
                                         </div>
                                         <div>
-                                            <p className="font-medium text-slate-800">Certificate of Appreciation</p>
-                                            <p className="text-sm text-slate-600">Recognition for your contribution</p>
+                                            <p className="font-medium text-slate-800">Priority Booking</p>
+                                            <p className="text-sm text-slate-600">
+                                                Automatic enrollment when capacity increases
+                                            </p>
                                         </div>
                                     </div>
 
                                     <div className="flex items-center gap-3">
-                                        <div className="flex h-10 w-10 items-center justify-center rounded-full bg-blue-100">
-                                            <Users className="h-5 w-5 text-blue-600" />
+                                        <div className="flex h-10 w-10 items-center justify-center rounded-full bg-purple-100">
+                                            <Heart className="h-5 w-5 text-purple-600" />
                                         </div>
                                         <div>
-                                            <p className="font-medium text-slate-800">Networking Opportunities</p>
+                                            <p className="font-medium text-slate-800">Event Updates</p>
                                             <p className="text-sm text-slate-600">
-                                                Connect with organizers and participants
+                                                Stay informed about event changes and news
                                             </p>
                                         </div>
                                     </div>
                                 </div>
+
+                                {available === 0 && (
+                                    <div className="mt-4 rounded-lg border border-amber-200 bg-amber-50 p-4">
+                                        <div className="flex items-start gap-3">
+                                            <AlertCircle className="mt-0.5 h-5 w-5 text-amber-600" />
+                                            <div>
+                                                <p className="font-medium text-amber-800">Event is Full</p>
+                                                <p className="mt-1 text-sm text-amber-700">
+                                                    Join the waitlist and we&apos;ll automatically enroll you if someone
+                                                    cancels or if the organizer increases capacity. You&apos;ll receive
+                                                    an email notification.
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                )}
                             </div>
                         </div>
                     )}
@@ -341,16 +379,28 @@ export function ConfirmCollaborator({ event: ev }: { event: EventDetailResponseT
                                     </Button>
                                 </DialogClose>
                                 <Button
-                                    onClick={handleConfirmCollaborator}
-                                    className="flex-1 bg-gradient-to-r from-orange-500 to-red-500 text-white transition-all duration-200 hover:scale-105"
+                                    onClick={handleAddToWishlist}
+                                    className="flex-1 bg-gradient-to-r from-purple-500 to-pink-500 text-white transition-all duration-200 hover:scale-105"
                                 >
-                                    Confirm Volunteer
+                                    {available === 0 ? "Join Waitlist" : "Add to Wishlist"}
                                 </Button>
                             </>
                         )}
                     </DialogFooter>
                 </DialogContent>
             </Dialog>
+
+            {/* Add to Calendar button - only show if on wishlist */}
+            {ev.is_booked && (
+                <Button
+                    onClick={handleAddToCalendar}
+                    variant="outline"
+                    className="inline-flex items-center gap-2 rounded-xl border-2 border-purple-200 bg-purple-50 px-6 py-3 font-medium text-purple-700 shadow-sm transition-all duration-200 hover:scale-105 hover:border-purple-300 hover:bg-purple-100"
+                >
+                    <CalendarPlus className="h-5 w-5" />
+                    Add to Calendar
+                </Button>
+            )}
         </div>
     );
 }
