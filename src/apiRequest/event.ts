@@ -63,5 +63,10 @@ const eventApi = {
     createEvent: (data: { [key: string]: any }) => {
         return publicApi.post(`/events`, data);
     },
+
+    // update eventApi
+    updateEvent: (id: number, data: { [key: string]: any }) => {
+        return publicApi.patch(`/events/${id}`, data);
+    },
 };
 export default eventApi;

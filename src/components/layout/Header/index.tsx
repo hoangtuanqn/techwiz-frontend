@@ -1,5 +1,5 @@
 import React from "react";
-import { GraduationCap, UserPlus, Menu, Mail, Bell } from "lucide-react";
+import { GraduationCap, UserPlus, Menu, Bell } from "lucide-react";
 import Link from "next/link";
 import ActionHeader from "./ActionHeader";
 
@@ -28,7 +28,7 @@ const Header: React.FC = () => {
                         <Link className="transition hover:text-cyan-600" href="/about">
                             About Us
                         </Link>
-                        <Link className="transition hover:text-cyan-600" href="/personal">
+                        <Link className="transition hover:text-cyan-600" href="/calendar">
                             Calendar
                         </Link>
                         <Link className="transition hover:text-cyan-600" href="/gallery">

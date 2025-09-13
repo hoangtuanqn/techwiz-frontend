@@ -1,5 +1,3 @@
-import { time } from "console";
-
 export const formatter = {
     date: (date: Date | string, withTime: boolean = false) => {
         const parsedDate = new Date(date);

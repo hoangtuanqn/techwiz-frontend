@@ -1,5 +1,5 @@
 "use client";
-import { UserPlus, User, Settings, LogOut, ChevronDown, Shield, History, Calendar, TicketCheck, Key } from "lucide-react";
+import { UserPlus, User, Settings, LogOut, ChevronDown, Shield, Calendar, TicketCheck, Key } from "lucide-react";
 import Link from "next/link";
 import React from "react";
 import { useAuth } from "~/hooks/useAuth";
