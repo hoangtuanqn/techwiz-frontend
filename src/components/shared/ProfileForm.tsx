@@ -7,9 +7,9 @@ import { toast } from "sonner";
 interface UserProfileData {
     full_name: string;
     email: string;
-    phone_number: string;
-    address: string;
-    avatar: string;
+    enrollment_no: string;
+    mobile: string;
+    department: string;
     // Add any other fields that might be part of the user profile
 }
 
@@ -61,40 +61,41 @@ export default function ProfileForm({ initialData, onSubmit, loading, isEmailEdi
                 {errors.email && <p className="mt-1 text-sm text-red-600">{errors.email.message}</p>}
             </div>
             <div>
-                <label htmlFor="phone_number" className="block text-sm font-medium text-gray-700">
+                <label htmlFor="mobile" className="block text-sm font-medium text-gray-700">
                     Số điện thoại
                 </label>
                 <input
                     type="text"
-                    id="phone_number"
-                    {...register("phone_number")}
+                    id="mobile"
+                    {...register("mobile", { required: "Số điện thoại không được để trống" })}
                     className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                 />
-                {errors.phone_number && <p className="mt-1 text-sm text-red-600">{errors.phone_number.message}</p>}
+                {errors.mobile && <p className="mt-1 text-sm text-red-600">{errors.mobile.message}</p>}
             </div>
             <div>
-                <label htmlFor="address" className="block text-sm font-medium text-gray-700">
-                    Địa chỉ
+                <label htmlFor="enrollment_no" className="block text-sm font-medium text-gray-700">
+                    Mã số đăng ký
                 </label>
                 <input
                     type="text"
-                    id="address"
-                    {...register("address")}
-                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                    id="enrollment_no"
+                    {...register("enrollment_no")}
+                    disabled
+                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm bg-gray-100"
                 />
-                {errors.address && <p className="mt-1 text-sm text-red-600">{errors.address.message}</p>}
+                {errors.enrollment_no && <p className="mt-1 text-sm text-red-600">{errors.enrollment_no.message}</p>}
             </div>
             <div>
-                <label htmlFor="avatar" className="block text-sm font-medium text-gray-700">
-                    Avatar URL
+                <label htmlFor="department" className="block text-sm font-medium text-gray-700">
+                    Phòng ban/Khoa
                 </label>
                 <input
                     type="text"
-                    id="avatar"
-                    {...register("avatar")}
+                    id="department"
+                    {...register("department", { required: "Phòng ban/Khoa không được để trống" })}
                     className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                 />
-                {errors.avatar && <p className="mt-1 text-sm text-red-600">{errors.avatar.message}</p>}
+                {errors.department && <p className="mt-1 text-sm text-red-600">{errors.department.message}</p>}
             </div>
             <button
                 type="submit"
