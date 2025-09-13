@@ -31,7 +31,8 @@ export default function OrganizerSidebar() {
             {/* Menu */}
             <nav className="space-y-1">
                 <SidebarLink href="/organizer" icon={Home} label="Dashboard" activePath={pathname} />
-                <SidebarLink href="/organizer/profile" icon={UserCircle} label="Profile" activePath={pathname} />
+                {/* Approvals submenu */}
+                <SidebarLink href="/organizer/approvals" icon={CheckSquare} label="Approvals" activePath={pathname} />
 
                 {/* Approvals submenu */}
                 <details open={approvalsOpen} className="group">
