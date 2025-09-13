@@ -8,6 +8,7 @@ import { EventCardSkeleton } from "./EventitemSkeleton";
 import useGetSearchQuery from "~/hooks/useGetSearchQuery";
 import { buildLaravelFilterQuery } from "~/utils/helpers";
 import { PaginationNav } from "~/components/Pagination";
+import { formatter } from "~/utils/format";
 
 const isAvailable = (endDate: string) => {
     return new Date(endDate) >= new Date();
@@ -103,7 +104,7 @@ const EventList = () => {
                                         </div>
                                         <p className="mt-2 line-clamp-2 text-sm text-slate-600">{ev.description}</p>
                                         <div className="mt-3 flex items-center justify-between text-sm">
-                                            <span className="text-slate-500">{ev.category}</span>
+                                            <span className="text-slate-500">{formatter.capitalize(ev.category)}</span>
                                             <span
                                                 className={`rounded-full px-2 py-1 text-xs font-semibold ${
                                                     isAvailable(ev.end_event)

@@ -123,10 +123,14 @@ export default async function EventDetailPage({ params }: { params: { id: string
                     <div className="flex items-center gap-2">
                         <Calendar className="h-5 w-5 text-cyan-600" />
                         <div>
-                            <div className="font-medium">{dateFormatted}</div>
+                            <div className="font-medium">{formatter.date(event.start_event, true)}</div>
                             <div className="flex items-center gap-1 text-xs text-slate-500">
                                 <Clock4 className="h-3.5 w-3.5" />
-                                {formatter.date(event.start_event, true)}
+                                <span>
+                                    {dateFormatted.startsWith("In") || dateFormatted.startsWith("Còn")
+                                        ? `Starts in ${dateFormatted.replace(/^In\s|^Còn\s/, "")}`
+                                        : dateFormatted}
+                                </span>
                             </div>
                         </div>
                     </div>

@@ -67,3 +67,30 @@ export const getEventScheduleSchema = z.object({
     data: z.array(getEventScheduleItemSchema),
 });
 export type GetEventScheduleResponseType = z.infer<typeof getEventScheduleSchema>;
+
+// Schema sự kiện đã đăng ký thêm cái thuộc tính registrations
+const registrationSchema = z.object({
+    id: z.number(),
+    event_id: z.number(),
+    user_id: z.number(),
+    status: z.string(),
+    seat_no: z.number().nullable(),
+    registered_on: z.string(),
+    checked_in: z.number(),
+    checked_in_at: z.string().nullable(),
+    created_at: z.string(),
+    updated_at: z.string(),
+});
+
+const _eventRegisteredItemSchema = z.object({
+    success: z.boolean(),
+    message: z.string(),
+    data: paginationMetaSchemaFn(
+        eventItemSchema.extend({
+            seating: seatingSchema,
+            organizer: organizerSchema,
+            registrations: registrationSchema,
+        }),
+    ),
+});
+export type EventRegisteredResponseType = z.infer<typeof _eventRegisteredItemSchema>;

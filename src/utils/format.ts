@@ -1,11 +1,23 @@
 export const formatter = {
-    date: (date: Date | string, time: boolean = false) => {
-        // time = true: Show H:i:s or not
+    date: (date: Date | string, withTime: boolean = false) => {
         const parsedDate = new Date(date);
-        if (time) {
-            return parsedDate.toLocaleString("en-US");
+
+        if (withTime) {
+            return parsedDate.toLocaleString("en-US", {
+                year: "numeric",
+                month: "2-digit",
+                day: "2-digit",
+                hour: "2-digit",
+                minute: "2-digit",
+                hour12: true, // hiển thị AM/PM
+            });
         }
-        return parsedDate.toLocaleDateString("en-US");
+
+        return parsedDate.toLocaleDateString("en-US", {
+            year: "numeric",
+            month: "2-digit",
+            day: "2-digit",
+        });
     },
 
     number: (amount: number) => Intl.NumberFormat("en-US").format(amount),
