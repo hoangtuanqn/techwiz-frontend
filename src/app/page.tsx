@@ -20,7 +20,7 @@ export default function Home() {
             <Features />
 
             {/* CATEGORIES */}
-            <Categories />
+            {/* <Categories /> */}
 
             {/* UPCOMING EVENTS */}
             <UpcomingEvents />
