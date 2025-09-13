@@ -1,18 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import {
-    UserCircle,
-    CheckSquare,
-    Users,
-    ChartBar,
-    Home,
-    ShieldCheck,
-    ChevronDown,
-    CalendarPlus,
-    FilePlus,
-    BellPlus,
-} from "lucide-react";
+import { CheckSquare, Users, Home, ShieldCheck, ChevronDown, CalendarPlus, FilePlus, BellPlus } from "lucide-react";
 import { usePathname } from "next/navigation";
 import SidebarLink from "~/components/shared/SidebarLink";
 
@@ -52,8 +41,8 @@ export default function AdminSidebar() {
                     </div>
                 </details>
 
-                <SidebarLink href="/admin/notifications" icon={BellPlus} label="Notifications" activePath={pathname} />
-                
+                <SidebarLink href="/admin/mail" icon={BellPlus} label="Create Mail" activePath={pathname} />
+
                 <SidebarLink
                     href="/admin/events/create"
                     icon={CalendarPlus}
@@ -66,4 +55,3 @@ export default function AdminSidebar() {
         </aside>
     );
 }
-
