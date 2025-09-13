@@ -39,8 +39,8 @@ export default function EventForm() {
             summary: "",
             thumbnail: "",
             description: "",
-            start_time: "",
-            end_time: "",
+            start_event: "",
+            end_event: "",
             capacity: 20,
             mode: "onsite",
             venue: "",
@@ -226,7 +226,7 @@ export default function EventForm() {
 
                             <FormField
                                 control={form.control}
-                                name="start_time"
+                                name="start_event"
                                 render={({ field }) => (
                                     <FormItem>
                                         <FormLabel>Start datetime</FormLabel>
@@ -240,7 +240,7 @@ export default function EventForm() {
 
                             <FormField
                                 control={form.control}
-                                name="end_time"
+                                name="end_event"
                                 render={({ field }) => (
                                     <FormItem>
                                         <FormLabel>End datetime</FormLabel>
