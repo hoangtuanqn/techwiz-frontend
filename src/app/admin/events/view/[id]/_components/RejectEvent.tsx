@@ -36,7 +36,7 @@ export function RejectEvent({ id }: { id: number }) {
             setReason(""); // Reset form
             setIsOpen(false); // Close dialog
             queryClient.invalidateQueries({ queryKey: ["event", id] }); // Refresh data
-            router.push("/admin/approvals"); // Navigate back to approvals
+            router.refresh();
         },
         onError: notificationErrorApi,
     });

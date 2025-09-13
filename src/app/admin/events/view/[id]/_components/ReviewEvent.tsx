@@ -1,6 +1,6 @@
 "use client";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import React, { useState } from "react";
+import { useQuery, useMutation } from "@tanstack/react-query";
+import React from "react";
 import { useRouter } from "next/navigation";
 import {
     CheckCircle,
@@ -12,23 +12,20 @@ import {
     Clock,
     User,
     Tag,
-    ArrowLeft,
     AlertTriangle,
     Info,
-    Eye,
 } from "lucide-react";
 import eventApi from "~/apiRequest/event";
 import { formatter } from "~/utils/format";
 import Link from "next/link";
 import { Button } from "~/components/ui/button";
 import { ConfirmDialog } from "~/components/ConfirmDialog";
-import { DangerConfirm } from "~/components/DangerConfirm";
 import { RejectEvent } from "./RejectEvent";
+import { notificationErrorApi } from "~/libs/apis/validationResponse";
+import { toast } from "sonner";
 
 const ReviewEvent = ({ id }: { id: number }) => {
     const router = useRouter();
-    const queryClient = useQueryClient();
-    const [isSubmitting, setIsSubmitting] = useState(false);
 
     const { data: event, isLoading } = useQuery({
         queryKey: ["event", id],
@@ -39,47 +36,16 @@ const ReviewEvent = ({ id }: { id: number }) => {
         staleTime: 1000 * 60 * 5, // 5 minutes
     });
 
-    // Approve event mutation
-    const approveMutation = useMutation({
-        mutationFn: () => eventApi.updateEvent(id, { status: "approved" }),
+    const eventMutation = useMutation({
+        mutationFn: async (data: { id: number; reason: string }) => {
+            const res = await eventApi.updateEventStatus(data.id, "rejected", data.reason);
+        },
         onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ["event", id] });
-            alert("Event approved successfully!");
-            router.push("/admin/approvals");
+            toast.success("Event rejected successfully");
+            router.refresh();
         },
-        onError: (error) => {
-            console.error("Approve failed:", error);
-            alert("Failed to approve event. Please try again.");
-        },
+        onError: notificationErrorApi,
     });
-
-    // Reject event mutation
-    const rejectMutation = useMutation({
-        mutationFn: () => eventApi.updateEvent(id, { status: "rejected" }),
-        onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ["event", id] });
-            alert("Event rejected successfully!");
-            router.push("/admin/approvals");
-        },
-        onError: (error) => {
-            console.error("Reject failed:", error);
-            alert("Failed to reject event. Please try again.");
-        },
-    });
-
-    const handleApprove = () => {
-        if (confirm("Are you sure you want to approve this event?")) {
-            setIsSubmitting(true);
-            approveMutation.mutate();
-        }
-    };
-
-    const handleReject = () => {
-        if (confirm("Are you sure you want to reject this event? This action cannot be undone.")) {
-            setIsSubmitting(true);
-            rejectMutation.mutate();
-        }
-    };
 
     if (isLoading) {
         return (
@@ -114,19 +80,7 @@ const ReviewEvent = ({ id }: { id: number }) => {
         <div className="space-y-6">
             {/* Header with Actions */}
             <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-                <div className="flex items-center gap-4">
-                    <button
-                        onClick={() => router.back()}
-                        className="inline-flex items-center gap-2 rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm font-medium text-slate-700 transition-colors hover:bg-slate-50"
-                    >
-                        <ArrowLeft className="h-4 w-4" />
-                        Back
-                    </button>
-                    <div>
-                        <h1 className="text-2xl font-bold text-slate-900">Review Event</h1>
-                        <p className="text-slate-600">Event ID: #{event.id}</p>
-                    </div>
-                </div>
+                <div className="flex items-center gap-4"></div>
 
                 {/* Action Buttons */}
                 <div className="flex items-center gap-3">
@@ -142,11 +96,13 @@ const ReviewEvent = ({ id }: { id: number }) => {
                             <RejectEvent id={event.id} />
                             <ConfirmDialog
                                 message="Are you sure you want to approve this event?"
-                                action={handleApprove}
+                                action={() => {
+                                    eventMutation.mutate({ id: event.id, reason: "" });
+                                }}
                             >
                                 <Button className="inline-flex items-center gap-2 rounded-lg bg-green-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-green-700">
                                     <CheckCircle className="h-4 w-4" />
-                                    {isSubmitting ? "Processing..." : "Approve"}
+                                    Approve
                                 </Button>
                             </ConfirmDialog>
                         </>
@@ -202,10 +158,7 @@ const ReviewEvent = ({ id }: { id: number }) => {
                                       : "Waiting for administrator review")}
                         </p>
                         {event.status === "rejected" && event.rejection_reason && (
-                            <div className="mt-3 rounded-lg bg-red-100 p-3">
-                                <p className="text-sm font-medium text-red-800">Rejection Reason:</p>
-                                <p className="text-sm text-red-700">{event.rejection_reason}</p>
-                            </div>
+                            <p className="text-sm text-red-700">Note: {event.rejection_reason}</p>
                         )}
                     </div>
                 </div>
@@ -281,10 +234,7 @@ const ReviewEvent = ({ id }: { id: number }) => {
                                         {formatter.date(event.start_event, true)} -{" "}
                                         {formatter.date(event.end_event, true)}
                                     </p>
-                                    <p className="text-sm text-slate-500">
-                                        {new Date(event.start_event).toLocaleTimeString()} -{" "}
-                                        {new Date(event.end_event).toLocaleTimeString()}
-                                    </p>
+
                                     <p className="mt-1 text-xs text-slate-400">
                                         {isPast
                                             ? "Event has ended"
@@ -368,13 +318,10 @@ const ReviewEvent = ({ id }: { id: number }) => {
                                 <span className="text-slate-500">Updated</span>
                                 <span className="font-medium">{new Date(event.updated_at).toLocaleDateString()}</span>
                             </div>
+
                             <div className="flex justify-between">
-                                <span className="text-slate-500">Event ID</span>
-                                <span className="font-mono font-medium">#{event.id}</span>
-                            </div>
-                            <div className="flex justify-between">
-                                <span className="text-slate-500">Organizer ID</span>
-                                <span className="font-mono font-medium">#{event.organizer_id}</span>
+                                <span className="text-slate-500">Organizer</span>
+                                <span className="font-mono font-medium">{event.organizer.full_name}</span>
                             </div>
                         </div>
                     </div>
