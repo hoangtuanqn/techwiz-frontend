@@ -5,6 +5,7 @@ import AOS from "aos";
 import { Button } from "~/components/ui/button";
 import { WatchPreview } from "./WatchPreview";
 import { useRouter } from "next/navigation";
+import NextLink from "next/link";
 const Hero = () => {
     const router = useRouter();
     const [keyword, setKeyword] = useState("");
@@ -108,12 +109,12 @@ const Hero = () => {
                         data-aos="fade-up"
                         data-aos-delay="150"
                     >
-                        <a
-                            href="#events"
+                        <NextLink
+                            href="/events"
                             className="inline-flex items-center gap-2 rounded-2xl bg-white px-6 py-3 text-slate-900 shadow hover:bg-slate-50"
                         >
                             <Rocket className="h-5 w-5" /> Explore Events
-                        </a>
+                        </NextLink>
                         <WatchPreview />
                     </div>
                 </div>

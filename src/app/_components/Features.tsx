@@ -22,7 +22,7 @@ const Features = () => {
         {/* === First Row === */}
         <div className="mt-10 grid gap-6 md:grid-cols-3">
           <Link
-            href="/events/id/register"
+            href="/events"
             className="rounded-2xl border border-slate-200 p-6 shadow transition hover:shadow-md block"
             data-aos="fade-up"
           >
