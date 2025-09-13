@@ -7,6 +7,7 @@ import { Metadata } from "next";
 import { ShareButton } from "~/components/ShareButton";
 import { ConfirmRegister } from "./_components/ConfirmRegister";
 import eventServerApi from "~/apiRequest/server/event";
+import Certificate from "~/components/Certificate";
 
 const getDetailEvent = cache(async (id: string) => {
     const {
@@ -47,8 +48,8 @@ export default async function EventDetailPage({ params }: { params: { id: string
     }
 
     // certificate demo files (put real files into public/certificates/)
-    const certPdfUrl = `/certificates/sample.jpg`;
-    const certImgUrl = `/certificates/sample.jpg`; // optional thumbnail; fallback to placeholder if missing
+    const certPdfUrl = `/certificates/sample.png`;
+    const certImgUrl = `/certificates/sample.png`; // optional thumbnail; fallback to placeholder if missing
 
     if (!event) {
         return (
@@ -182,12 +183,12 @@ export default async function EventDetailPage({ params }: { params: { id: string
                         left === 0
                             ? "border-gray-300 bg-gray-100 text-gray-700"
                             : Date.now() > new Date(event.end_event).getTime()
-                            ? "border-slate-300 bg-slate-100 text-slate-700"
-                            : left <= 10
-                            ? "border-red-200 bg-red-50 text-red-800"
-                            : left <= 30
-                            ? "border-amber-200 bg-amber-50 text-amber-800"
-                            : "border-emerald-200 bg-emerald-50 text-emerald-800"
+                              ? "border-slate-300 bg-slate-100 text-slate-700"
+                              : left <= 10
+                                ? "border-red-200 bg-red-50 text-red-800"
+                                : left <= 30
+                                  ? "border-amber-200 bg-amber-50 text-amber-800"
+                                  : "border-emerald-200 bg-emerald-50 text-emerald-800"
                     }`}
                 >
                     {Date.now() > new Date(event.end_event).getTime() ? (
@@ -198,12 +199,8 @@ export default async function EventDetailPage({ params }: { params: { id: string
                         </span>
                     ) : (
                         <span>
-                            {left <= 10
-                                ? "Hurry!"
-                                : left <= 30
-                                ? "Limited seats!"
-                                : "Good news!"}{" "}
-                            Only <b>{left}</b> seat{left > 1 ? "s" : ""} left. Registration closes when full.
+                            {left <= 10 ? "Hurry!" : left <= 30 ? "Limited seats!" : "Good news!"} Only <b>{left}</b>{" "}
+                            seat{left > 1 ? "s" : ""} left. Registration closes when full.
                         </span>
                     )}
                 </div>
@@ -218,6 +215,11 @@ export default async function EventDetailPage({ params }: { params: { id: string
                         <li>Q&A and networking after the main session.</li>
                     </ul>
                 </div>
+                <Certificate
+                    fullName="Phạm Hoàng Tuấn"
+                    eventName="EventSphere Hackathon 2025"
+                    eventDate="13 September 2025"
+                />
 
                 {/* Actions */}
                 <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center">
