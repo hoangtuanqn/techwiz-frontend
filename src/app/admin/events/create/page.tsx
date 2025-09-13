@@ -11,7 +11,7 @@ export default function CreateEventPage() {
             mode="create"
             onCreate={async (v) => {
                 // TODO: call API create
-                alert("Created event:\n" + JSON.stringify(v, null, 2));
+                alert("Event created:\n" + JSON.stringify(v, null, 2));
             }}
         />
     );
