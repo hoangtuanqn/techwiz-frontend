@@ -87,28 +87,42 @@ export default async function EventDetailPage({ params }: { params: { id: string
                 </div>
 
                 {/* Title */}
-                <div className="flex flex-col gap-2 md:flex-row md:items-end md:justify-between">
-                    <div className="flex w-full justify-between">
+                <div className="flex flex-col gap-2 md:flex-row md:items-start md:justify-between">
+                    <div className="flex w-full flex-col gap-2 md:flex-row md:items-center md:justify-between">
                         <div>
-                            <h1 className="text-3xl font-bold text-slate-900 md:text-4xl">{event.title}</h1>
-                            <p className="text-slate-500">
-                                {formatter.capitalize(event.category)} Event • by {event.organizer.full_name} •{" "}
-                                {event.seating.total_seats} seats
-                            </p>
+                            <h1 className="text-4xl font-extrabold text-cyan-800 md:text-5xl">{event.title}</h1>
+                            <div className="mt-2 flex flex-wrap items-center gap-3 text-base text-slate-500">
+                                <span className="rounded bg-cyan-50 px-2 py-0.5 font-medium text-cyan-700">
+                                    {formatter.capitalize(event.category)}
+                                </span>
+                                <span>•</span>
+                                <span>
+                                    by <span className="font-semibold text-slate-700">{event.organizer.full_name}</span>
+                                </span>
+                                <span>•</span>
+                                <span>
+                                    <Users className="mr-1 inline-block h-4 w-4 text-cyan-600" />
+                                    {event.seating.total_seats} seats
+                                </span>
+                            </div>
                         </div>
-                        <ShareButton />
                     </div>
                     {/* Quick rating (demo static) */}
                     {Date.now() > new Date(event.end_event).getTime() && (
-                        <div className="mt-2 flex items-center gap-1 text-amber-500">
-                            <Star className="h-5 w-5 fill-current" />
-                            <Star className="h-5 w-5 fill-current" />
-                            <Star className="h-5 w-5 fill-current" />
-                            <Star className="h-5 w-5 fill-current" />
-                            <Star className="h-5 w-5" />
-                            <span className="ml-2 text-sm text-slate-500">4.0 (128)</span>
+                        <div className="mt-2 mr-2 flex items-center gap-2">
+                            <div className="flex items-center">
+                                {[...Array(4)].map((_, i) => (
+                                    <Star key={i} className="h-5 w-5 fill-amber-400 text-amber-400" />
+                                ))}
+                                <Star className="h-5 w-5 fill-amber-200 text-amber-200" />
+                            </div>
+                            <span className="ml-2 rounded-full bg-amber-50 px-3 py-1 text-xs font-medium text-amber-700 shadow">
+                                4.0
+                            </span>
+                            <span className="text-xs text-slate-400">({128} reviews)</span>
                         </div>
                     )}
+                    <ShareButton />
                 </div>
 
                 {/* Cover */}
@@ -123,7 +137,9 @@ export default async function EventDetailPage({ params }: { params: { id: string
                     <div className="flex items-center gap-2">
                         <Calendar className="h-5 w-5 text-cyan-600" />
                         <div>
-                            <div className="font-medium">{formatter.date(event.start_event, true)}</div>
+                            <div className="text-lg font-medium text-cyan-700">
+                                {formatter.date(event.start_event, true)}
+                            </div>
                             <div className="flex items-center gap-1 text-xs text-slate-500">
                                 <Clock4 className="h-3.5 w-3.5" />
                                 <span>

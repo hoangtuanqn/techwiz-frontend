@@ -11,8 +11,6 @@ import {
     SelectTrigger,
     SelectValue,
 } from "~/components/ui/select";
-import { useSearchParams } from "next/navigation";
-import { useEffect, useRef } from "react";
 import { useFilterQuery } from "~/hooks/useFilterQuery";
 
 const fields = ["search", "category", "status"] as const;
@@ -27,7 +25,7 @@ const SearchFilterEvent = () => {
                     <Input
                         type="text"
                         placeholder="Search events…"
-                        className="w-full rounded-xl border border-slate-200 py-2 pr-3 pl-10 text-sm focus:ring-2 focus:ring-[#06b6d4]/50 focus:outline-none"
+                        className="rounded-xl border border-slate-200 bg-white py-2 pr-3 pl-10 text-sm *:w-full focus:ring-2 focus:ring-[#06b6d4]/50 focus:outline-none"
                         value={formValues.filter.search || ""}
                         onChange={(e) => setFieldValue("search", e.target.value, "filter")}
                     />
@@ -37,7 +35,7 @@ const SearchFilterEvent = () => {
                     value={formValues.filter.category || ""}
                     onValueChange={(value) => setFieldValue("category", value, "filter")}
                 >
-                    <SelectTrigger className="w-[180px]">
+                    <SelectTrigger className="w-[180px] bg-white">
                         <SelectValue placeholder="Select a category" />
                     </SelectTrigger>
                     <SelectContent>
@@ -61,7 +59,7 @@ const SearchFilterEvent = () => {
                     value={formValues.filter.status || ""}
                     onValueChange={(value) => setFieldValue("status", value, "filter")}
                 >
-                    <SelectTrigger className="w-[180px]">
+                    <SelectTrigger className="w-[180px] bg-white">
                         <SelectValue placeholder="Select status" />
                     </SelectTrigger>
                     <SelectContent>

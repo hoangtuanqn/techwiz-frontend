@@ -6,7 +6,7 @@ import SidebarLink from "~/components/shared/SidebarLink"; // Import shared Side
 
 const links = [
     { href: "/", label: "Personal Information", icon: User, exact: true }, // Add exact prop
-    { href: "/my-events", label: "My Events", icon: Calendar },
+    { href: "/registered-events", label: "Registered Events", icon: Calendar },
     { href: "/certificates", label: "Certificates", icon: TicketCheck },
     { href: "/change-password", label: "Change Password", icon: Key },
 ];

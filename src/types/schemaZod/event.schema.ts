@@ -89,7 +89,7 @@ const _eventRegisteredItemSchema = z.object({
         eventItemSchema.extend({
             seating: seatingSchema,
             organizer: organizerSchema,
-            registrations: registrationSchema,
+            user_registration: registrationSchema,
         }),
     ),
 });
