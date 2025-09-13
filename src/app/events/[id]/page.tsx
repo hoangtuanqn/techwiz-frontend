@@ -177,7 +177,19 @@ export default async function EventDetailPage({ params }: { params: { id: string
                 </div>
 
                 {/* Status banner */}
-                <div className={`mt-4 rounded-xl border px-4 py-3 text-sm ${toneClass}`}>
+                <div
+                    className={`mt-4 rounded-xl border px-4 py-3 text-sm ${
+                        left === 0
+                            ? "border-gray-300 bg-gray-100 text-gray-700"
+                            : Date.now() > new Date(event.end_event).getTime()
+                            ? "border-slate-300 bg-slate-100 text-slate-700"
+                            : left <= 10
+                            ? "border-red-200 bg-red-50 text-red-800"
+                            : left <= 30
+                            ? "border-amber-200 bg-amber-50 text-amber-800"
+                            : "border-emerald-200 bg-emerald-50 text-emerald-800"
+                    }`}
+                >
                     {Date.now() > new Date(event.end_event).getTime() ? (
                         <span>
                             {left === 0
@@ -186,8 +198,12 @@ export default async function EventDetailPage({ params }: { params: { id: string
                         </span>
                     ) : (
                         <span>
-                            {left <= 10 ? "Hurry!" : "Good news!"} Only <b>{left}</b> seat
-                            {left > 1 ? "s" : ""} left. Registration closes when full.
+                            {left <= 10
+                                ? "Hurry!"
+                                : left <= 30
+                                ? "Limited seats!"
+                                : "Good news!"}{" "}
+                            Only <b>{left}</b> seat{left > 1 ? "s" : ""} left. Registration closes when full.
                         </span>
                     )}
                 </div>

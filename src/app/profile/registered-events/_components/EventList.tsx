@@ -147,9 +147,10 @@ const EventList = () => {
 
                                 <div className="flex flex-1 flex-col justify-between p-5">
                                     <div>
-                                        <h3 className="mb-2 flex items-center gap-2 text-lg font-semibold text-emerald-700 group-hover:text-emerald-600">
-                                            <CheckCircle className="h-5 w-5 text-emerald-500" />
-                                            <span className="truncate">{ev.title}</span>
+                                        <h3
+                                            className={`mb-2 font-semibold text-slate-800 transition-colors group-hover:text-[#06b6d4]`}
+                                        >
+                                            {ev.title}
                                         </h3>
 
                                         {/* Event Details */}
