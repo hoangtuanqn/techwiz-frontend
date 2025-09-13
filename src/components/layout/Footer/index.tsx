@@ -122,7 +122,7 @@ const Footer: React.FC = () => {
                                 </li>
                                 <li>
                                     {/* Trong /app/about/page.tsx nhớ đặt id="policies" cho anchor này nếu cần */}
-                                    <Link href="/about#policies" className="transition hover:text-cyan-400">
+                                    <Link href="/policies" className="transition hover:text-cyan-400">
                                         Policies
                                     </Link>
                                 </li>
