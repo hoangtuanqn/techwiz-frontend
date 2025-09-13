@@ -2,7 +2,7 @@
 
 import React from "react";
 import EventTable, { EventRow } from "../../_components/EventTable";
-import { DEMO_PENDING } from "../../_components/eventConstants";
+import { DEMO_PENDING } from "../../_components/EventConstants";
 
 export default function PendingPage() {
     return (

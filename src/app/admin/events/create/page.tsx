@@ -1,7 +1,7 @@
 "use client";
 
 import EventEditorShell from "~/app/admin/_components/EventEditorShell";
-import { EMPTY_EVENT } from "~/app/admin/_components/eventConstants";
+import { EMPTY_EVENT } from "~/app/admin/_components/EventConstants";
 
 export default function CreateEventPage() {
     return (
