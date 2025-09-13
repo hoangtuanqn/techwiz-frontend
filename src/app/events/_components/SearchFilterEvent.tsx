@@ -41,7 +41,6 @@ const SearchFilterEvent = () => {
                     <SelectContent>
                         <SelectGroup>
                             <SelectLabel>Category</SelectLabel>
-                            <SelectItem value="all">All</SelectItem>
                             <SelectItem value="technical">Technical</SelectItem>
                             <SelectItem value="business">Business</SelectItem>
                             <SelectItem value="cultural">Cultural</SelectItem>

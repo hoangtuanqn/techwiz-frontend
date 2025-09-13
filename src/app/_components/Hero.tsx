@@ -6,6 +6,15 @@ import { Button } from "~/components/ui/button";
 import { WatchPreview } from "./WatchPreview";
 import { useRouter } from "next/navigation";
 import NextLink from "next/link";
+import {
+    Select,
+    SelectContent,
+    SelectGroup,
+    SelectItem,
+    SelectLabel,
+    SelectTrigger,
+    SelectValue,
+} from "~/components/ui/select";
 const Hero = () => {
     const router = useRouter();
     const [keyword, setKeyword] = useState("");
@@ -84,8 +93,7 @@ const Hero = () => {
                                 onChange={(e) => setCategory(e.target.value)}
                                 className="w-full rounded-xl border border-cyan-300/40 bg-white px-3 py-3 text-slate-900 focus:ring-2 focus:ring-cyan-400/50 focus:outline-none"
                             >
-                                <option>Category</option>
-                                <option value="all">All</option>
+                                <option value="">Category</option>
                                 <option value="technical">Technical</option>
                                 <option value="business">Business</option>
                                 <option value="cultural">Cultural</option>
