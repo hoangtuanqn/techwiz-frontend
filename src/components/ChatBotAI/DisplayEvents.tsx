@@ -40,7 +40,9 @@ const DisplayEvents = ({ eventIds }: { eventIds: number[] }) => {
                             <div className="text-sm font-semibold text-blue-700">{item.title}</div>
                             <div className="text-slate-600">
                                 Start time:{" "}
-                                {item.start_time ? new Date(item.start_time).toLocaleString("en-US") : "Not specified"}
+                                {item.start_event
+                                    ? new Date(item.start_event).toLocaleString("en-US")
+                                    : "Not specified"}
                             </div>
                             <div className="font-medium text-emerald-600">Available seats: {item.available_seats}</div>
                         </div>

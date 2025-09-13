@@ -54,11 +54,11 @@ export function ConfirmRegister({ event: ev }: { event: EventDetailResponseType[
         mutationFn: () => eventApi.registerEvent(ev.id),
         onSuccess: () => {
             toast.success("You have successfully registered for the event!");
-            if (isAddToCalendar && ev.start_time && ev.end_time) {
+            if (isAddToCalendar && ev.start_event && ev.end_event) {
                 const gcalLink = getGoogleCalendarLink({
                     title: ev.title,
-                    start: ev.start_time, // ví dụ "2025-09-28 17:15:14" hoặc "2025-09-28T17:15:14.000000Z"
-                    end: ev.end_time,
+                    start: ev.start_event, // ví dụ "2025-09-28 17:15:14" hoặc "2025-09-28T17:15:14.000000Z"
+                    end: ev.end_event,
                     details: ev.description ?? "",
                     location: ev.venue ?? "",
                     timezone: "Asia/Ho_Chi_Minh",
@@ -77,11 +77,11 @@ export function ConfirmRegister({ event: ev }: { event: EventDetailResponseType[
 
     // Handle Add to Calendar for already registered events
     const handleAddToCalendar = () => {
-        if (ev.start_time && ev.end_time) {
+        if (ev.start_event && ev.end_event) {
             const gcalLink = getGoogleCalendarLink({
                 title: ev.title,
-                start: ev.start_time,
-                end: ev.end_time,
+                start: ev.start_event,
+                end: ev.end_event,
                 details: ev.description ?? "",
                 location: ev.venue ?? "",
                 timezone: "Asia/Ho_Chi_Minh",
@@ -169,7 +169,7 @@ export function ConfirmRegister({ event: ev }: { event: EventDetailResponseType[
                                         <div className="flex items-center gap-2">
                                             <Calendar className="h-4 w-4 text-slate-500" />
                                             <span className="text-sm text-slate-600">
-                                                {formatter.formatDate(ev.start_time)}
+                                                {formatter.formatDate(ev.start_event)}
                                             </span>
                                         </div>
 
@@ -204,15 +204,15 @@ export function ConfirmRegister({ event: ev }: { event: EventDetailResponseType[
                                         <div className="flex items-center gap-2">
                                             <Calendar className="h-4 w-4 text-slate-500" />
                                             <span className="text-sm text-slate-600">
-                                                {formatter.formatDate(ev.start_time)}
+                                                {formatter.formatDate(ev.start_event)}
                                             </span>
                                         </div>
 
                                         <div className="flex items-center gap-2">
                                             <Clock className="h-4 w-4 text-slate-500" />
                                             <span className="text-sm text-slate-600">
-                                                {formatter.formatTime(ev.start_time)} –{" "}
-                                                {formatter.formatTime(ev.end_time)}
+                                                {formatter.formatTime(ev.start_event)} –{" "}
+                                                {formatter.formatTime(ev.end_event)}
                                             </span>
                                         </div>
 

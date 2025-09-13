@@ -153,8 +153,8 @@ const Calendar: React.FC = () => {
         const filtered = allEvents
             .filter((ev) => {
                 // Date range filter
-                const eventStart = parseDate(ev.start_time);
-                const eventEnd = parseDate(ev.end_time);
+                const eventStart = parseDate(ev.start_event);
+                const eventEnd = parseDate(ev.end_event);
                 const inDateRange = !(eventEnd < startDate || eventStart > endDate);
 
                 // Search filter
@@ -168,7 +168,7 @@ const Calendar: React.FC = () => {
                     selectedCategory === "all" || ev.category.toLowerCase() === selectedCategory.toLowerCase();
 
                 // Status filter
-                const eventStatus = getEventStatus(ev.start_time, ev.end_time, today);
+                const eventStatus = getEventStatus(ev.start_event, ev.end_event, today);
                 const matchesStatus =
                     selectedStatus === "all" ||
                     (selectedStatus === "completed" && eventStatus === "ended") ||
@@ -180,8 +180,8 @@ const Calendar: React.FC = () => {
                 return inDateRange && matchesSearch && matchesCategory && matchesStatus && matchesMyEvents;
             })
             .sort((a, b) => {
-                const aStart = parseDate(a.start_time).getTime();
-                const bStart = parseDate(b.start_time).getTime();
+                const aStart = parseDate(a.start_event).getTime();
+                const bStart = parseDate(b.start_event).getTime();
                 return aStart - bStart || a.id - b.id;
             });
 
@@ -504,11 +504,11 @@ const Calendar: React.FC = () => {
                         )}
 
                         {visibleEvents.map((ev) => {
-                            const start = parseDate(ev.start_time);
-                            const end = parseDate(ev.end_time);
+                            const start = parseDate(ev.start_event);
+                            const end = parseDate(ev.end_event);
                             const startIdx = Math.max(0, daysBetween(start, days[0]));
                             const endIdx = Math.min(days.length - 1, daysBetween(end, days[0]));
-                            const status = getEventStatus(ev.start_time, ev.end_time, today);
+                            const status = getEventStatus(ev.start_event, ev.end_event, today);
                             const color = CATEGORY_COLORS[ev.category] || PALETTE[ev.id % PALETTE.length];
                             const faded = status === "ended";
 

@@ -106,12 +106,12 @@ const EventList = () => {
                                             <span className="text-slate-500">{ev.category}</span>
                                             <span
                                                 className={`rounded-full px-2 py-1 text-xs font-semibold ${
-                                                    isAvailable(ev.end_time)
+                                                    isAvailable(ev.end_event)
                                                         ? "bg-green-100 text-green-700"
                                                         : "bg-red-100 text-red-700"
                                                 }`}
                                             >
-                                                {isAvailable(ev.end_time) ? "Available" : "Closed"}
+                                                {isAvailable(ev.end_event) ? "Available" : "Closed"}
                                             </span>
                                             <span className="flex items-center gap-1 text-[#06b6d4] hover:underline">
                                                 Details <SlidersHorizontal className="h-3 w-3" />

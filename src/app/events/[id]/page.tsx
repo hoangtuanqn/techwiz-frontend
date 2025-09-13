@@ -62,9 +62,9 @@ export default async function EventDetailPage({ params }: { params: { id: string
     }
 
     const { left, percent, tone } = seatStatus(event.seating.total_seats, event.booked_count ?? 0);
-    console.log(event.start_time);
+    console.log(event.start_event);
 
-    const dateFormatted = formatter.timeUntil(event.start_time);
+    const dateFormatted = formatter.timeUntil(event.start_event);
 
     const toneClass =
         tone === "ok"
@@ -99,7 +99,7 @@ export default async function EventDetailPage({ params }: { params: { id: string
                         <ShareButton />
                     </div>
                     {/* Quick rating (demo static) */}
-                    {Date.now() > new Date(event.end_time).getTime() && (
+                    {Date.now() > new Date(event.end_event).getTime() && (
                         <div className="mt-2 flex items-center gap-1 text-amber-500">
                             <Star className="h-5 w-5 fill-current" />
                             <Star className="h-5 w-5 fill-current" />
@@ -126,7 +126,7 @@ export default async function EventDetailPage({ params }: { params: { id: string
                             <div className="font-medium">{dateFormatted}</div>
                             <div className="flex items-center gap-1 text-xs text-slate-500">
                                 <Clock4 className="h-3.5 w-3.5" />
-                                {formatter.date(event.start_time, true)}
+                                {formatter.date(event.start_event, true)}
                             </div>
                         </div>
                     </div>
@@ -158,7 +158,7 @@ export default async function EventDetailPage({ params }: { params: { id: string
 
                 {/* Status banner */}
                 <div className={`mt-4 rounded-xl border px-4 py-3 text-sm ${toneClass}`}>
-                    {Date.now() > new Date(event.end_time).getTime() ? (
+                    {Date.now() > new Date(event.end_event).getTime() ? (
                         <span>
                             {left === 0
                                 ? "Event is full. You’ll be added to the waitlist upon registration."
@@ -187,7 +187,7 @@ export default async function EventDetailPage({ params }: { params: { id: string
                 <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center">
                     <ConfirmRegister event={event} />
                     {/* Sự kiện kết thúc mới hiển thị */}
-                    {Date.now() > new Date(event.end_time).getTime() && (
+                    {Date.now() > new Date(event.end_event).getTime() && (
                         <Link
                             href={`/events/${event.id}/reviews`}
                             className="inline-flex items-center justify-center rounded-xl border border-slate-300 px-6 py-3 font-medium text-slate-700 hover:bg-slate-50"
