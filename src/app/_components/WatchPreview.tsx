@@ -20,7 +20,7 @@ export function WatchPreview() {
                 <DialogTrigger asChild>
                     <a
                         href="#"
-                        className="inline-flex items-center gap-2 rounded-2xl border border-white/20 px-6 py-3 hover:bg-white/10"
+                        className="inline-flex items-center gap-2 rounded-2xl border border-white px-6 py-3 hover:bg-white/10"
                     >
                         <Play className="h-5 w-5" /> Watch Preview
                     </a>
