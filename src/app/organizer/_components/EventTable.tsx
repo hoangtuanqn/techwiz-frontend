@@ -151,15 +151,19 @@ export default function EventTable({
                                     </div>
                                 </td>
                                 <td className="px-3 py-2">
-                                    <div className="flex items-center justify-center">
-                                        <Link
-                                            href={`${actionLinkPrefix}/${event.id}?mode=review`}
-                                            className="rounded-lg border border-slate-200 px-2 py-1 text-xs transition-colors duration-200 hover:bg-slate-50"
-                                        >
-                                            <Eye className="mr-1 inline-block h-3.5 w-3.5" />
-                                            {actionLabel}
-                                        </Link>
-                                    </div>
+                                    {event.status === "approved" ? (
+                                        <div className="flex items-center justify-center">
+                                            <Link
+                                                href={`/organizer/events/${event.id}`}
+                                                className="rounded-lg border border-slate-200 px-2 py-1 text-xs transition-colors duration-200 hover:bg-slate-50"
+                                            >
+                                                <Eye className="mr-1 inline-block h-3.5 w-3.5" />
+                                                {actionLabel}
+                                            </Link>
+                                        </div>
+                                    ) : (
+                                        <span>No Action</span>
+                                    )}
                                 </td>
                             </tr>
                         ))}

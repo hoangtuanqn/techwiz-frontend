@@ -4,14 +4,14 @@ import * as React from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Calendar as CalendarIcon, DatabaseZapIcon, Image as ImageIcon, MapPin } from "lucide-react";
+import { Calendar as CalendarIcon, Image as ImageIcon, MapPin } from "lucide-react";
 
 import { Input } from "~/components/ui/input";
 import { Textarea } from "~/components/ui/textarea";
 import { Label } from "~/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "~/components/ui/radio-group";
 import { Button } from "~/components/ui/button";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "~/components/ui/form";
+import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "~/components/ui/form";
 import { eventSchema } from "../schema/event.schema";
 import { useMutation } from "@tanstack/react-query";
 import { notificationErrorApi } from "~/libs/apis/validationResponse";
@@ -28,6 +28,7 @@ import {
 } from "~/components/ui/select";
 import Loading from "~/components/Loading";
 import { uploadFile } from "~/libs/upload";
+import { Description } from "@radix-ui/react-dialog";
 type EventFormValues = z.infer<typeof eventSchema>;
 
 export default function EventForm() {
@@ -118,8 +119,11 @@ export default function EventForm() {
                                     <FormItem className="md:col-span-2">
                                         <FormLabel>Summary</FormLabel>
                                         <FormControl>
-                                            <Input placeholder="Short introduction" {...field} />
+                                            <Textarea rows={5} placeholder="Summary" {...field} />
                                         </FormControl>
+                                        <FormDescription>
+                                            This is a brief summary of your event (under 300 words).
+                                        </FormDescription>
                                         <FormMessage />
                                     </FormItem>
                                 )}
@@ -132,7 +136,12 @@ export default function EventForm() {
                                     <FormItem className="md:col-span-2">
                                         <FormLabel>Description</FormLabel>
                                         <FormControl>
-                                            <Textarea rows={5} placeholder="Detailed description" {...field} />
+                                            <Textarea
+                                                rows={40}
+                                                cols={40}
+                                                placeholder="Detailed description"
+                                                {...field}
+                                            />
                                         </FormControl>
                                         <FormMessage />
                                     </FormItem>

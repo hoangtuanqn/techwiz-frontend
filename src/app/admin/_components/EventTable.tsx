@@ -4,6 +4,7 @@ import React, { useMemo, useState } from "react";
 import Link from "next/link";
 import { Search, Eye } from "lucide-react";
 import { EventListResponseType } from "~/types/schemaZod/event.schema";
+import { formatter } from "~/utils/format";
 
 export default function EventTable({
     title = "",
@@ -160,7 +161,7 @@ export default function EventTable({
                                 </td>
                                 <td className="px-3 py-2">
                                     <span className="inline-flex items-center rounded-full bg-blue-100 px-2.5 py-0.5 text-xs font-medium text-blue-800">
-                                        {event.category}
+                                        {formatter.capitalize(event.category)}
                                     </span>
                                 </td>
                                 <td className="px-3 py-2 text-slate-600">

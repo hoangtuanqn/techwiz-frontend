@@ -4,24 +4,24 @@ import React from "react";
 import EventTable from "../../_components/EventTable";
 import { useQuery } from "@tanstack/react-query";
 import eventApi from "~/apiRequest/event";
-
+import { EventListResponseType } from "~/types/schemaZod/event.schema";
+import useGetSearchQuery from "~/hooks/useGetSearchQuery";
+const fields = ["page", "search"] as const;
 export default function ApprovedPage() {
-    // get dữ liệu approvals đã được approved
-    const { data: approvedEvents, isPending } = useQuery({
-        queryKey: ["approvedEvents"],
+    const { page, search } = useGetSearchQuery(fields);
+    const { data: approvedEvents } = useQuery({
+        queryKey: ["approvedEvents", { page, search }],
         queryFn: async () => {
-            const response = await eventApi.getEvent(1, 10, "", "filter[status]=approved");
-            return response.data.data.data;
+            const response = await eventApi.getEvent(+page, 9, search, "", "filter[status]=approved");
+            return response.data.data;
         },
     });
-    return null;
-    // return (
-    //     <EventTable
-    //         title="Approved events"
-    //         data={approvedEvents}
-    //         actionLabel="View"
-    //         actionLinkPrefix="/organizer/events"
-    //         showCheckbox={false}
-    //     />
-    // );
+    return (
+        <EventTable
+            title="Approved events"
+            data={approvedEvents as EventListResponseType["data"]}
+            actionLabel="View"
+            actionLinkPrefix="/organizer/approvals/approved"
+        />
+    );
 }
