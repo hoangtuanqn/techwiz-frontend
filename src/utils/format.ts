@@ -1,3 +1,5 @@
+import { time } from "console";
+
 export const formatter = {
     date: (date: Date | string, withTime: boolean = false) => {
         const parsedDate = new Date(date);
@@ -17,6 +19,14 @@ export const formatter = {
             year: "numeric",
             month: "2-digit",
             day: "2-digit",
+        });
+    },
+    time: (date: Date | string) => {
+        const parsedDate = new Date(date);
+        return parsedDate.toLocaleTimeString("en-US", {
+            hour: "2-digit",
+            minute: "2-digit",
+            hour12: true, // hiển thị AM/PM
         });
     },
 

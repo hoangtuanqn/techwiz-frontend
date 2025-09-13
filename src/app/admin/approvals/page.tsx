@@ -6,6 +6,7 @@ import { CheckCircle2, Clock4, ArrowRight, ListChecks } from "lucide-react";
 import EventTable from "../_components/EventTable";
 import eventApi from "~/apiRequest/event";
 import { useQuery } from "@tanstack/react-query";
+import { EventListResponseType } from "~/types/schemaZod/event.schema";
 
 export default function ApprovalsIndexPage() {
     const { data: approvedEvents } = useQuery({
@@ -77,7 +78,7 @@ export default function ApprovalsIndexPage() {
                         </Link>
                     </div>
                     <EventTable
-                        data={pendingEvents}
+                        data={pendingEvents as EventListResponseType["data"]}
                         actionLabel="Review"
                         actionLinkPrefix="/admin/events"
                         showCheckbox
@@ -99,7 +100,7 @@ export default function ApprovalsIndexPage() {
                         </Link>
                     </div>
                     <EventTable
-                        data={approvedEvents}
+                        data={approvedEvents as EventListResponseType["data"]}
                         actionLabel="View"
                         actionLinkPrefix="/admin/events"
                         minTableWidth={900}

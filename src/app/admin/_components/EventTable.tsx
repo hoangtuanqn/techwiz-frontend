@@ -5,6 +5,7 @@ import Link from "next/link";
 import { Search, Eye } from "lucide-react";
 import { EventListResponseType } from "~/types/schemaZod/event.schema";
 import { formatter } from "~/utils/format";
+import { PaginationNav } from "~/components/Pagination";
 
 export default function EventTable({
     title = "",
@@ -58,17 +59,6 @@ export default function EventTable({
         }
     };
 
-    const formatTime = (dateString: string) => {
-        try {
-            return new Date(dateString).toLocaleTimeString("en-US", {
-                hour: "2-digit",
-                minute: "2-digit",
-            });
-        } catch {
-            return "";
-        }
-    };
-
     const getStatusBadge = (status: string) => {
         const statusStyles = {
             pending: "bg-yellow-100 text-yellow-800 border-yellow-200",
@@ -90,9 +80,9 @@ export default function EventTable({
 
     const toggleAll = (checked: boolean) => setSelected(checked ? rows.map((r) => r.id) : []);
     const toggleOne = (id: number) => setSelected((s) => (s.includes(id) ? s.filter((x) => x !== id) : [...s, id]));
-
+    const pages = Math.ceil(total / perPage) || 1;
     return (
-        <section className="rounded-2xl border border-slate-200 bg-white">
+        <section className="rounded-2xl border border-slate-200 bg-white py-4">
             {/* Header + search */}
             <div className="flex flex-wrap items-center justify-between gap-3 p-4">
                 <div className="text-xs text-slate-500">
@@ -151,14 +141,18 @@ export default function EventTable({
                                 </td>
                                 <td className="px-3 py-2 text-slate-600">
                                     <div className="flex flex-col">
-                                        <span className="text-sm">{formatDate(event.start_event)}</span>
-                                        <span className="text-xs text-slate-400">{formatTime(event.start_event)}</span>
+                                        <span className="text-sm">{formatter.date(event.start_event)}</span>
+                                        <span className="text-xs text-slate-400">
+                                            {formatter.time(event.start_event)}
+                                        </span>
                                     </div>
                                 </td>
                                 <td className="px-3 py-2 text-slate-600">
                                     <div className="flex flex-col">
-                                        <span className="text-sm">{formatDate(event.end_event)}</span>
-                                        <span className="text-xs text-slate-400">{formatTime(event.end_event)}</span>
+                                        <span className="text-sm">{formatter.date(event.end_event)}</span>
+                                        <span className="text-xs text-slate-400">
+                                            {formatter.time(event.end_event)}
+                                        </span>
                                     </div>
                                 </td>
                                 <td className="px-3 py-2 text-slate-600">{event.venue}</td>
@@ -197,6 +191,8 @@ export default function EventTable({
                     </tbody>
                 </table>
             </div>
+
+            <PaginationNav totalPages={pages} basePath={actionLinkPrefix} />
         </section>
     );
 }
