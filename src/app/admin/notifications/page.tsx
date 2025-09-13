@@ -32,65 +32,65 @@ const NOTIFICATIONS_DATA: NotificationItem[] = [
         icon: Inbox,
         title: "Inbox",
         value: "120",
-        subtitle: "5 chưa đọc",
+        subtitle: "5 unread",
     },
     {
         id: "sent-1",
         type: "stat",
         icon: Send,
-        title: "Đã gửi",
+        title: "Sent",
         value: "320",
-        subtitle: "email & push",
+        subtitle: "emails & push",
     },
     {
         id: "scheduled-1",
         type: "stat",
         icon: Clock,
-        title: "Đã lên lịch",
+        title: "Scheduled",
         value: "8",
-        subtitle: "sắp gửi",
+        subtitle: "soon to be sent",
     },
     {
         id: "failed-1",
         type: "stat",
         icon: AlertTriangle,
-        title: "Thất bại",
+        title: "Failed",
         value: "2",
-        subtitle: "cần xử lý",
+        subtitle: "needs attention",
     },
     {
         id: "reminder-hackathon",
         type: "row",
         title: "Reminder: Hackathon 2025",
-        desc: "Gửi lúc 18:00 — Email",
+        desc: "Sent at 18:00 — Email",
         badge: { text: "Sent", tone: "ok" },
     },
     {
         id: "checkin-open",
         type: "row",
-        title: "Check-in mở cửa",
-        desc: "Gửi lúc 08:30 — Push",
+        title: "Check-in open",
+        desc: "Sent at 08:30 — Push",
         badge: { text: "Sent", tone: "ok" },
     },
     {
         id: "cultural-night-update",
         type: "row",
         title: "Cultural Night update",
-        desc: "Hẹn 19:00 — Email",
+        desc: "Scheduled 19:00 — Email",
         badge: { text: "Scheduled", tone: "info" },
     },
     {
         id: "workshop-docs",
         type: "row",
-        title: "Workshop tài liệu",
+        title: "Workshop documents",
         desc: "09:00 — Email",
         badge: { text: "Failed", tone: "error" },
     },
     {
         id: "organizer-role",
         type: "row",
-        title: "Phân quyền Organizer mới",
-        desc: "Cập nhật vai trò — Admin",
+        title: "New Organizer Permissions",
+        desc: "Role update — Admin",
         badge: { text: "Info", tone: "warn" },
     },
 ];
@@ -169,29 +169,29 @@ export default function NotificationsOverviewPage() {
         <section className="grid gap-6">
             {/* Intro */}
             <article className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
-                <h1 className="text-2xl font-bold text-slate-900">Hộp thư sự kiện</h1>
+                <h1 className="text-2xl font-bold text-slate-900">Event Mailbox</h1>
                 <p className="mt-1 text-sm text-slate-600">
-                    Quản lý email và thông báo gửi đến người tham gia. Xem tổng quan trạng thái, hoạt động gần đây và
-                    chuyển nhanh tới các mục quản trị.
+                    Manage emails and notifications sent to participants. View status overview, recent activities, and
+                    quickly navigate to administration sections.
                 </p>
                 <div className="mt-4 flex flex-wrap gap-2">
                     <Link
                         href="/admin/notifications/compose"
                         className="inline-flex items-center gap-2 rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-sm font-medium text-slate-700 hover:bg-slate-50"
                     >
-                        <BellPlus className="h-4 w-4" /> Tạo thông báo
+                        <BellPlus className="h-4 w-4" /> Create Notification
                     </Link>
                     <Link
                         href="/admin/approvals"
                         className="inline-flex items-center gap-2 rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-sm font-medium text-slate-700 hover:bg-slate-50"
                     >
-                        <CheckSquare className="h-4 w-4" /> Duyệt yêu cầu
+                        <CheckSquare className="h-4 w-4" /> Approve Requests
                     </Link>
                     <Link
                         href="/admin/events/create"
                         className="inline-flex items-center gap-2 rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-sm font-medium text-slate-700 hover:bg-slate-50"
                     >
-                        <CalendarPlus className="h-4 w-4" /> Tạo sự kiện
+                        <CalendarPlus className="h-4 w-4" /> Create Event
                     </Link>
                 </div>
             </article>
@@ -213,7 +213,7 @@ export default function NotificationsOverviewPage() {
             {/* Recent */}
             <article className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
                 <div className="flex items-center justify-between border-b border-slate-200 px-4 py-3">
-                    <h2 className="text-lg font-semibold text-slate-900">Hoạt động gần đây</h2>
+                    <h2 className="text-lg font-semibold text-slate-900">Recent Activities</h2>
                     {/* Link to status removed as per previous instruction */}
                 </div>
                 <div className="divide-y divide-slate-100">

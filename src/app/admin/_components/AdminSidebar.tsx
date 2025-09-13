@@ -18,7 +18,6 @@ import { usePathname } from "next/navigation";
 export default function AdminSidebar() {
     const pathname = usePathname();
 
-    const approvalsOpen = pathname.startsWith("/admin/approvals");
     const rolesOpen = pathname.startsWith("/admin/role");
 
     return (
@@ -31,22 +30,10 @@ export default function AdminSidebar() {
 
             {/* Menu */}
             <nav className="space-y-1">
-                <SidebarLink href="/admin" icon={Home} label="Dashboard" activePath={pathname} />
+                <SidebarLink href="/admin" icon={Home} label="Dashboard" activePath={pathname} exact={true} />
 
                 {/* Approvals submenu */}
-                <details open={approvalsOpen} className="group">
-                    <summary className="flex cursor-pointer items-center justify-between rounded-lg px-3 py-2 text-sm text-slate-600 hover:bg-slate-50 hover:text-slate-900">
-                        <span className="flex items-center gap-2">
-                            <CheckSquare className="h-4 w-4" />
-                            Approvals
-                        </span>
-                        <ChevronDown className="h-4 w-4 text-slate-400 transition group-open:rotate-180" />
-                    </summary>
-                    <div className="mt-1 ml-6 space-y-1">
-                        <SidebarLink href="/admin/approvals/approved" label="Approved" activePath={pathname} />
-                        <SidebarLink href="/admin/approvals/pending" label="Pending" activePath={pathname} />
-                    </div>
-                </details>
+                <SidebarLink href="/admin/approvals" icon={CheckSquare} label="Approvals" activePath={pathname} />
 
                 {/* Role submenu */}
                 <details open={rolesOpen} className="group">
@@ -73,7 +60,7 @@ export default function AdminSidebar() {
                     activePath={pathname}
                 />
                 <SidebarLink href="/admin/blogs" icon={FilePlus} label="Create Blog" activePath={pathname} />
-                <SidebarLink href="/" icon={Home} label="Back to Home" activePath={pathname} />
+                <SidebarLink href="/" icon={Home} label="Back to Home" activePath={pathname} exact={true} />
             </nav>
         </aside>
     );
@@ -84,13 +71,15 @@ function SidebarLink({
     label,
     icon: Icon,
     activePath,
+    exact = false,
 }: {
     href: string;
     label: string;
     icon?: React.ElementType;
     activePath: string;
+    exact?: boolean;
 }) {
-    const active = activePath === href || (href !== "/" && activePath.startsWith(href + "/"));
+    const active = exact ? activePath === href : activePath.startsWith(href);
 
     return (
         <Link

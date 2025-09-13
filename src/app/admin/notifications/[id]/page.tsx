@@ -15,7 +15,7 @@ function DetailPane({ subject, time, snippet }: { subject: string; time: string;
                 <div className="mt-0.5 text-xs text-slate-500">EventSphere • {time}</div>
             </div>
             <div className="flex-1 overflow-auto p-4 text-sm leading-6 text-slate-700">
-                <p>{snippet || "— Không có nội dung xem trước."}</p>
+                <p>{snippet || "— No preview content."}</p>
             </div>
         </>
     );
@@ -36,9 +36,9 @@ export default function NotificationDetailPage() {
             // For now, simulate fetching data
             const fetchedMessage = {
                 id: id as string,
-                subject: `[Chi tiết] Thông báo ${id}`,
-                snippet: `Đây là nội dung chi tiết của thông báo có ID: ${id}. Lorem ipsum dolor sit amet, consectetur adipiscing elit.`, // Placeholder
-                time: "Vừa xong",
+                subject: `[Detail] Notification ${id}`,
+                snippet: `This is the detailed content of notification ID: ${id}. Lorem ipsum dolor sit amet, consectetur adipiscing elit.`, // Placeholder
+                time: "Just now",
             };
             setMessage(fetchedMessage);
             setLoading(false);
@@ -46,11 +46,11 @@ export default function NotificationDetailPage() {
     }, [id]);
 
     if (loading) {
-        return <p>Đang tải chi tiết thông báo...</p>;
+        return <p>Loading notification details...</p>;
     }
 
     if (!message) {
-        return <p>Không tìm thấy thông báo.</p>;
+        return <p>Notification not found.</p>;
     }
 
     return (
