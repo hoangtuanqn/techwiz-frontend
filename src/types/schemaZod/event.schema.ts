@@ -44,6 +44,7 @@ export const eventItemSchema = z.object({
     booked_count: z.number(),
     is_booked: z.boolean(),
     seating: seatingSchema,
+    organizer: organizerSchema,
 });
 
 export const eventListSchema = z.object({
