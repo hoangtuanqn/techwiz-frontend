@@ -1,11 +1,8 @@
 "use client";
 import React from "react";
-import { ArrowRight, Import, Link } from "lucide-react";
-import { useRouter } from "next/navigation";
+import { ArrowRight } from "lucide-react";
 import NextLink from "next/link";
 const Blogs = () => {
-    const router = useRouter();
-
     return (
         <section id="blog" className="bg-gray-50 py-12 sm:py-16 md:py-20">
             <div className="mx-auto max-w-7xl px-2 sm:px-6 md:px-8 lg:px-12">
@@ -67,7 +64,7 @@ const Blogs = () => {
                                         <h3 className="text-base font-semibold text-slate-900 sm:text-lg">{title}</h3>
                                         <p className="mt-2 text-xs text-slate-600 sm:text-sm">{desc}</p>
                                         <a
-                                            href={href}
+                                            href={"/blog?category=" + category}
                                             className="mt-3 inline-flex items-center gap-1 text-xs font-medium text-cyan-600 hover:text-cyan-700 sm:mt-4 sm:text-base"
                                         >
                                             Read more <ArrowRight className="h-4 w-4" />
