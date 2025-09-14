@@ -24,7 +24,7 @@ export default function CreateBlogPage() {
 
     async function handleSave() {
         if (!title.trim() || !slug.trim() || !content.trim()) {
-            toast.error("Vui lòng nhập đầy đủ Title, Slug và Content!");
+            toast.error("Please fill in Title, Slug, and Content!");
             return;
         }
 
@@ -43,7 +43,7 @@ export default function CreateBlogPage() {
 
             const response = await blogApi.createBlog(blogData);
             if (response.data.success) {
-                toast.success("Tạo blog thành công!");
+                toast.success("Blog created successfully!");
                 router.push("/organizer/blogs");
             }
         } catch (error: any) {
@@ -51,7 +51,7 @@ export default function CreateBlogPage() {
             if (error.response?.data?.message) {
                 toast.error(error.response.data.message);
             } else {
-                toast.error('Có lỗi khi tạo blog');
+                toast.error("An error occurred while creating the blog");
             }
         } finally {
             setLoading(false);
@@ -71,7 +71,7 @@ export default function CreateBlogPage() {
                         <ArrowLeft className="h-4 w-4" /> Back
                     </Link>
                 </div>
-                <p className="mt-1 text-sm text-slate-600">Tạo blog mới và lưu tạm vào localStorage.</p>
+                <p className="mt-1 text-sm text-slate-600">Create a new blog post and save it to the server.</p>
             </article>
 
             {/* Form */}
@@ -82,7 +82,7 @@ export default function CreateBlogPage() {
                 }}
                 className="space-y-4 rounded-2xl border bg-white p-6 shadow-sm"
             >
-                {/* Cover uploader dùng chung */}
+                {/* Shared CoverUploader component */}
                 <CoverUploader value={cover} onChange={setCover} info={coverInfo} setInfo={setCoverInfo} />
 
                 <label className="block text-sm">
@@ -107,13 +107,13 @@ export default function CreateBlogPage() {
                 </label>
 
                 <label className="block text-sm">
-                    Excerpt (Tóm tắt)
+                    Excerpt
                     <textarea
                         value={excerpt}
                         onChange={(e) => setExcerpt(e.target.value)}
                         rows={3}
                         className="mt-1 w-full rounded-lg border p-2 text-sm"
-                        placeholder="Tóm tắt ngắn cho blog..."
+                        placeholder="Short summary for the blog..."
                     />
                 </label>
 
@@ -150,13 +150,13 @@ export default function CreateBlogPage() {
                         onChange={(e) => setContent(e.target.value)}
                         rows={10}
                         className="mt-1 w-full rounded-lg border p-2 text-sm"
-                        placeholder="Nội dung blog..."
+                        placeholder="Blog content..."
                         required
                     />
                 </label>
 
                 <label className="block text-sm">
-                    Tags (phân cách bằng dấu phẩy)
+                    Tags (separated by commas)
                     <input
                         value={tags}
                         onChange={(e) => setTags(e.target.value)}
@@ -170,7 +170,7 @@ export default function CreateBlogPage() {
                     disabled={loading}
                     className="inline-flex items-center gap-1 rounded-lg bg-slate-900 px-4 py-2 text-sm font-medium text-white hover:bg-slate-800 disabled:opacity-50"
                 >
-                    <Save className="h-4 w-4" /> 
+                    <Save className="h-4 w-4" />
                     {loading ? "Creating..." : "Create Blog"}
                 </button>
             </form>
