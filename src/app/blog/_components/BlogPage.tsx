@@ -2,53 +2,20 @@
 "use client";
 
 import Link from "next/link";
-import { useMemo, useState } from "react";
+import { useMemo, useState, useEffect } from "react";
 import { ArrowRight, Search, X } from "lucide-react";
 import { BlogCardSkeleton } from "./BlogSkeleton";
+import blogApi from "~/apiRequest/blog";
+import { BlogItemType } from "~/types/schemaZod/blog.schema";
+import { toast } from "sonner";
 
-const TAG_POOL = ["Hackathon", "Robotics", "AI", "Design", "Startup", "Marketing", "Culture", "Sports"] as const;
-const CATEGORIES = ["All", "Technical", "Cultural", "Business", "Design"] as const;
+const CATEGORIES = ["All", "technology", "culture", "education", "other"] as const;
 
-type Post = {
-    id: number;
-    title: string;
-    category: "Technical" | "Cultural" | "Business" | "Design";
-    desc: string;
-    image: string;
-    date: string;
-    read: number;
-    tags: (typeof TAG_POOL)[number][];
-};
-
-function demoPosts(count = 36): Post[] {
-    return Array.from({ length: count }).map((_, i) => {
-        const category = ["Technical", "Cultural", "Business", "Design"][i % 4] as Post["category"];
-        const title = [
-            "From Dusk to Dawn: How Our Hackathon Ignited Innovation",
-            "Top 7 Cultural Nights You Shouldn’t Miss",
-            "Zero-to-One: Campus Startups that Took Off",
-            "Robotics 101: Getting Your First Bot Moving",
-            "Design Systems for Campus Apps",
-        ][i % 5];
-
-        const shuffled = [...TAG_POOL].sort(() => Math.random() - 0.5);
-        const tags = shuffled.slice(0, 2 + (i % 2)) as Post["tags"];
-
-        return {
-            id: i + 1,
-            title,
-            category,
-            desc: "A concise preview that highlights the story and key takeaways. Learn how students collaborate, ship fast, and turn ideas into prototypes.",
-            image: `https://picsum.photos/seed/blog-${i}/900/600`,
-            date: new Date(2025, i % 12, (i % 28) + 1).toISOString().slice(0, 10),
-            read: [4, 6, 7, 5, 8][i % 5],
-            tags,
-        };
-    });
-}
+type Post = BlogItemType;
 
 export default function BlogPage() {
-    const ALL = useMemo(() => demoPosts(), []);
+    const [ALL, setALL] = useState<Post[]>([]);
+    const [loading, setLoading] = useState(true);
     const [q, setQ] = useState("");
     const [category, setCategory] = useState<(typeof CATEGORIES)[number]>("All");
     const [selectedTags, setSelectedTags] = useState<Set<string>>(new Set());
@@ -57,6 +24,26 @@ export default function BlogPage() {
     const [minRead, setMinRead] = useState<number>(0);
     const [sort, setSort] = useState<"Newest" | "Oldest" | "A-Z" | "Z-A">("Newest");
     const [visible, setVisible] = useState(12);
+
+    // Load blogs from API
+    useEffect(() => {
+        loadBlogs();
+    }, []);
+
+    async function loadBlogs() {
+        try {
+            setLoading(true);
+            const response = await blogApi.getBlogs(1, 100); // Lấy nhiều blogs cho public
+            if (response.data.success) {
+                setALL(response.data.data.data);
+            }
+        } catch (error) {
+            console.error('Error loading blogs:', error);
+            toast.error('Không thể tải danh sách blog');
+        } finally {
+            setLoading(false);
+        }
+    }
 
     const toggleTag = (t: string) => {
         setVisible(12);
@@ -78,6 +65,19 @@ export default function BlogPage() {
         setVisible(12);
     };
 
+    // Get all unique tags from blogs
+    const allTags = useMemo(() => {
+        const tags = new Set<string>();
+        ALL.forEach(blog => {
+            if (blog.tags) {
+                blog.tags.split(',').forEach(tag => {
+                    if (tag.trim()) tags.add(tag.trim());
+                });
+            }
+        });
+        return Array.from(tags);
+    }, [ALL]);
+
     const filtered = useMemo(() => {
         const fromTime = from ? new Date(from).getTime() : Number.NEGATIVE_INFINITY;
         const toTime = to ? new Date(to).getTime() : Number.POSITIVE_INFINITY;
@@ -85,20 +85,22 @@ export default function BlogPage() {
         const arr = ALL.filter((p) => {
             const matchCat = category === "All" || p.category === category;
             const matchQ =
-                !q || p.title.toLowerCase().includes(q.toLowerCase()) || p.desc.toLowerCase().includes(q.toLowerCase());
-            const time = new Date(p.date).getTime();
+                !q || p.title.toLowerCase().includes(q.toLowerCase()) || 
+                (p.excerpt && p.excerpt.toLowerCase().includes(q.toLowerCase()));
+            const time = new Date(p.created_at).getTime();
             const matchDate = time >= fromTime && time <= toTime;
-            const matchRead = p.read >= minRead;
-            const matchTags = selectedTags.size === 0 || [...selectedTags].every((t) => p.tags.includes(t as any));
+            const matchRead = p.views_count >= minRead;
+            const blogTags = p.tags ? p.tags.split(',').map(t => t.trim()) : [];
+            const matchTags = selectedTags.size === 0 || [...selectedTags].every((t) => blogTags.includes(t));
             return matchCat && matchQ && matchDate && matchRead && matchTags;
         });
 
         arr.sort((a, b) => {
             switch (sort) {
                 case "Newest":
-                    return b.date.localeCompare(a.date);
+                    return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
                 case "Oldest":
-                    return a.date.localeCompare(b.date);
+                    return new Date(a.created_at).getTime() - new Date(b.created_at).getTime();
                 case "A-Z":
                     return a.title.localeCompare(b.title);
                 case "Z-A":
@@ -197,23 +199,29 @@ export default function BlogPage() {
                 {/* Tags, min read, sort */}
                 <div className="mb-8 flex flex-col items-center justify-between gap-4 md:flex-row">
                     <div className="flex flex-wrap gap-2">
-                        {TAG_POOL.map((t) => {
-                            const active = selectedTags.has(t);
-                            return (
-                                <button
-                                    key={t}
-                                    onClick={() => toggleTag(t)}
-                                    className={`group relative overflow-hidden rounded-full border px-3 py-1.5 text-xs transition ${
-                                        active
-                                            ? "border-cyan-500 bg-cyan-500 text-white"
-                                            : "border-slate-200 bg-white text-slate-700 hover:bg-slate-50"
-                                    }`}
-                                >
-                                    <span className="pointer-events-none absolute inset-y-0 -left-10 w-10 translate-x-0 rotate-12 bg-white/30 opacity-0 transition group-hover:translate-x-[220%] group-hover:opacity-100" />
-                                    #{t}
-                                </button>
-                            );
-                        })}
+                        {loading ? (
+                            <div className="text-sm text-slate-500">Loading tags...</div>
+                        ) : allTags.length === 0 ? (
+                            <div className="text-sm text-slate-500">No tags available</div>
+                        ) : (
+                            allTags.slice(0, 10).map((t) => {
+                                const active = selectedTags.has(t);
+                                return (
+                                    <button
+                                        key={t}
+                                        onClick={() => toggleTag(t)}
+                                        className={`group relative overflow-hidden rounded-full border px-3 py-1.5 text-xs transition ${
+                                            active
+                                                ? "border-cyan-500 bg-cyan-500 text-white"
+                                                : "border-slate-200 bg-white text-slate-700 hover:bg-slate-50"
+                                        }`}
+                                    >
+                                        <span className="pointer-events-none absolute inset-y-0 -left-10 w-10 translate-x-0 rotate-12 bg-white/30 opacity-0 transition group-hover:translate-x-[220%] group-hover:opacity-100" />
+                                        #{t}
+                                    </button>
+                                );
+                            })
+                        )}
                     </div>
 
                     <div className="flex flex-wrap items-center gap-3">
@@ -252,61 +260,71 @@ export default function BlogPage() {
 
                 {/* Grid */}
                 <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
-                    {items.length === 0
-                        ? Array.from({ length: 6 }).map((_, i) => <BlogCardSkeleton key={i} />)
-                        : items.map((post) => (
-                              <article
-                                  key={post.id}
-                                  className="group relative overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-lg"
-                              >
-                                  <Link
-                                      href={`/blog/${post.id}`}
-                                      className="absolute inset-0 z-10"
-                                      aria-label={post.title}
-                                  />
-                                  <div className="overflow-hidden">
-                                      <img
-                                          src={post.image}
-                                          alt={post.title}
-                                          className="h-48 w-full object-cover transition-transform duration-500 group-hover:scale-105"
-                                      />
-                                  </div>
+                    {loading ? (
+                        Array.from({ length: 6 }).map((_, i) => <BlogCardSkeleton key={i} />)
+                    ) : items.length === 0 ? (
+                        <div className="col-span-full text-center py-12">
+                            <p className="text-slate-500">Không có blog nào được tìm thấy.</p>
+                        </div>
+                    ) : (
+                        items.map((post) => (
+                            <article
+                                key={post.id}
+                                className="group relative overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-lg"
+                            >
+                                <Link
+                                    href={`/blog/${post.id}`}
+                                    className="absolute inset-0 z-10"
+                                    aria-label={post.title}
+                                />
+                                <div className="overflow-hidden">
+                                    <img
+                                        src={post.cover || `https://picsum.photos/seed/blog-${post.id}/900/600`}
+                                        alt={post.title}
+                                        className="h-48 w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                                    />
+                                </div>
 
-                                  <div className="p-5">
-                                      <div className="flex items-center justify-between text-xs text-slate-500">
-                                          <span className="rounded-full border border-slate-200 px-2 py-0.5">
-                                              {post.category}
-                                          </span>
-                                          <span>{post.date}</span>
-                                      </div>
+                                <div className="p-5">
+                                    <div className="flex items-center justify-between text-xs text-slate-500">
+                                        <span className="rounded-full border border-slate-200 px-2 py-0.5 capitalize">
+                                            {post.category}
+                                        </span>
+                                        <span>{new Date(post.created_at).toLocaleDateString()}</span>
+                                    </div>
 
-                                      <h3 className="mt-2 line-clamp-2 font-semibold text-slate-800 transition group-hover:text-cyan-600">
-                                          {post.title}
-                                      </h3>
-                                      <p className="mt-2 line-clamp-2 text-sm text-slate-600">{post.desc}</p>
+                                    <h3 className="mt-2 line-clamp-2 font-semibold text-slate-800 transition group-hover:text-cyan-600">
+                                        {post.title}
+                                    </h3>
+                                    <p className="mt-2 line-clamp-2 text-sm text-slate-600">
+                                        {post.excerpt || "Không có mô tả..."}
+                                    </p>
 
-                                      <div className="mt-3 flex flex-wrap gap-2">
-                                          {post.tags.map((tg) => (
-                                              <span
-                                                  key={tg}
-                                                  className="rounded-full border border-slate-200 px-2 py-0.5 text-xs text-slate-600"
-                                              >
-                                                  #{tg}
-                                              </span>
-                                          ))}
-                                      </div>
+                                    {post.tags && (
+                                        <div className="mt-3 flex flex-wrap gap-2">
+                                            {post.tags.split(',').slice(0, 3).map((tg, index) => (
+                                                <span
+                                                    key={index}
+                                                    className="rounded-full border border-slate-200 px-2 py-0.5 text-xs text-slate-600"
+                                                >
+                                                    #{tg.trim()}
+                                                </span>
+                                            ))}
+                                        </div>
+                                    )}
 
-                                      <div className="mt-3 flex items-center justify-between text-xs text-slate-500">
-                                          <span>~ {post.read} min read</span>
-                                          <span className="relative inline-flex items-center gap-1 overflow-hidden rounded-lg border border-slate-200 px-3 py-1.5 text-cyan-600 transition group-hover:-translate-y-0.5 group-hover:border-cyan-500 group-hover:bg-cyan-50">
-                                              <span className="relative z-10">Read more</span>
-                                              <ArrowRight className="relative z-10 h-4 w-4 transition-transform group-hover:translate-x-0.5" />
-                                              <span className="pointer-events-none absolute inset-0 -z-0 bg-gradient-to-r from-transparent via-white/30 to-transparent opacity-0 transition group-hover:opacity-100" />
-                                          </span>
-                                      </div>
-                                  </div>
-                              </article>
-                          ))}
+                                    <div className="mt-3 flex items-center justify-between text-xs text-slate-500">
+                                        <span>{post.views_count} views</span>
+                                        <span className="relative inline-flex items-center gap-1 overflow-hidden rounded-lg border border-slate-200 px-3 py-1.5 text-cyan-600 transition group-hover:-translate-y-0.5 group-hover:border-cyan-500 group-hover:bg-cyan-50">
+                                            <span className="relative z-10">Read more</span>
+                                            <ArrowRight className="relative z-10 h-4 w-4 transition-transform group-hover:translate-x-0.5" />
+                                            <span className="pointer-events-none absolute inset-0 -z-0 bg-gradient-to-r from-transparent via-white/30 to-transparent opacity-0 transition group-hover:opacity-100" />
+                                        </span>
+                                    </div>
+                                </div>
+                            </article>
+                        ))
+                    )}
                 </div>
 
                 {/* Load more */}
