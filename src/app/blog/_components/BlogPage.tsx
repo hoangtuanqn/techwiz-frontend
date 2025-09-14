@@ -27,7 +27,7 @@ function demoPosts(count = 36): Post[] {
             "From Dusk to Dawn: How Our Hackathon Ignited Innovation",
             "Top 7 Cultural Nights You Shouldn’t Miss",
             "Zero-to-One: Campus Startups that Took Off",
-            "Robotics 101: Getting Your First Bot Moving",
+            "Robotics 101: Getting Your First Bot Moving",  
             "Design Systems for Campus Apps",
         ][i % 5];
 

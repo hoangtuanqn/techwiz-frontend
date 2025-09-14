@@ -16,36 +16,37 @@ const Blogs = () => {
                             </h2>
                         </div>
 
-                        <div className="mt-8 grid gap-8 md:grid-cols-3">
+                        <div className="mt-8 grid gap-8 md:grid-cols-2">
                             {[
                                 {
                                     img: "https://images.unsplash.com/photo-1519389950473-47ba0277781c?q=80&w=1470&auto=format&fit=crop",
                                     alt: "Hackathon tips",
-                                    title: "How to Win Your First Hackathon",
+                                    title: "Technical",
                                     desc: "Team formation, idea validation, and demo strategy.",
-                                    href: "#",
+                                    href: "./blog/technical",
                                 },
                                 {
                                     img: "https://images.unsplash.com/photo-1523580846011-d3a5bc25702b?q=80&w=1470&auto=format&fit=crop",
                                     alt: "Cultural nights",
-                                    title: "5 Cultural Nights You Can’t Miss",
+                                    title: "Cultural",
                                     desc: "A round-up of campus festivals, dance and music nights.",
-                                    href: "#",
+                                    href: "./blog/cultural",
                                 },
                                 {
                                     img: "https://images.unsplash.com/photo-1523580846011-d3a5bc25702b?q=80&w=1470&auto=format&fit=crop",
                                     alt: "Cultural nights",
-                                    title: "5 Cultural Nights You Can’t Miss",
+                                    title: "BUsiness",
                                     desc: "A round-up of campus festivals, dance and music nights.",
-                                    href: "#",
+                                    href: "./blog/business",
                                 },
                                 {
                                     img: "https://images.unsplash.com/photo-1523580846011-d3a5bc25702b?q=80&w=1470&auto=format&fit=crop",
                                     alt: "Cultural nights",
-                                    title: "5 Cultural Nights You Can’t Miss",
+                                    title: "Design",
                                     desc: "A round-up of campus festivals, dance and music nights.",
-                                    href: "#",
+                                    href: "./blog/design",
                                 },
+                               
                             ].map(({ img, alt, title, desc, href }, i) => (
                                 <article
                                     key={i}
