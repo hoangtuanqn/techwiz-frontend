@@ -9,12 +9,12 @@ const Blogs = () => {
     return (
         <section id="blog" className="bg-gray-50 py-12 sm:py-16 md:py-20">
             <div className="mx-auto max-w-7xl px-2 sm:px-6 md:px-8 lg:px-12">
-                <div className="grid gap-8 lg:gap-12 lg:grid-cols-3">
+                <div className="grid gap-8 lg:grid-cols-3 lg:gap-12">
                     {/* Blog list */}
                     <div className="lg:col-span-3">
                         <div className="mb-6 flex items-center gap-3 sm:gap-4" data-aos="fade-up">
                             <span className="inline-block h-8 w-1 rounded bg-gradient-to-b from-cyan-500 to-fuchsia-500"></span>
-                            <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-slate-900 md:text-4xl">
+                            <h2 className="text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl md:text-4xl">
                                 From the Blog
                             </h2>
                         </div>
@@ -49,7 +49,6 @@ const Blogs = () => {
                                     desc: "Miscellaneous topics and general discussions.",
                                     category: "other",
                                 },
-                               
                             ].map(({ img, alt, title, desc, category }, i) => (
                                 <NextLink
                                     href={`/blog?category=${category}`}
@@ -59,21 +58,20 @@ const Blogs = () => {
                                     data-aos-delay={i * 30}
                                 >
                                     <img
-                                        className="h-36 sm:h-48 w-full object-cover transition-transform duration-300 group-hover:scale-105"
+                                        className="h-36 w-full object-cover transition-transform duration-300 group-hover:scale-105 sm:h-48"
                                         src={img}
                                         alt={alt}
                                     />
 
                                     <div className="p-4 sm:p-6">
-                                        <h3 className="text-base sm:text-lg font-semibold text-slate-900">{title}</h3>
-                                        <p className="mt-2 text-xs sm:text-sm text-slate-600">{desc}</p>
+                                        <h3 className="text-base font-semibold text-slate-900 sm:text-lg">{title}</h3>
+                                        <p className="mt-2 text-xs text-slate-600 sm:text-sm">{desc}</p>
                                         <a
                                             href={href}
-                                            className="mt-3 sm:mt-4 inline-flex items-center gap-1 font-medium text-cyan-600 hover:text-cyan-700 text-xs sm:text-base"
-
+                                            className="mt-3 inline-flex items-center gap-1 text-xs font-medium text-cyan-600 hover:text-cyan-700 sm:mt-4 sm:text-base"
                                         >
                                             Read more <ArrowRight className="h-4 w-4" />
-                                        </button>
+                                        </a>
                                     </div>
                                 </NextLink>
                             ))}
