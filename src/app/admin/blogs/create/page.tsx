@@ -17,7 +17,7 @@ export default function CreateBlogPage() {
     const [content, setContent] = useState("");
     const [tags, setTags] = useState("");
     const [category, setCategory] = useState<"technology" | "culture" | "education" | "other">("technology");
-    const [status, setStatus] = useState<"draft" | "published">("published"); // Admin có thể publish ngay
+    const [status, setStatus] = useState<"draft" | "published">("published"); // Admin can publish immediately
     const [cover, setCover] = useState<string | null>(null);
     const [coverInfo, setCoverInfo] = useState<{ name: string; size: string } | null>(null);
     const [loading, setLoading] = useState(false);
@@ -47,11 +47,11 @@ export default function CreateBlogPage() {
                 router.push("/admin/blogs");
             }
         } catch (error: any) {
-            console.error('Error creating blog:', error);
+            console.error("Error creating blog:", error);
             if (error.response?.data?.message) {
                 toast.error(error.response.data.message);
             } else {
-                toast.error('An error occurred while creating the blog.');
+                toast.error("An error occurred while creating the blog.");
             }
         } finally {
             setLoading(false);
@@ -82,7 +82,7 @@ export default function CreateBlogPage() {
                 }}
                 className="space-y-4 rounded-2xl border bg-white p-6 shadow-sm"
             >
-                {/* Cover uploader dùng chung */}
+                {/* Reusable Cover Uploader */}
                 <CoverUploader value={cover} onChange={setCover} info={coverInfo} setInfo={setCoverInfo} />
 
                 <label className="block text-sm">
@@ -107,13 +107,13 @@ export default function CreateBlogPage() {
                 </label>
 
                 <label className="block text-sm">
-                    Excerpt (Tóm tắt)
+                    Excerpt
                     <textarea
                         value={excerpt}
                         onChange={(e) => setExcerpt(e.target.value)}
                         rows={3}
                         className="mt-1 w-full rounded-lg border p-2 text-sm"
-                        placeholder="Tóm tắt ngắn cho blog..."
+                        placeholder="Short summary of the blog..."
                     />
                 </label>
 
@@ -150,13 +150,13 @@ export default function CreateBlogPage() {
                         onChange={(e) => setContent(e.target.value)}
                         rows={10}
                         className="mt-1 w-full rounded-lg border p-2 text-sm"
-                        placeholder="Nội dung blog..."
+                        placeholder="Blog content..."
                         required
                     />
                 </label>
 
                 <label className="block text-sm">
-                    Tags (phân cách bằng dấu phẩy)
+                    Tags (comma-separated)
                     <input
                         value={tags}
                         onChange={(e) => setTags(e.target.value)}
@@ -170,7 +170,7 @@ export default function CreateBlogPage() {
                     disabled={loading}
                     className="inline-flex items-center gap-1 rounded-lg bg-slate-900 px-4 py-2 text-sm font-medium text-white hover:bg-slate-800 disabled:opacity-50"
                 >
-                    <Save className="h-4 w-4" /> 
+                    <Save className="h-4 w-4" />
                     {loading ? "Creating..." : "Create Blog"}
                 </button>
             </form>

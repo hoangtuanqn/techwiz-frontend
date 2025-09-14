@@ -17,7 +17,7 @@ export default function MyBlogsPage() {
     const [selectedId, setSelectedId] = useState<number | null>(null);
     const [loading, setLoading] = useState(false);
 
-    // info ảnh bìa (UI only)
+    // Cover image info (UI only)
     const [coverInfo, setCoverInfo] = useState<{ name: string; size: string } | null>(null);
 
     // Load blogs from API
@@ -28,13 +28,13 @@ export default function MyBlogsPage() {
     async function loadBlogs() {
         try {
             setLoading(true);
-            const response = await blogApi.getBlogs(1, 100); // Lấy nhiều blogs cho organizer
+            const response = await blogApi.getBlogs(1, 100); // Load many blogs for organizer
             if (response.data.success) {
                 setBlogs(response.data.data.data);
             }
         } catch (error) {
             console.error('Error loading blogs:', error);
-            toast.error('Không thể tải danh sách blog');
+            toast.error('Unable to load blog list');
         } finally {
             setLoading(false);
         }
@@ -70,7 +70,7 @@ export default function MyBlogsPage() {
 
             const response = await blogApi.updateBlog(current.id, updateData);
             if (response.data.success) {
-                toast.success("Đã lưu chỉnh sửa!");
+                toast.success("Changes saved!");
                 await loadBlogs(); // Reload blogs
                 setSelectedId(current.id);
             }
@@ -79,7 +79,7 @@ export default function MyBlogsPage() {
             if (error.response?.data?.message) {
                 toast.error(error.response.data.message);
             } else {
-                toast.error('Có lỗi khi cập nhật blog');
+                toast.error('An error occurred while updating the blog');
             }
         } finally {
             setLoading(false);
@@ -88,13 +88,13 @@ export default function MyBlogsPage() {
 
     async function deleteBlog() {
         if (!current || !selectedId) return;
-        if (!confirm("Xoá blog này?")) return;
+        if (!confirm("Delete this blog?")) return;
 
         try {
             setLoading(true);
             const response = await blogApi.deleteBlog(current.id);
             if (response.data.success) {
-                toast.success("Đã xóa blog!");
+                toast.success("Blog deleted!");
                 await loadBlogs(); // Reload blogs
                 setCurrent(null);
                 setSelectedId(null);
@@ -105,7 +105,7 @@ export default function MyBlogsPage() {
             if (error.response?.data?.message) {
                 toast.error(error.response.data.message);
             } else {
-                toast.error('Có lỗi khi xóa blog');
+                toast.error('An error occurred while deleting the blog');
             }
         } finally {
             setLoading(false);
@@ -119,7 +119,7 @@ export default function MyBlogsPage() {
                     <div>
                         <h1 className="text-xl font-semibold">My Blogs</h1>
                         <p className="mt-1 text-sm text-slate-600">
-                            Quản lý blog của bạn. Bạn có thể xem, chỉnh sửa và xóa blog.
+                            Manage your blog posts. You can view, edit, and delete blogs.
                         </p>
                     </div>
                     <Link
@@ -155,11 +155,11 @@ export default function MyBlogsPage() {
                     <div className="max-h-[60vh] overflow-y-auto">
                         {loading ? (
                             <div className="p-4 text-center text-sm text-slate-500">
-                                Đang tải...
+                                Loading...
                             </div>
                         ) : filtered.length === 0 ? (
                             <div className="p-4 text-center text-sm text-slate-500">
-                                Không có blog nào
+                                No blogs found
                             </div>
                         ) : (
                             filtered.map((b) => {
@@ -171,7 +171,7 @@ export default function MyBlogsPage() {
                                         className={`block w-full border-b px-3 py-2 text-left text-sm ${
                                             active ? "bg-slate-100" : "hover:bg-slate-50"
                                         }`}
-                                >
+                                    >
                                         <div className="truncate font-medium">{b.title || "Untitled"}</div>
                                         <div className="truncate text-xs text-slate-500">/{b.slug}</div>
                                     </button>
@@ -184,23 +184,22 @@ export default function MyBlogsPage() {
                 {/* Detail + Preview */}
                 <main className="space-y-6 rounded-2xl border bg-white p-4">
                     {!current ? (
-                        <div className="text-sm text-slate-500">Chọn blog để xem & chỉnh sửa.</div>
+                        <div className="text-sm text-slate-500">Select a blog to view & edit.</div>
                     ) : (
                         <>
                             {/* Preview card */}
                             <article className="rounded-xl border border-slate-200 bg-slate-50 p-4 shadow-sm">
                                 {current.cover && (
                                     <div className="mb-3 overflow-hidden rounded-lg border border-slate-200">
-                                        {/* eslint-disable-next-line @next/next/no-img-element */}
                                         <img src={current.cover} alt="cover" className="max-h-56 w-full object-cover" />
                                     </div>
                                 )}
                                 <h2 className="text-lg font-semibold text-slate-900">{current.title || "Untitled"}</h2>
                                 <p className="mt-1 text-sm text-slate-600">
-                                    {current.excerpt || "— Không có excerpt —"}
+                                    {current.excerpt || "— No excerpt —"}
                                 </p>
                                 <div className="mt-2 line-clamp-4 text-sm whitespace-pre-line text-slate-700">
-                                    {current.content || "— Nội dung trống —"}
+                                    {current.content || "— No content —"}
                                 </div>
                                 {current.tags && (
                                     <div className="mt-2 flex flex-wrap gap-2">
@@ -297,7 +296,7 @@ export default function MyBlogsPage() {
                                 </label>
 
                                 <label className="block text-sm">
-                                    Tags (phân cách bằng dấu phẩy)
+                                    Tags (separated by commas)
                                     <input
                                         value={current.tags || ''}
                                         onChange={(e) =>

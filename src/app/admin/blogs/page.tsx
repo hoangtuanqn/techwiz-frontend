@@ -17,7 +17,7 @@ export default function MyBlogsPage() {
     const [selectedId, setSelectedId] = useState<number | null>(null);
     const [loading, setLoading] = useState(false);
 
-    // info ảnh bìa (UI only)
+    // Cover image info (UI only)
     const [coverInfo, setCoverInfo] = useState<{ name: string; size: string } | null>(null);
 
     // Load blogs from API
@@ -28,13 +28,13 @@ export default function MyBlogsPage() {
     async function loadBlogs() {
         try {
             setLoading(true);
-            const response = await blogApi.getBlogs(1, 100); // Lấy nhiều blogs cho admin
+            const response = await blogApi.getBlogs(1, 100); // Load many blogs for admin
             if (response.data.success) {
                 setBlogs(response.data.data.data);
             }
         } catch (error) {
             console.error('Error loading blogs:', error);
-            toast.error('Không thể tải danh sách blog');
+            toast.error('Failed to load blog list');
         } finally {
             setLoading(false);
         }
@@ -70,7 +70,7 @@ export default function MyBlogsPage() {
 
             const response = await blogApi.updateBlog(current.id, updateData);
             if (response.data.success) {
-                toast.success("Đã lưu chỉnh sửa!");
+                toast.success("Saved successfully!");
                 await loadBlogs(); // Reload blogs
                 setSelectedId(current.id);
             }
@@ -79,7 +79,7 @@ export default function MyBlogsPage() {
             if (error.response?.data?.message) {
                 toast.error(error.response.data.message);
             } else {
-                toast.error('Có lỗi khi cập nhật blog');
+                toast.error('Error updating blog');
             }
         } finally {
             setLoading(false);
@@ -88,13 +88,13 @@ export default function MyBlogsPage() {
 
     async function deleteBlog() {
         if (!current || !selectedId) return;
-        if (!confirm("Xoá blog này?")) return;
+        if (!confirm("Delete this blog?")) return;
 
         try {
             setLoading(true);
             const response = await blogApi.deleteBlog(current.id);
             if (response.data.success) {
-                toast.success("Đã xóa blog!");
+                toast.success("Deleted successfully!");
                 await loadBlogs(); // Reload blogs
                 setCurrent(null);
                 setSelectedId(null);
@@ -105,7 +105,7 @@ export default function MyBlogsPage() {
             if (error.response?.data?.message) {
                 toast.error(error.response.data.message);
             } else {
-                toast.error('Có lỗi khi xóa blog');
+                toast.error('Error deleting blog');
             }
         } finally {
             setLoading(false);
@@ -149,9 +149,13 @@ export default function MyBlogsPage() {
 
                     <div className="max-h-[60vh] overflow-y-auto">
                         {loading ? (
-                            <div className="p-4 text-center text-sm text-slate-500">Đang tải...</div>
+                            <div className="p-4 text-center text-sm text-slate-500">
+                                Loading...
+                            </div>
                         ) : filtered.length === 0 ? (
-                            <div className="p-4 text-center text-sm text-slate-500">Không có blog nào</div>
+                            <div className="p-4 text-center text-sm text-slate-500">
+                                No blogs found
+                            </div>
                         ) : (
                             filtered.map((b) => {
                                 const active = selectedId === b.id;
@@ -178,7 +182,7 @@ export default function MyBlogsPage() {
                 {/* Detail + Preview */}
                 <main className="space-y-6 rounded-2xl border bg-white p-4">
                     {!current ? (
-                        <div className="text-sm text-slate-500">Chọn blog để xem & chỉnh sửa.</div>
+                        <div className="text-sm text-slate-500">Select a blog to view and edit.</div>
                     ) : (
                         <>
                             {/* Preview card */}
@@ -191,10 +195,10 @@ export default function MyBlogsPage() {
                                 )}
                                 <h2 className="text-lg font-semibold text-slate-900">{current.title || "Untitled"}</h2>
                                 <p className="mt-1 text-sm text-slate-600">
-                                    {current.excerpt || "— Không có excerpt —"}
+                                    {current.excerpt || "— No excerpt —"}
                                 </p>
                                 <div className="mt-2 line-clamp-4 text-sm whitespace-pre-line text-slate-700">
-                                    {current.content || "— Nội dung trống —"}
+                                    {current.content || "— Empty content —"}
                                 </div>
                                 {current.tags && (
                                     <div className="mt-2 flex flex-wrap gap-2">
@@ -251,7 +255,7 @@ export default function MyBlogsPage() {
                                         onChange={(e) => setCurrent({ ...current, excerpt: e.target.value })}
                                         rows={3}
                                         className="mt-1 w-full rounded-lg border p-2 text-sm"
-                                        placeholder="Tóm tắt ngắn cho blog..."
+                                        placeholder="Short summary for the blog..."
                                     />
                                 </label>
 
@@ -292,7 +296,7 @@ export default function MyBlogsPage() {
                                 </label>
 
                                 <label className="block text-sm">
-                                    Tags (phân cách bằng dấu phẩy)
+                                    Tags (comma separated)
                                     <input
                                         value={current.tags || ""}
                                         onChange={(e) =>

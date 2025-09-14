@@ -15,7 +15,7 @@ import {
     AlertTriangle,
 } from "lucide-react";
 
-/* ========= Small UI bits ========= */
+/* ========= Small UI Components ========= */
 function Stat({
     icon: Icon,
     title,
@@ -83,128 +83,128 @@ function Row({
     );
 }
 
-/* ========= Page ========= */
+/* ========= Main Page ========= */
 export default function OrganizerOverviewPage() {
     return (
         <section className="grid gap-6">
-            {/* Intro */}
+            {/* Introduction */}
             <article className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
                 <div className="flex items-center gap-2">
                     <Notebook className="h-6 w-6 text-[#06b6d4]" />
                     <h1 className="text-2xl font-bold text-slate-900">Organizer — Overview</h1>
                 </div>
                 <p className="mt-1 text-sm text-slate-600">
-                    Tổng quan khu vực Organizer. Tạo/sửa sự kiện, gửi thông báo cho người tham gia, theo dõi tiến độ phê
-                    duyệt và quản lý nội dung blog.
+                    Overview of the Organizer area. Create/edit events, send notifications to attendees, monitor
+                    approval progress, and manage blog content.
                 </p>
                 <div className="mt-4 flex flex-wrap gap-2">
                     <Link
                         href="/organizer/notifications"
                         className="inline-flex items-center gap-2 rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-sm font-medium text-slate-700 hover:bg-slate-50"
                     >
-                        <BellPlus className="h-4 w-4" /> Tạo thông báo
+                        <BellPlus className="h-4 w-4" /> Create Notification
                     </Link>
                     <Link
                         href="/organizer/approvals/pending"
                         className="inline-flex items-center gap-2 rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-sm font-medium text-slate-700 hover:bg-slate-50"
                     >
-                        <CheckSquare className="h-4 w-4" /> Theo dõi phê duyệt
+                        <CheckSquare className="h-4 w-4" /> Track Approvals
                     </Link>
                     <Link
                         href="/organizer/events/create"
                         className="inline-flex items-center gap-2 rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-sm font-medium text-slate-700 hover:bg-slate-50"
                     >
-                        <CalendarPlus className="h-4 w-4" /> Tạo sự kiện
+                        <CalendarPlus className="h-4 w-4" /> Create Event
                     </Link>
                     <Link
                         href="/organizer/blog/create"
                         className="inline-flex items-center gap-2 rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-sm font-medium text-slate-700 hover:bg-slate-50"
                     >
-                        <FilePlus className="h-4 w-4" /> Tạo blog
+                        <FilePlus className="h-4 w-4" /> Create Blog
                     </Link>
                 </div>
             </article>
 
-            {/* Stats (demo số tĩnh, chỉ điều hướng) */}
+            {/* Stats (Static demo, navigation only) */}
             <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
                 <Stat
                     icon={ClipboardList}
-                    title="Sự kiện của tôi"
+                    title="My Events"
                     value="6"
-                    subtitle="2 đang chờ duyệt"
+                    subtitle="2 pending approval"
                     href="/organizer/approvals/pending"
                 />
                 <Stat
                     icon={Send}
-                    title="Thông báo đã gửi"
+                    title="Sent Notifications"
                     value="28"
                     subtitle="email & push"
                     href="/organizer/notifications"
                 />
                 <Stat
                     icon={Clock8}
-                    title="Đã lên lịch"
+                    title="Scheduled"
                     value="3"
-                    subtitle="thông báo sắp gửi"
+                    subtitle="upcoming notifications"
                     href="/organizer/notifications"
                 />
                 <Stat
                     icon={AlertTriangle}
-                    title="Cần chú ý"
+                    title="Needs Attention"
                     value="1"
-                    subtitle="thông báo lỗi"
+                    subtitle="delivery issues"
                     href="/organizer/notifications"
                 />
             </div>
 
-            {/* Recent activities (demo, link tới các trang organizer) */}
+            {/* Recent Activity (Demo links to organizer pages) */}
             <article className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
                 <div className="flex items-center justify-between border-b border-slate-200 px-4 py-3">
-                    <h2 className="text-lg font-semibold text-slate-900">Hoạt động gần đây</h2>
+                    <h2 className="text-lg font-semibold text-slate-900">Recent Activity</h2>
                     <Link
                         href="/organizer/approvals/approved"
                         className="text-xs font-medium text-slate-600 hover:text-slate-900"
                     >
-                        Xem sự kiện đã duyệt &rarr;
+                        View approved events &rarr;
                     </Link>
                 </div>
                 <div className="divide-y divide-slate-100">
                     <Row
-                        title="Hackathon 2025 — cập nhật agenda"
-                        desc="Sự kiện • Đã gửi email cho 132 người đăng ký"
+                        title="Hackathon 2025 — agenda updated"
+                        desc="Event • Email sent to 132 registrants"
                         href="/organizer/notifications"
                         badge={{ text: "Sent", tone: "ok" }}
                     />
                     <Row
-                        title="Career Fair — đề nghị phê duyệt"
-                        desc="Sự kiện • Đang chờ duyệt từ Admin"
+                        title="Career Fair — approval requested"
+                        desc="Event • Waiting for admin approval"
                         href="/organizer/approvals/pending"
                         badge={{ text: "Pending", tone: "info" }}
                     />
                     <Row
-                        title="Cultural Night — nhắc lịch"
-                        desc="Thông báo • Hẹn lúc 19:00 hôm nay"
+                        title="Cultural Night — reminder scheduled"
+                        desc="Notification • Set for 7:00 PM today"
                         href="/organizer/notifications"
                         badge={{ text: "Scheduled", tone: "info" }}
                     />
                     <Row
-                        title="Workshop tài liệu — gửi lại"
-                        desc="Thông báo • 2 email lỗi, cần kiểm tra"
+                        title="Workshop — resend email"
+                        desc="Notification • 2 email failures, check required"
                         href="/organizer/notifications"
                         badge={{ text: "Failed", tone: "error" }}
                     />
                     <Row
-                        title="Blog — Kinh nghiệm tổ chức booth"
-                        desc="Bản nháp •  chưa publish"
+                        title="Blog — Booth Organization Tips"
+                        desc="Draft • Not published yet"
                         href="/organizer/blog/create"
                         badge={{ text: "Draft", tone: "warn" }}
                     />
                 </div>
             </article>
 
-            {/* Quick links theo sidebar Organizer */}
+            {/* Quick Links (based on Organizer sidebar) */}
             <article className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
-                <h2 className="mb-3 text-lg font-semibold text-slate-900">Điều hướng nhanh</h2>
+                <h2 className="mb-3 text-lg font-semibold text-slate-900">Quick Links</h2>
                 <div className="grid grid-cols-1 gap-2 sm:grid-cols-2 md:grid-cols-3">
                     <Link
                         className="rounded-lg border border-slate-200 px-3 py-2 text-sm text-slate-700 hover:bg-slate-50"

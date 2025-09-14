@@ -1,14 +1,10 @@
 "use client";
 import React from "react";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Import, Link } from "lucide-react";
 import { useRouter } from "next/navigation";
-
+import NextLink from "next/link";
 const Blogs = () => {
     const router = useRouter();
-
-    const handleCategoryClick = (category: string) => {
-        router.push(`/blog?category=${category}`);
-    };
 
     return (
         <section id="blog" className="bg-gray-50 py-20">
@@ -55,7 +51,8 @@ const Blogs = () => {
                                 },
                                
                             ].map(({ img, alt, title, desc, category }, i) => (
-                                <article
+                                <NextLink
+                                    href={`/blog?category=${category}`}
                                     key={i}
                                     className="group overflow-hidden rounded-3xl border border-slate-300 bg-white shadow-sm transition-shadow hover:shadow-lg"
                                     data-aos="fade-up"
@@ -70,13 +67,12 @@ const Blogs = () => {
                                         <h3 className="text-lg font-semibold text-slate-900">{title}</h3>
                                         <p className="mt-2 text-sm text-slate-600">{desc}</p>
                                         <button
-                                            onClick={() => handleCategoryClick(category)}
                                             className="mt-4 inline-flex items-center gap-1 font-medium text-cyan-600 hover:text-cyan-700 cursor-pointer"
                                         >
                                             Read more <ArrowRight className="h-4 w-4" />
                                         </button>
                                     </div>
-                                </article>
+                                </NextLink>
                             ))}
                         </div>
                     </div>
