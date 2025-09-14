@@ -20,7 +20,7 @@ const Loading = () => {
         <div className="fixed inset-0 z-[999] flex items-center justify-center bg-black/50 backdrop-blur-xs">
             <div className="flex flex-col items-center gap-4 rounded-lg p-6">
                 <ThreeDot variant="bounce" color="#32cd32" size="large" text="" textColor="" />
-                <span className="font-bold text-white">Đang xử lý...</span>
+                <span className="font-bold text-white">Loading...</span>
             </div>
         </div>
     );
