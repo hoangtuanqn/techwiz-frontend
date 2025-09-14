@@ -10,9 +10,11 @@ import { ConfirmCollaborator } from "./_components/ConfirmCollaborator";
 
 import eventServerApi from "~/apiRequest/server/event";
 import QRCode from "react-qr-code";
-import { ConfirmWishlist } from "./_components/ConfirmWishlist";
+import { ConfirmWishlist } from "./_components/ConfirmWaitlist";
 import { APP } from "~/config/env";
 import QrCodeCheckIn from "./_components/QrCodeCheckIn";
+import { Cancel } from "@radix-ui/react-alert-dialog";
+import CancelRegister from "./_components/CancelRegister";
 
 const getDetailEvent = cache(async (id: string) => {
     const {
@@ -73,12 +75,13 @@ export default async function EventDetailPage({ params }: { params: { id: string
     const capacityBarClass = tone === "ok" ? "bg-emerald-500" : tone === "warn" ? "bg-amber-500" : "bg-red-500";
 
     const isCheckOneDay = () => {
-        const eventDate = new Date(event.start_event);
+        const eventStart = new Date(event.start_event);
+        const eventEnd = new Date(event.end_event);
         const now = new Date();
-        const oneDayBefore = new Date(eventDate);
-        oneDayBefore.setDate(eventDate.getDate() - 1);
+        const oneDayBeforeStart = new Date(eventStart);
+        oneDayBeforeStart.setDate(eventStart.getDate() - 1);
 
-        return now >= oneDayBefore && now < eventDate;
+        return now >= oneDayBeforeStart && now <= eventEnd;
     };
 
     return (
@@ -226,12 +229,19 @@ export default async function EventDetailPage({ params }: { params: { id: string
                 {isCheckOneDay() && event.is_booked ? null : (
                     <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center">
                         <div className="flex gap-3">
-                            {event.seating.total_seats === event.booked_count && event.seating.waitlist_enabled ? (
+                            {/* {event.seating.total_seats === event.booked_count && event.seating.waitlist_enabled ? (
                                 <ConfirmWishlist event={event} />
                             ) : (
                                 <ConfirmRegister event={event} />
+                            )} */}
+                            {event.is_booked ? (
+                                <CancelRegister event={event} />
+                            ) : (
+                                <>
+                                    <ConfirmRegister event={event} />
+                                    <ConfirmCollaborator event={event} />
+                                </>
                             )}
-                            {!event.is_booked && <ConfirmCollaborator event={event} />}
                         </div>
                         {/* Sự kiện kết thúc mới hiển thị */}
                         {Date.now() > new Date(event.end_event).getTime() && (

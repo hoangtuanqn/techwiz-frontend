@@ -1,27 +1,31 @@
 import axios from "axios";
 import { APP } from "~/config/env";
-// Axios custom
+
+// Custom Axios instance
 const privateApi = axios.create({
     baseURL: APP.API.FULL_URL,
     withCredentials: true,
 });
 
-// Refresh Token khi hết hạn
+// Function to refresh token when expired
 const refreshToken = () => {
     return axios.post(`${APP.API.FULL_URL}/auth/refresh`, null, { withCredentials: true });
 };
+
+// Response interceptor
 privateApi.interceptors.response.use(
     (response) => response,
     async (error) => {
         const originalRequest = error.config;
 
         if (error.response?.status === 401 && !originalRequest._retry) {
-            originalRequest._retry = true; // ngăn lặp vô hạn nếu refresh token cũng lỗi
+            // Prevent infinite loop if refresh token also fails
+            originalRequest._retry = true;
             try {
-                await refreshToken(); // cần await
-                return privateApi(originalRequest); // Retry request ban đầu
+                await refreshToken(); // must await
+                return privateApi(originalRequest); // Retry the original request
             } catch (error) {
-                console.log(">>> Log instance Axios error: ", error);
+                console.log(">>> Axios instance error: ", error);
             }
         }
         return Promise.reject(error);

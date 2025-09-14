@@ -1,8 +1,11 @@
 "use client";
 import React from "react";
-import { ArrowRight } from "lucide-react";
-
+import { ArrowRight, Import, Link } from "lucide-react";
+import { useRouter } from "next/navigation";
+import NextLink from "next/link";
 const Blogs = () => {
+    const router = useRouter();
+
     return (
         <section id="blog" className="bg-gray-50 py-12 sm:py-16 md:py-20">
             <div className="mx-auto max-w-7xl px-2 sm:px-6 md:px-8 lg:px-12">
@@ -20,35 +23,36 @@ const Blogs = () => {
                             {[
                                 {
                                     img: "https://images.unsplash.com/photo-1519389950473-47ba0277781c?q=80&w=1470&auto=format&fit=crop",
-                                    alt: "Hackathon tips",
-                                    title: "Technical",
-                                    desc: "Team formation, idea validation, and demo strategy.",
-                                    href: "./blog/technical",
+                                    alt: "Technology blogs",
+                                    title: "Technology",
+                                    desc: "Latest tech trends, programming tips, and development insights.",
+                                    category: "technology",
                                 },
                                 {
                                     img: "https://images.unsplash.com/photo-1523580846011-d3a5bc25702b?q=80&w=1470&auto=format&fit=crop",
-                                    alt: "Cultural nights",
-                                    title: "Cultural",
+                                    alt: "Culture blogs",
+                                    title: "Culture",
                                     desc: "A round-up of campus festivals, dance and music nights.",
-                                    href: "./blog/cultural",
+                                    category: "culture",
                                 },
                                 {
                                     img: "https://images.unsplash.com/photo-1523580846011-d3a5bc25702b?q=80&w=1470&auto=format&fit=crop",
-                                    alt: "Cultural nights",
-                                    title: "BUsiness",
-                                    desc: "A round-up of campus festivals, dance and music nights.",
-                                    href: "./blog/business",
+                                    alt: "Education blogs",
+                                    title: "Education",
+                                    desc: "Learning resources, study tips, and educational content.",
+                                    category: "education",
                                 },
                                 {
                                     img: "https://images.unsplash.com/photo-1523580846011-d3a5bc25702b?q=80&w=1470&auto=format&fit=crop",
-                                    alt: "Cultural nights",
-                                    title: "Design",
-                                    desc: "A round-up of campus festivals, dance and music nights.",
-                                    href: "./blog/design",
+                                    alt: "Other blogs",
+                                    title: "Other",
+                                    desc: "Miscellaneous topics and general discussions.",
+                                    category: "other",
                                 },
                                
-                            ].map(({ img, alt, title, desc, href }, i) => (
-                                <article
+                            ].map(({ img, alt, title, desc, category }, i) => (
+                                <NextLink
+                                    href={`/blog?category=${category}`}
                                     key={i}
                                     className="group overflow-hidden rounded-3xl border border-slate-300 bg-white shadow-sm transition-shadow hover:shadow-lg"
                                     data-aos="fade-up"
@@ -59,17 +63,19 @@ const Blogs = () => {
                                         src={img}
                                         alt={alt}
                                     />
+
                                     <div className="p-4 sm:p-6">
                                         <h3 className="text-base sm:text-lg font-semibold text-slate-900">{title}</h3>
                                         <p className="mt-2 text-xs sm:text-sm text-slate-600">{desc}</p>
                                         <a
                                             href={href}
                                             className="mt-3 sm:mt-4 inline-flex items-center gap-1 font-medium text-cyan-600 hover:text-cyan-700 text-xs sm:text-base"
+
                                         >
                                             Read more <ArrowRight className="h-4 w-4" />
-                                        </a>
+                                        </button>
                                     </div>
-                                </article>
+                                </NextLink>
                             ))}
                         </div>
                     </div>

@@ -39,7 +39,7 @@ import { Checkbox } from "~/components/ui/checkbox";
 import { Label } from "~/components/ui/label";
 import { useState } from "react";
 import { getGoogleCalendarLink } from "~/libs/googleCalendar";
-export function ConfirmWishlist({ event: ev }: { event: EventDetailResponseType["data"] }) {
+export function ConfirmWaitlist({ event: ev }: { event: EventDetailResponseType["data"] }) {
     const { user } = useAuth();
     const [isAddToCalendar, setIsAddToCalendar] = useState(true);
 

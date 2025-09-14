@@ -88,5 +88,10 @@ const eventApi = {
     registerVolunteer: (id: number) => {
         return publicApi.post(`/events/${id}/volunteer`);
     },
+
+    // hủy đăng ký sự kiện
+    cancelEventRegistration: (id: number) => {
+        return publicApi.post(`/events/${id}/unregister`);
+    },
 };
 export default eventApi;

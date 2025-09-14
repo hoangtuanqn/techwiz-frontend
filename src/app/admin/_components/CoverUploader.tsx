@@ -67,13 +67,13 @@ export default function CoverUploader({
                             <ImageIcon className="h-5 w-5 text-slate-500" />
                         </div>
                         <div className="text-sm">
-                            <div className="font-medium text-slate-800">Kéo & thả ảnh vào đây</div>
-                            <div className="text-xs text-slate-500">hoặc bấm để chọn (PNG/JPG, &lt; {maxMB}MB)</div>
+                            <div className="font-medium text-slate-800">Drag & drop an image here.</div>
+                            <div className="text-xs text-slate-500">or click to select. (PNG/JPG, &lt; {maxMB}MB)</div>
                         </div>
                     </div>
                     <div className="inline-flex items-center gap-2 rounded-lg bg-slate-900 px-3 py-1.5 text-xs font-medium text-white">
                         <UploadCloud className="h-4 w-4" />
-                        Chọn ảnh
+                        Select Image
                     </div>
                     <input
                         id={inputId}
@@ -103,7 +103,7 @@ export default function CoverUploader({
                             className="inline-flex cursor-pointer items-center gap-2 rounded-lg bg-slate-900 px-3 py-1.5 text-xs font-medium text-white hover:bg-slate-800"
                         >
                             <UploadCloud className="h-4 w-4" />
-                            Đổi ảnh
+                            Change Image
                             <input
                                 id={inputId}
                                 type="file"
@@ -124,7 +124,7 @@ export default function CoverUploader({
                             className="inline-flex items-center gap-2 rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-xs font-medium text-slate-700 hover:bg-slate-50"
                         >
                             <X className="h-4 w-4" />
-                            Xoá ảnh
+                            Delete Image
                         </button>
                     </div>
                 </div>

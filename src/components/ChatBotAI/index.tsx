@@ -9,10 +9,10 @@ import ReactMarkdown from "react-markdown";
 import DisplayEvents from "./DisplayEvents";
 
 export const extractJSON = (input: string) => {
-    const match = input.match(/{[\s\S]*}/); // tìm đoạn bắt đầu bằng { và kết thúc bằng }
+    const match = input.match(/{[\s\S]*}/); // find the part that starts with { and ends with }
     if (match) {
         try {
-            return JSON.parse(match[0]); // parse ra object
+            return JSON.parse(match[0]); // parse into object
         } catch (err) {
             console.error("Error when parsing JSON:", err);
             return input;
@@ -20,9 +20,9 @@ export const extractJSON = (input: string) => {
     }
     return null;
 };
+
 const ChatBotAI = () => {
     const [isOpen, setIsOpen] = useState(false);
-
     const [inputValue, setInputValue] = useState("");
     const [isTyping, setIsTyping] = useState(false);
     const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -60,22 +60,21 @@ const ChatBotAI = () => {
         setChatHistories(newHistories);
         setInputValue("");
         setIsTyping(true);
-        let modelReply = "Hiện tại máy chủ đang quá tải nên chưa thể hỗ trợ bạn được!";
+
+        let modelReply = "The server is currently overloaded, please try again later.";
 
         try {
-            // Loại bỏ createdAt trước khi gửi
-
             const data = await axios.post("/api/chat/ai", {
-                contents: newHistories.map(({ role, parts }) => ({ role, parts })), // Gửi đi mà không có createdAt
+                contents: newHistories.map(({ role, parts }) => ({ role, parts })), // send without createdAt
             });
 
             if (data.data?.candidates[0].content.parts[0].text) {
                 const parse = extractJSON(data.data?.candidates[0].content.parts[0].text);
-                // setDataParse(parse);
+
                 modelReply =
                     parse?.message ||
                     data.data?.candidates[0].content.parts[0].text ||
-                    "Xin lỗi, mình không hiểu câu hỏi của bạn";
+                    "Sorry, I didn’t understand your question.";
                 if (parse?.event_id && parse?.event_id.length > 0) {
                     setIds((prev) => [...prev, { id: chatHistories.length + 2, event_id: parse.event_id || [] }]);
                 }

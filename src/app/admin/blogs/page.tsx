@@ -4,44 +4,41 @@ import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { Search, Save, Trash2, Plus } from "lucide-react";
 import CoverUploader from "../_components/CoverUploader";
+import blogApi from "~/apiRequest/blog";
+import { BlogItemType, BlogUpdateType } from "~/types/schemaZod/blog.schema";
+import { toast } from "sonner";
 
-const LS_KEY = "demo_blogs";
-
-type Blog = {
-    title: string;
-    slug: string;
-    summary: string;
-    content: string;
-    tags: string[];
-    cover?: string;
-    updatedAt?: string;
-};
-
-function loadBlogs(): Blog[] {
-    if (typeof window === "undefined") return [];
-    try {
-        return JSON.parse(localStorage.getItem(LS_KEY) || "[]");
-    } catch {
-        return [];
-    }
-}
-function saveBlogs(rows: Blog[]) {
-    if (typeof window === "undefined") return;
-    localStorage.setItem(LS_KEY, JSON.stringify(rows));
-}
+type Blog = BlogItemType;
 
 export default function MyBlogsPage() {
     const [blogs, setBlogs] = useState<Blog[]>([]);
     const [search, setSearch] = useState("");
     const [current, setCurrent] = useState<Blog | null>(null);
-    const [selectedSlug, setSelectedSlug] = useState<string | null>(null);
+    const [selectedId, setSelectedId] = useState<number | null>(null);
+    const [loading, setLoading] = useState(false);
 
-    // info ảnh bìa (UI only)
+    // Cover image info (UI only)
     const [coverInfo, setCoverInfo] = useState<{ name: string; size: string } | null>(null);
 
+    // Load blogs from API
     useEffect(() => {
-        setBlogs(loadBlogs());
+        loadBlogs();
     }, []);
+
+    async function loadBlogs() {
+        try {
+            setLoading(true);
+            const response = await blogApi.getBlogs(1, 100); // Load many blogs for admin
+            if (response.data.success) {
+                setBlogs(response.data.data.data);
+            }
+        } catch (error) {
+            console.error('Error loading blogs:', error);
+            toast.error('Failed to load blog list');
+        } finally {
+            setLoading(false);
+        }
+    }
 
     const filtered = blogs.filter((b) => {
         const key = search.toLowerCase();
@@ -50,39 +47,69 @@ export default function MyBlogsPage() {
 
     function selectBlog(b: Blog) {
         setCurrent(b);
-        setSelectedSlug(b.slug);
+        setSelectedId(b.id);
         setCoverInfo(null);
     }
 
-    function saveEdit() {
-        if (!current || !selectedSlug) return;
+    async function saveEdit() {
+        if (!current || !selectedId) return;
 
-        const duplicated = current.slug !== selectedSlug && blogs.some((b) => b.slug === current.slug);
-        if (duplicated) {
-            alert("Slug đã tồn tại. Vui lòng chọn slug khác.");
-            return;
+        try {
+            setLoading(true);
+            const updateData: BlogUpdateType = {
+                id: current.id,
+                title: current.title,
+                slug: current.slug,
+                content: current.content,
+                excerpt: current.excerpt || undefined,
+                cover: current.cover || undefined,
+                category: current.category,
+                tags: current.tags || undefined,
+                status: current.status,
+            };
+
+            const response = await blogApi.updateBlog(current.id, updateData);
+            if (response.data.success) {
+                toast.success("Saved successfully!");
+                await loadBlogs(); // Reload blogs
+                setSelectedId(current.id);
+            }
+        } catch (error: any) {
+            console.error('Error updating blog:', error);
+            if (error.response?.data?.message) {
+                toast.error(error.response.data.message);
+            } else {
+                toast.error('Error updating blog');
+            }
+        } finally {
+            setLoading(false);
         }
-
-        const next = blogs.map((b) =>
-            b.slug === selectedSlug ? { ...current, updatedAt: new Date().toISOString() } : b,
-        );
-
-        saveBlogs(next);
-        setBlogs(next);
-        setSelectedSlug(current.slug);
-        alert("Đã lưu chỉnh sửa!");
     }
 
-    function deleteBlog() {
-        if (!current || !selectedSlug) return;
-        if (!confirm("Xoá blog này?")) return;
+    async function deleteBlog() {
+        if (!current || !selectedId) return;
+        if (!confirm("Delete this blog?")) return;
 
-        const next = blogs.filter((b) => b.slug !== selectedSlug);
-        saveBlogs(next);
-        setBlogs(next);
-        setCurrent(null);
-        setSelectedSlug(null);
-        setCoverInfo(null);
+        try {
+            setLoading(true);
+            const response = await blogApi.deleteBlog(current.id);
+            if (response.data.success) {
+                toast.success("Deleted successfully!");
+                await loadBlogs(); // Reload blogs
+                setCurrent(null);
+                setSelectedId(null);
+                setCoverInfo(null);
+            }
+        } catch (error: any) {
+            console.error('Error deleting blog:', error);
+            if (error.response?.data?.message) {
+                toast.error(error.response.data.message);
+            } else {
+                toast.error('Error deleting blog');
+            }
+        } finally {
+            setLoading(false);
+        }
     }
 
     return (
@@ -90,9 +117,9 @@ export default function MyBlogsPage() {
             <article className="rounded-2xl border bg-white p-6 shadow-sm">
                 <div className="flex items-center justify-between">
                     <div>
-                        <h1 className="text-xl font-semibold">My Blogs</h1>
+                        <h1 className="text-xl font-semibold">Blogs Management</h1>
                         <p className="mt-1 text-sm text-slate-600">
-                            Danh sách blog được lưu tạm vào localStorage. Bạn có thể xem & chỉnh sửa.
+                            Manage all blogs in the system. You can view, edit, and delete blogs.
                         </p>
                     </div>
                     <Link
@@ -117,38 +144,45 @@ export default function MyBlogsPage() {
                                 className="w-full rounded-lg border py-1.5 pr-2 pl-8 text-sm"
                             />
                         </div>
-                        <Link
-                            href="/admin/blogs/create"
-                            className="inline-flex items-center gap-2 rounded-lg bg-slate-900 px-3 py-1.5 text-xs font-medium text-white hover:bg-slate-800"
-                        >
-                            <Plus className="h-4 w-4" /> New
-                        </Link>
+
                     </div>
 
                     <div className="max-h-[60vh] overflow-y-auto">
-                        {filtered.map((b) => {
-                            const active = selectedSlug === b.slug;
-                            return (
-                                <button
-                                    key={b.slug}
-                                    onClick={() => selectBlog(b)}
-                                    className={`block w-full border-b px-3 py-2 text-left text-sm ${
-                                        active ? "bg-slate-100" : "hover:bg-slate-50"
-                                    }`}
-                                >
-                                    <div className="truncate font-medium">{b.title || "Untitled"}</div>
-                                    <div className="truncate text-xs text-slate-500">/{b.slug}</div>
-                                </button>
-                            );
-                        })}
-                        {filtered.length === 0 && <div className="p-3 text-sm text-slate-500">Không có blog nào.</div>}
+                        {loading ? (
+                            <div className="p-4 text-center text-sm text-slate-500">
+                                Loading...
+                            </div>
+                        ) : filtered.length === 0 ? (
+                            <div className="p-4 text-center text-sm text-slate-500">
+                                No blogs found
+                            </div>
+                        ) : (
+                            filtered.map((b) => {
+                                const active = selectedId === b.id;
+                                return (
+                                    <button
+                                        key={b.id}
+                                        onClick={() => selectBlog(b)}
+                                        className={`block w-full border-b px-3 py-2 text-left text-sm ${
+                                            active ? "bg-slate-100" : "hover:bg-slate-50"
+                                        }`}
+                                    >
+                                        <div className="truncate font-medium">{b.title || "Untitled"}</div>
+                                        <div className="truncate text-xs text-slate-500">/{b.slug}</div>
+                                        <div className="text-xs text-slate-400">
+                                            Status: {b.status} | Views: {b.views_count}
+                                        </div>
+                                    </button>
+                                );
+                            })
+                        )}
                     </div>
                 </aside>
 
                 {/* Detail + Preview */}
                 <main className="space-y-6 rounded-2xl border bg-white p-4">
                     {!current ? (
-                        <div className="text-sm text-slate-500">Chọn blog để xem & chỉnh sửa.</div>
+                        <div className="text-sm text-slate-500">Select a blog to view and edit.</div>
                     ) : (
                         <>
                             {/* Preview card */}
@@ -161,19 +195,19 @@ export default function MyBlogsPage() {
                                 )}
                                 <h2 className="text-lg font-semibold text-slate-900">{current.title || "Untitled"}</h2>
                                 <p className="mt-1 text-sm text-slate-600">
-                                    {current.summary || "— Không có summary —"}
+                                    {current.excerpt || "— No excerpt —"}
                                 </p>
                                 <div className="mt-2 line-clamp-4 text-sm whitespace-pre-line text-slate-700">
-                                    {current.content || "— Nội dung trống —"}
+                                    {current.content || "— Empty content —"}
                                 </div>
-                                {current.tags?.length > 0 && (
+                                {current.tags && (
                                     <div className="mt-2 flex flex-wrap gap-2">
-                                        {current.tags.map((t) => (
+                                        {current.tags.split(",").map((t, index) => (
                                             <span
-                                                key={t}
+                                                key={index}
                                                 className="rounded-full bg-cyan-50 px-2 py-0.5 text-xs text-cyan-700"
                                             >
-                                                #{t}
+                                                #{t.trim()}
                                             </span>
                                         ))}
                                     </div>
@@ -215,13 +249,40 @@ export default function MyBlogsPage() {
                                 </label>
 
                                 <label className="block text-sm">
-                                    Summary
+                                    Excerpt
                                     <textarea
-                                        value={current.summary}
-                                        onChange={(e) => setCurrent({ ...current, summary: e.target.value })}
+                                        value={current.excerpt || ""}
+                                        onChange={(e) => setCurrent({ ...current, excerpt: e.target.value })}
                                         rows={3}
                                         className="mt-1 w-full rounded-lg border p-2 text-sm"
+                                        placeholder="Short summary for the blog..."
                                     />
+                                </label>
+
+                                <label className="block text-sm">
+                                    Category
+                                    <select
+                                        value={current.category}
+                                        onChange={(e) => setCurrent({ ...current, category: e.target.value as any })}
+                                        className="mt-1 w-full rounded-lg border p-2 text-sm"
+                                    >
+                                        <option value="technology">Technology</option>
+                                        <option value="culture">Culture</option>
+                                        <option value="education">Education</option>
+                                        <option value="other">Other</option>
+                                    </select>
+                                </label>
+
+                                <label className="block text-sm">
+                                    Status
+                                    <select
+                                        value={current.status}
+                                        onChange={(e) => setCurrent({ ...current, status: e.target.value as any })}
+                                        className="mt-1 w-full rounded-lg border p-2 text-sm"
+                                    >
+                                        <option value="draft">Draft</option>
+                                        <option value="published">Published</option>
+                                    </select>
                                 </label>
 
                                 <label className="block text-sm">
@@ -235,34 +296,36 @@ export default function MyBlogsPage() {
                                 </label>
 
                                 <label className="block text-sm">
-                                    Tags
+                                    Tags (comma separated)
                                     <input
-                                        value={(current.tags || []).join(", ")}
+                                        value={current.tags || ""}
                                         onChange={(e) =>
                                             setCurrent({
                                                 ...current,
-                                                tags: e.target.value
-                                                    .split(",")
-                                                    .map((t) => t.trim())
-                                                    .filter(Boolean),
+                                                tags: e.target.value,
                                             })
                                         }
                                         className="mt-1 w-full rounded-lg border p-2 text-sm"
+                                        placeholder="tag1, tag2, tag3"
                                     />
                                 </label>
 
                                 <div className="flex gap-2">
                                     <button
                                         onClick={saveEdit}
-                                        className="inline-flex items-center gap-1 rounded-lg bg-slate-900 px-3 py-1.5 text-sm text-white"
+                                        disabled={loading}
+                                        className="inline-flex items-center gap-1 rounded-lg bg-slate-900 px-3 py-1.5 text-sm text-white disabled:opacity-50"
                                     >
-                                        <Save className="h-4 w-4" /> Save
+                                        <Save className="h-4 w-4" />
+                                        {loading ? "Saving..." : "Save"}
                                     </button>
                                     <button
                                         onClick={deleteBlog}
-                                        className="inline-flex items-center gap-1 rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-sm text-rose-600 hover:bg-rose-50"
+                                        disabled={loading}
+                                        className="inline-flex items-center gap-1 rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-sm text-rose-600 hover:bg-rose-50 disabled:opacity-50"
                                     >
-                                        <Trash2 className="h-4 w-4" /> Delete
+                                        <Trash2 className="h-4 w-4" />
+                                        {loading ? "Deleting..." : "Delete"}
                                     </button>
                                 </div>
                             </div>

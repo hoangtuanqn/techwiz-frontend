@@ -2,53 +2,23 @@
 "use client";
 
 import Link from "next/link";
-import { useMemo, useState } from "react";
+import { useMemo, useState, useEffect } from "react";
 import { ArrowRight, Search, X } from "lucide-react";
+import { useSearchParams } from "next/navigation";
 import { BlogCardSkeleton } from "./BlogSkeleton";
+import blogApi from "~/apiRequest/blog";
+import { BlogItemType } from "~/types/schemaZod/blog.schema";
+import { toast } from "sonner";
 
-const TAG_POOL = ["Hackathon", "Robotics", "AI", "Design", "Startup", "Marketing", "Culture", "Sports"] as const;
-const CATEGORIES = ["All", "Technical", "Cultural", "Business", "Design"] as const;
+const CATEGORIES = ["All", "technology", "culture", "education", "other"] as const;
 
-type Post = {
-    id: number;
-    title: string;
-    category: "Technical" | "Cultural" | "Business" | "Design";
-    desc: string;
-    image: string;
-    date: string;
-    read: number;
-    tags: (typeof TAG_POOL)[number][];
-};
 
-function demoPosts(count = 36): Post[] {
-    return Array.from({ length: count }).map((_, i) => {
-        const category = ["Technical", "Cultural", "Business", "Design"][i % 4] as Post["category"];
-        const title = [
-            "From Dusk to Dawn: How Our Hackathon Ignited Innovation",
-            "Top 7 Cultural Nights You Shouldn’t Miss",
-            "Zero-to-One: Campus Startups that Took Off",
-            "Robotics 101: Getting Your First Bot Moving",  
-            "Design Systems for Campus Apps",
-        ][i % 5];
-
-        const shuffled = [...TAG_POOL].sort(() => Math.random() - 0.5);
-        const tags = shuffled.slice(0, 2 + (i % 2)) as Post["tags"];
-
-        return {
-            id: i + 1,
-            title,
-            category,
-            desc: "A concise preview that highlights the story and key takeaways. Learn how students collaborate, ship fast, and turn ideas into prototypes.",
-            image: `https://picsum.photos/seed/blog-${i}/900/600`,
-            date: new Date(2025, i % 12, (i % 28) + 1).toISOString().slice(0, 10),
-            read: [4, 6, 7, 5, 8][i % 5],
-            tags,
-        };
-    });
-}
+type Post = BlogItemType;
 
 export default function BlogPage() {
-    const ALL = useMemo(() => demoPosts(), []);
+    const searchParams = useSearchParams();
+    const [ALL, setALL] = useState<Post[]>([]);
+    const [loading, setLoading] = useState(true);
     const [q, setQ] = useState("");
     const [category, setCategory] = useState<(typeof CATEGORIES)[number]>("All");
     const [selectedTags, setSelectedTags] = useState<Set<string>>(new Set());
@@ -57,6 +27,34 @@ export default function BlogPage() {
     const [minRead, setMinRead] = useState<number>(0);
     const [sort, setSort] = useState<"Newest" | "Oldest" | "A-Z" | "Z-A">("Newest");
     const [visible, setVisible] = useState(12);
+
+    // Load blogs from API
+    useEffect(() => {
+        loadBlogs();
+    }, []);
+
+    // Set category from URL params
+    useEffect(() => {
+        const categoryParam = searchParams.get('category');
+        if (categoryParam && CATEGORIES.includes(categoryParam as any)) {
+            setCategory(categoryParam as (typeof CATEGORIES)[number]);
+        }
+    }, [searchParams]);
+
+    async function loadBlogs() {
+        try {
+            setLoading(true);
+            const response = await blogApi.getBlogs(1, 100); // Lấy nhiều blogs cho public
+            if (response.data.success) {
+                setALL(response.data.data.data);
+            }
+        } catch (error) {
+            console.error('Error loading blogs:', error);
+            toast.error('Không thể tải danh sách blog');
+        } finally {
+            setLoading(false);
+        }
+    }
 
     const toggleTag = (t: string) => {
         setVisible(12);
@@ -78,6 +76,19 @@ export default function BlogPage() {
         setVisible(12);
     };
 
+    // Get all unique tags from blogs
+    const allTags = useMemo(() => {
+        const tags = new Set<string>();
+        ALL.forEach(blog => {
+            if (blog.tags) {
+                blog.tags.split(',').forEach(tag => {
+                    if (tag.trim()) tags.add(tag.trim());
+                });
+            }
+        });
+        return Array.from(tags);
+    }, [ALL]);
+
     const filtered = useMemo(() => {
         const fromTime = from ? new Date(from).getTime() : Number.NEGATIVE_INFINITY;
         const toTime = to ? new Date(to).getTime() : Number.POSITIVE_INFINITY;
@@ -85,20 +96,22 @@ export default function BlogPage() {
         const arr = ALL.filter((p) => {
             const matchCat = category === "All" || p.category === category;
             const matchQ =
-                !q || p.title.toLowerCase().includes(q.toLowerCase()) || p.desc.toLowerCase().includes(q.toLowerCase());
-            const time = new Date(p.date).getTime();
+                !q || p.title.toLowerCase().includes(q.toLowerCase()) || 
+                (p.excerpt && p.excerpt.toLowerCase().includes(q.toLowerCase()));
+            const time = new Date(p.created_at).getTime();
             const matchDate = time >= fromTime && time <= toTime;
-            const matchRead = p.read >= minRead;
-            const matchTags = selectedTags.size === 0 || [...selectedTags].every((t) => p.tags.includes(t as any));
+            const matchRead = p.views_count >= minRead;
+            const blogTags = p.tags ? p.tags.split(',').map(t => t.trim()) : [];
+            const matchTags = selectedTags.size === 0 || [...selectedTags].every((t) => blogTags.includes(t));
             return matchCat && matchQ && matchDate && matchRead && matchTags;
         });
 
         arr.sort((a, b) => {
             switch (sort) {
                 case "Newest":
-                    return b.date.localeCompare(a.date);
+                    return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
                 case "Oldest":
-                    return a.date.localeCompare(b.date);
+                    return new Date(a.created_at).getTime() - new Date(b.created_at).getTime();
                 case "A-Z":
                     return a.title.localeCompare(b.title);
                 case "Z-A":
@@ -116,9 +129,11 @@ export default function BlogPage() {
         <section id="blog" className="bg-white py-8 sm:py-12 md:py-16">
             <div className="mx-auto max-w-7xl px-2 sm:px-4 lg:px-8">
                 {/* Header */}
+
                 <div className="mb-6 sm:mb-8 text-center">
                     <h1 className="text-2xl sm:text-3xl font-bold text-slate-800 md:text-4xl">
                         From the <span className="text-cyan-600">Blog</span>
+
                     </h1>
                     <p className="mx-auto mt-2 sm:mt-3 max-w-2xl text-slate-600 text-sm sm:text-base">
                         Stories, insights, and tips from our event organizers and students.
@@ -197,23 +212,29 @@ export default function BlogPage() {
                 {/* Tags, min read, sort */}
                 <div className="mb-6 sm:mb-8 flex flex-col items-stretch sm:items-center justify-between gap-4 md:flex-row">
                     <div className="flex flex-wrap gap-2">
-                        {TAG_POOL.map((t) => {
-                            const active = selectedTags.has(t);
-                            return (
-                                <button
-                                    key={t}
-                                    onClick={() => toggleTag(t)}
-                                    className={`group relative overflow-hidden rounded-full border px-3 py-1.5 text-xs transition ${
-                                        active
-                                            ? "border-cyan-500 bg-cyan-500 text-white"
-                                            : "border-slate-200 bg-white text-slate-700 hover:bg-slate-50"
-                                    }`}
-                                >
-                                    <span className="pointer-events-none absolute inset-y-0 -left-10 w-10 translate-x-0 rotate-12 bg-white/30 opacity-0 transition group-hover:translate-x-[220%] group-hover:opacity-100" />
-                                    #{t}
-                                </button>
-                            );
-                        })}
+                        {loading ? (
+                            <div className="text-sm text-slate-500">Loading tags...</div>
+                        ) : allTags.length === 0 ? (
+                            <div className="text-sm text-slate-500">No tags available</div>
+                        ) : (
+                            allTags.slice(0, 10).map((t) => {
+                                const active = selectedTags.has(t);
+                                return (
+                                    <button
+                                        key={t}
+                                        onClick={() => toggleTag(t)}
+                                        className={`group relative overflow-hidden rounded-full border px-3 py-1.5 text-xs transition ${
+                                            active
+                                                ? "border-cyan-500 bg-cyan-500 text-white"
+                                                : "border-slate-200 bg-white text-slate-700 hover:bg-slate-50"
+                                        }`}
+                                    >
+                                        <span className="pointer-events-none absolute inset-y-0 -left-10 w-10 translate-x-0 rotate-12 bg-white/30 opacity-0 transition group-hover:translate-x-[220%] group-hover:opacity-100" />
+                                        #{t}
+                                    </button>
+                                );
+                            })
+                        )}
                     </div>
 
                     <div className="flex flex-wrap items-center gap-3">
@@ -251,6 +272,7 @@ export default function BlogPage() {
                 </div>
 
                 {/* Grid */}
+
                 <div className="grid gap-6 sm:gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
                     {items.length === 0
                         ? Array.from({ length: 6 }).map((_, i) => <BlogCardSkeleton key={i} />)
@@ -307,6 +329,7 @@ export default function BlogPage() {
                                   </div>
                               </article>
                           ))}
+
                 </div>
 
                 {/* Load more */}
