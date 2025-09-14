@@ -113,20 +113,20 @@ export default function BlogPage() {
     const canLoadMore = visible < filtered.length;
 
     return (
-        <section id="blog" className="bg-white py-16">
-            <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <section id="blog" className="bg-white py-8 sm:py-12 md:py-16">
+            <div className="mx-auto max-w-7xl px-2 sm:px-4 lg:px-8">
                 {/* Header */}
-                <div className="mb-8 text-center">
-                    <h1 className="text-3xl font-bold text-slate-800 md:text-4xl">
+                <div className="mb-6 sm:mb-8 text-center">
+                    <h1 className="text-2xl sm:text-3xl font-bold text-slate-800 md:text-4xl">
                         From the <span className="text-cyan-600">Blog</span>
                     </h1>
-                    <p className="mx-auto mt-3 max-w-2xl text-slate-600">
+                    <p className="mx-auto mt-2 sm:mt-3 max-w-2xl text-slate-600 text-sm sm:text-base">
                         Stories, insights, and tips from our event organizers and students.
                     </p>
                 </div>
 
                 {/* Controls */}
-                <div className="mb-6 grid grid-cols-1 gap-3 md:grid-cols-12">
+                <div className="mb-4 sm:mb-6 grid grid-cols-1 gap-3 md:grid-cols-12">
                     <div className="relative md:col-span-4">
                         <Search className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-slate-400" />
                         <input
@@ -189,13 +189,13 @@ export default function BlogPage() {
                             className="inline-flex w-full items-center justify-center gap-1 rounded-xl border border-slate-300 bg-white px-3 py-2 text-sm text-slate-700 transition hover:border-cyan-500 hover:text-cyan-600"
                             title="Reset filters"
                         >
-                            <X className="h-4 w-4" /> Reset
+                            <X className="h-4 w-4" /> <span className="hidden sm:inline">Reset</span>
                         </button>
                     </div>
                 </div>
 
                 {/* Tags, min read, sort */}
-                <div className="mb-8 flex flex-col items-center justify-between gap-4 md:flex-row">
+                <div className="mb-6 sm:mb-8 flex flex-col items-stretch sm:items-center justify-between gap-4 md:flex-row">
                     <div className="flex flex-wrap gap-2">
                         {TAG_POOL.map((t) => {
                             const active = selectedTags.has(t);
@@ -228,7 +228,7 @@ export default function BlogPage() {
                                     setMinRead(Number(e.target.value) || 0);
                                     setVisible(12);
                                 }}
-                                className="w-20 rounded-xl border border-slate-200 px-2 py-1 text-sm focus:ring-2 focus:ring-cyan-500/40"
+                                className="w-16 sm:w-20 rounded-xl border border-slate-200 px-2 py-1 text-sm focus:ring-2 focus:ring-cyan-500/40"
                             />
                             <span className="text-slate-500">min</span>
                         </label>
@@ -246,12 +246,12 @@ export default function BlogPage() {
                     </div>
                 </div>
 
-                <div className="mb-6 text-center text-sm text-slate-500">
+                <div className="mb-4 sm:mb-6 text-center text-xs sm:text-sm text-slate-500">
                     {filtered.length} articles • showing {items.length}
                 </div>
 
                 {/* Grid */}
-                <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+                <div className="grid gap-6 sm:gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
                     {items.length === 0
                         ? Array.from({ length: 6 }).map((_, i) => <BlogCardSkeleton key={i} />)
                         : items.map((post) => (
@@ -268,11 +268,11 @@ export default function BlogPage() {
                                       <img
                                           src={post.image}
                                           alt={post.title}
-                                          className="h-48 w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                                          className="h-40 sm:h-48 w-full object-cover transition-transform duration-500 group-hover:scale-105"
                                       />
                                   </div>
 
-                                  <div className="p-5">
+                                  <div className="p-4 sm:p-5">
                                       <div className="flex items-center justify-between text-xs text-slate-500">
                                           <span className="rounded-full border border-slate-200 px-2 py-0.5">
                                               {post.category}
@@ -280,7 +280,7 @@ export default function BlogPage() {
                                           <span>{post.date}</span>
                                       </div>
 
-                                      <h3 className="mt-2 line-clamp-2 font-semibold text-slate-800 transition group-hover:text-cyan-600">
+                                      <h3 className="mt-2 line-clamp-2 font-semibold text-slate-800 transition group-hover:text-cyan-600 text-base sm:text-lg">
                                           {post.title}
                                       </h3>
                                       <p className="mt-2 line-clamp-2 text-sm text-slate-600">{post.desc}</p>
@@ -310,11 +310,11 @@ export default function BlogPage() {
                 </div>
 
                 {/* Load more */}
-                <div className="mt-12 flex justify-center">
+                <div className="mt-8 sm:mt-12 flex justify-center">
                     {canLoadMore ? (
                         <button
                             onClick={() => setVisible((v) => v + 12)}
-                            className="group relative inline-flex items-center gap-2 overflow-hidden rounded-xl border border-slate-300 bg-white px-5 py-3 text-slate-800 shadow-sm transition hover:-translate-y-0.5 hover:border-cyan-500 hover:shadow-lg active:translate-y-0"
+                            className="group relative inline-flex items-center gap-2 overflow-hidden rounded-xl border border-slate-300 bg-white px-4 sm:px-5 py-2.5 sm:py-3 text-slate-800 shadow-sm transition hover:-translate-y-0.5 hover:border-cyan-500 hover:shadow-lg active:translate-y-0"
                         >
                             <span className="pointer-events-none absolute inset-y-0 -left-10 w-10 translate-x-0 rotate-12 bg-white/40 opacity-0 transition group-hover:translate-x-[260%] group-hover:opacity-100" />
                             Show more
@@ -323,7 +323,7 @@ export default function BlogPage() {
                     ) : (
                         <button
                             onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-                            className="inline-flex items-center gap-2 rounded-xl bg-cyan-600 px-5 py-3 text-white shadow-sm transition hover:-translate-y-0.5 hover:shadow-lg active:translate-y-0"
+                            className="inline-flex items-center gap-2 rounded-xl bg-cyan-600 px-4 sm:px-5 py-2.5 sm:py-3 text-white shadow-sm transition hover:-translate-y-0.5 hover:shadow-lg active:translate-y-0"
                         >
                             You’re all caught up
                         </button>

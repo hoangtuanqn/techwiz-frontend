@@ -226,12 +226,12 @@ const Hero = () => {
   return (
     <section
       id="home"
-      className="relative"
+      className="relative min-h-[500px] md:min-h-[600px] lg:min-h-[700px]"
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
     >
       {/* Slideshow layer */}
-      <div className="absolute inset-0 overflow-hidden">
+  <div className="absolute inset-0 overflow-hidden">
         {slides.map((s, idx) => {
           const isActive = idx === current;
           return (
@@ -243,7 +243,7 @@ const Hero = () => {
               aria-hidden={!isActive}
             >
               <img
-                className={`h-[620px] w-full object-cover transition-transform duration-[6000ms] ease-[cubic-bezier(0.22,1,0.36,1)] will-change-transform ${
+                className={`h-[320px] sm:h-[420px] md:h-[520px] lg:h-[620px] w-full object-cover transition-transform duration-[6000ms] ease-[cubic-bezier(0.22,1,0.36,1)] will-change-transform ${
                   isActive ? "scale-100" : "scale-105"
                 }`}
                 src={s.src}
@@ -259,11 +259,11 @@ const Hero = () => {
       </div>
 
       {/* Controls */}
-      <div className="pointer-events-none absolute inset-0 flex items-center justify-between px-2 sm:px-3">
+  <div className="pointer-events-none absolute inset-0 flex items-center justify-between px-1 sm:px-3">
         <button
           type="button"
           onClick={prev}
-          className="pointer-events-auto inline-flex h-10 w-10 items-center justify-center rounded-full bg-white/80 text-slate-800 shadow hover:bg-white"
+          className="pointer-events-auto inline-flex h-8 w-8 sm:h-10 sm:w-10 items-center justify-center rounded-full bg-white/80 text-slate-800 shadow hover:bg-white"
           aria-label="Previous slide"
         >
           <ChevronLeft className="h-5 w-5" />
@@ -271,7 +271,7 @@ const Hero = () => {
         <button
           type="button"
           onClick={next}
-          className="pointer-events-auto inline-flex h-10 w-10 items-center justify-center rounded-full bg-white/80 text-slate-800 shadow hover:bg-white"
+          className="pointer-events-auto inline-flex h-8 w-8 sm:h-10 sm:w-10 items-center justify-center rounded-full bg-white/80 text-slate-800 shadow hover:bg-white"
           aria-label="Next slide"
         >
           <ChevronRight className="h-5 w-5" />
@@ -279,7 +279,7 @@ const Hero = () => {
       </div>
 
       {/* Dots */}
-      <div className="pointer-events-none absolute right-0 bottom-3 left-0 flex items-center justify-center gap-2">
+  <div className="pointer-events-none absolute right-0 bottom-2 sm:bottom-3 left-0 flex items-center justify-center gap-2">
         {slides.map((_, i) => (
           <button
             key={i}
@@ -293,8 +293,8 @@ const Hero = () => {
       </div>
 
       {/* Content */}
-      <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="pt-28 pb-24 text-center text-white md:pt-36">
+      <div className="relative mx-auto max-w-7xl px-2 sm:px-4 md:px-6 lg:px-8">
+        <div className="pt-20 pb-16 text-center text-white sm:pt-28 sm:pb-24 md:pt-36">
           <p
             className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/5 px-3 py-1 text-xs md:text-sm"
             data-aos="fade-up"
@@ -304,25 +304,25 @@ const Hero = () => {
           </p>
 
           <h1
-            className="mt-4 text-4xl leading-tight font-extrabold md:text-6xl"
+            className="mt-4 text-2xl leading-tight font-extrabold sm:text-4xl md:text-6xl"
             data-aos="fade-up"
             data-aos-delay="40"
           >
             Make Every Event Memorable
           </h1>
 
-          <p className="mx-auto mt-4 max-w-2xl text-white/90" data-aos="fade-up" data-aos-delay="80">
+          <p className="mx-auto mt-4 max-w-xl text-white/90 text-sm sm:text-base" data-aos="fade-up" data-aos-delay="80">
             Discover curated events across campus. Register in seconds, breeze through QR check-in, and
             download your certificate right after.
           </p>
           {/* Faceted Search Form */}
           <form
             id="searchForm"
-            className="glass shadow-soft mx-auto mt-8 max-w-4xl rounded-2xl border border-cyan-300/30 bg-white/90 p-3 backdrop-blur-md md:p-4"
+            className="glass shadow-soft mx-auto mt-8 max-w-2xl sm:max-w-3xl md:max-w-4xl rounded-2xl border border-cyan-300/30 bg-white/90 p-2 sm:p-3 md:p-4 backdrop-blur-md"
             aria-label="Search events"
             onSubmit={handleSearch}
           >
-            <div className="grid grid-cols-1 gap-3 md:grid-cols-3">
+            <div className="grid grid-cols-1 gap-2 sm:gap-3 md:grid-cols-3">
               {/* Keyword input */}
               <div className="relative">
                 <Search className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-cyan-500" />
@@ -331,7 +331,7 @@ const Hero = () => {
                   placeholder="Keyword…"
                   value={keyword}
                   onChange={(e) => setKeyword(e.target.value)}
-                  className="w-full rounded-xl border border-cyan-300/40 bg-white py-3 pr-3 pl-10 text-slate-900 placeholder-slate-500 focus:ring-2 focus:ring-cyan-400/50 focus:outline-none"
+                  className="w-full rounded-xl border border-cyan-300/40 bg-white py-2.5 sm:py-3 pr-3 pl-10 text-slate-900 placeholder-slate-500 focus:ring-2 focus:ring-cyan-400/50 focus:outline-none text-sm sm:text-base"
                 />
               </div>
 
@@ -341,7 +341,7 @@ const Hero = () => {
               {/* Search button */}
               <Button
                 type="submit"
-                className="h-full items-center justify-center gap-2 rounded-xl bg-cyan-500 px-5 py-3 font-semibold text-white transition-all duration-300 hover:bg-cyan-600"
+                className="h-full items-center justify-center gap-2 rounded-xl bg-cyan-500 px-4 sm:px-5 py-2.5 sm:py-3 font-semibold text-white transition-all duration-300 hover:bg-cyan-600 text-sm sm:text-base"
                 aria-label="Search events"
               >
                 <SearchCheck className="h-4 w-4" /> Search
@@ -349,10 +349,10 @@ const Hero = () => {
             </div>
           </form>
 
-          <div className="mt-6 flex items-center justify-center gap-3" data-aos="fade-up" data-aos-delay="150">
+          <div className="mt-5 flex flex-col sm:flex-row items-center justify-center gap-3" data-aos="fade-up" data-aos-delay="150">
             <NextLink
               href="/events"
-              className="inline-flex items-center gap-2 rounded-2xl bg-white px-6 py-3 text-slate-900 shadow hover:bg-slate-50"
+              className="inline-flex items-center gap-2 rounded-2xl bg-white px-5 sm:px-6 py-2.5 sm:py-3 text-slate-900 shadow hover:bg-slate-50 text-sm sm:text-base"
             >
               <Rocket className="h-5 w-5" /> Explore Events
             </NextLink>
