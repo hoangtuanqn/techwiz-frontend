@@ -11,47 +11,8 @@ import { toast } from "sonner";
 
 const CATEGORIES = ["All", "technology", "culture", "education", "other"] as const;
 
-<<<<<<< HEAD
+
 type Post = BlogItemType;
-=======
-type Post = {
-    id: number;
-    title: string;
-    category: "Technical" | "Cultural" | "Business" | "Design";
-    desc: string;
-    image: string;
-    date: string;
-    read: number;
-    tags: (typeof TAG_POOL)[number][];
-};
-
-function demoPosts(count = 36): Post[] {
-    return Array.from({ length: count }).map((_, i) => {
-        const category = ["Technical", "Cultural", "Business", "Design"][i % 4] as Post["category"];
-        const title = [
-            "From Dusk to Dawn: How Our Hackathon Ignited Innovation",
-            "Top 7 Cultural Nights You Shouldn’t Miss",
-            "Zero-to-One: Campus Startups that Took Off",
-            "Robotics 101: Getting Your First Bot Moving",  
-            "Design Systems for Campus Apps",
-        ][i % 5];
-
-        const shuffled = [...TAG_POOL].sort(() => Math.random() - 0.5);
-        const tags = shuffled.slice(0, 2 + (i % 2)) as Post["tags"];
-
-        return {
-            id: i + 1,
-            title,
-            category,
-            desc: "A concise preview that highlights the story and key takeaways. Learn how students collaborate, ship fast, and turn ideas into prototypes.",
-            image: `https://picsum.photos/seed/blog-${i}/900/600`,
-            date: new Date(2025, i % 12, (i % 28) + 1).toISOString().slice(0, 10),
-            read: [4, 6, 7, 5, 8][i % 5],
-            tags,
-        };
-    });
-}
->>>>>>> 147c6207a02cf406522cb38267f5f68bcd0be745
 
 export default function BlogPage() {
     const [ALL, setALL] = useState<Post[]>([]);
