@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { Search, Eye, Edit, Users, Clock, CheckCircle, XCircle, AlertCircle, Calendar } from "lucide-react";
+import { CalendarPlus, Search, Eye, Edit, Users, Clock, CheckCircle, XCircle, AlertCircle, Calendar } from "lucide-react";
 import { formatter } from "~/utils/format";
 import { PaginationNav } from "~/components/Pagination";
 import Link from "next/link";
@@ -123,7 +123,7 @@ export default function OrganizerEventsPage() {
                     href="/organizer/events/create"
                     className="inline-flex items-center gap-2 rounded-lg bg-[#06b6d4] px-4 py-2 text-sm font-medium text-white hover:bg-[#0891b2]"
                 >
-                    <span>+</span>
+                    <CalendarPlus className="h-5 w-5" />
                     Create Event
                 </Link>
             </div>

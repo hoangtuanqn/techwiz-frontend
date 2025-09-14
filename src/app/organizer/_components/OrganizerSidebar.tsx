@@ -27,12 +27,6 @@ export default function OrganizerSidebar() {
                     activePath={pathname}
                 />
                 
-                <SidebarLink
-                    href="/organizer/events/create"
-                    icon={CalendarPlus}
-                    label="Create Event"
-                    activePath={pathname}
-                />
                 
                 <SidebarLink href="/organizer/blogs" icon={FilePlus} label="Blog Management" activePath={pathname} />
                 <SidebarLink href="/" icon={Home} label="Back to Home" activePath={pathname} exact={true} />

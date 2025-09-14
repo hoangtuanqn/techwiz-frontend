@@ -144,12 +144,7 @@ export default function MyBlogsPage() {
                                 className="w-full rounded-lg border py-1.5 pr-2 pl-8 text-sm"
                             />
                         </div>
-                        <Link
-                            href="/organizer/blogs/create"
-                            className="inline-flex items-center gap-2 rounded-lg bg-slate-900 px-3 py-1.5 text-xs font-medium text-white hover:bg-slate-800"
-                        >
-                            <Plus className="h-4 w-4" /> New
-                        </Link>
+
                     </div>
 
                     <div className="max-h-[60vh] overflow-y-auto">
