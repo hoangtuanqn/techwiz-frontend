@@ -24,7 +24,7 @@ export default function CreateBlogPage() {
 
     async function handleSave() {
         if (!title.trim() || !slug.trim() || !content.trim()) {
-            toast.error("Vui lòng nhập đầy đủ Title, Slug và Content!");
+            toast.error("Please enter the Title, Slug, and Content completely!");
             return;
         }
 
@@ -43,7 +43,7 @@ export default function CreateBlogPage() {
 
             const response = await blogApi.createBlog(blogData);
             if (response.data.success) {
-                toast.success("Tạo blog thành công!");
+                toast.success("Blog created successfully!");
                 router.push("/admin/blogs");
             }
         } catch (error: any) {
@@ -51,7 +51,7 @@ export default function CreateBlogPage() {
             if (error.response?.data?.message) {
                 toast.error(error.response.data.message);
             } else {
-                toast.error('Có lỗi khi tạo blog');
+                toast.error('An error occurred while creating the blog.');
             }
         } finally {
             setLoading(false);
@@ -71,7 +71,7 @@ export default function CreateBlogPage() {
                         <ArrowLeft className="h-4 w-4" /> Back
                     </Link>
                 </div>
-                <p className="mt-1 text-sm text-slate-600">Tạo blog mới và lưu tạm vào localStorage.</p>
+                <p className="mt-1 text-sm text-slate-600">Create a new blog and temporarily save it to localStorage.</p>
             </article>
 
             {/* Form */}

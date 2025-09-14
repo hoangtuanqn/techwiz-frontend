@@ -51,7 +51,7 @@ export default function AdminSidebar() {
                     label="Create event"
                     activePath={pathname}
                 />
-                <SidebarLink href="/admin/blogs" icon={FilePlus} label="Create Blog" activePath={pathname} />
+                <SidebarLink href="/admin/blogs" icon={FilePlus} label="Blog Management" activePath={pathname} />
                 <SidebarLink href="/" icon={Home} label="Back to Home" activePath={pathname} exact={true} />
             </nav>
         </aside>
