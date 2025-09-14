@@ -3,73 +3,59 @@
 import { useState } from "react";
 import { Save, ArrowLeft } from "lucide-react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import CoverUploader from "../../_components/CoverUploader";
-
-const LS_KEY = "demo_blogs";
-
-type Blog = {
-    title: string;
-    slug: string;
-    summary: string;
-    content: string;
-    tags: string[];
-    cover?: string;
-    updatedAt?: string;
-};
-
-function loadBlogs(): Blog[] {
-    if (typeof window === "undefined") return [];
-    try {
-        return JSON.parse(localStorage.getItem(LS_KEY) || "[]");
-    } catch {
-        return [];
-    }
-}
-function saveBlogs(rows: Blog[]) {
-    if (typeof window === "undefined") return;
-    localStorage.setItem(LS_KEY, JSON.stringify(rows));
-}
+import blogApi from "~/apiRequest/blog";
+import { BlogCreateType } from "~/types/schemaZod/blog.schema";
+import { toast } from "sonner";
 
 export default function CreateBlogPage() {
+    const router = useRouter();
     const [title, setTitle] = useState("");
     const [slug, setSlug] = useState("");
-    const [summary, setSummary] = useState("");
+    const [excerpt, setExcerpt] = useState("");
     const [content, setContent] = useState("");
-    const [tags, setTags] = useState<string[]>([]);
+    const [tags, setTags] = useState("");
+    const [category, setCategory] = useState<"technology" | "culture" | "education" | "other">("technology");
+    const [status, setStatus] = useState<"draft" | "published">("published"); // Admin có thể publish ngay
     const [cover, setCover] = useState<string | null>(null);
     const [coverInfo, setCoverInfo] = useState<{ name: string; size: string } | null>(null);
+    const [loading, setLoading] = useState(false);
 
-    function handleSave() {
-        if (!title.trim() || !slug.trim()) {
-            alert("Vui lòng nhập Title và Slug!");
-            return;
-        }
-        const blogs = loadBlogs();
-        if (blogs.some((b) => b.slug === slug)) {
-            alert("Slug đã tồn tại!");
+    async function handleSave() {
+        if (!title.trim() || !slug.trim() || !content.trim()) {
+            toast.error("Please enter the Title, Slug, and Content completely!");
             return;
         }
 
-        const newBlog: Blog = {
-            title,
-            slug,
-            summary,
-            content,
-            tags,
-            cover: cover || undefined,
-            updatedAt: new Date().toISOString(),
-        };
+        try {
+            setLoading(true);
+            const blogData: BlogCreateType = {
+                title: title.trim(),
+                slug: slug.trim(),
+                content: content.trim(),
+                excerpt: excerpt.trim() || undefined,
+                cover: cover || undefined,
+                category,
+                tags: tags.trim() || undefined,
+                status,
+            };
 
-        saveBlogs([...blogs, newBlog]);
-
-        alert("Blog đã được tạo!");
-        setTitle("");
-        setSlug("");
-        setSummary("");
-        setContent("");
-        setTags([]);
-        setCover(null);
-        setCoverInfo(null);
+            const response = await blogApi.createBlog(blogData);
+            if (response.data.success) {
+                toast.success("Blog created successfully!");
+                router.push("/admin/blogs");
+            }
+        } catch (error: any) {
+            console.error('Error creating blog:', error);
+            if (error.response?.data?.message) {
+                toast.error(error.response.data.message);
+            } else {
+                toast.error('An error occurred while creating the blog.');
+            }
+        } finally {
+            setLoading(false);
+        }
     }
 
     return (
@@ -85,7 +71,7 @@ export default function CreateBlogPage() {
                         <ArrowLeft className="h-4 w-4" /> Back
                     </Link>
                 </div>
-                <p className="mt-1 text-sm text-slate-600">Tạo blog mới và lưu tạm vào localStorage.</p>
+                <p className="mt-1 text-sm text-slate-600">Create a new blog and temporarily save it to localStorage.</p>
             </article>
 
             {/* Form */}
@@ -121,46 +107,71 @@ export default function CreateBlogPage() {
                 </label>
 
                 <label className="block text-sm">
-                    Summary
+                    Excerpt (Tóm tắt)
                     <textarea
-                        value={summary}
-                        onChange={(e) => setSummary(e.target.value)}
+                        value={excerpt}
+                        onChange={(e) => setExcerpt(e.target.value)}
                         rows={3}
                         className="mt-1 w-full rounded-lg border p-2 text-sm"
+                        placeholder="Tóm tắt ngắn cho blog..."
                     />
                 </label>
 
                 <label className="block text-sm">
-                    Content
+                    Category
+                    <select
+                        value={category}
+                        onChange={(e) => setCategory(e.target.value as any)}
+                        className="mt-1 w-full rounded-lg border p-2 text-sm"
+                    >
+                        <option value="technology">Technology</option>
+                        <option value="culture">Culture</option>
+                        <option value="education">Education</option>
+                        <option value="other">Other</option>
+                    </select>
+                </label>
+
+                <label className="block text-sm">
+                    Status
+                    <select
+                        value={status}
+                        onChange={(e) => setStatus(e.target.value as any)}
+                        className="mt-1 w-full rounded-lg border p-2 text-sm"
+                    >
+                        <option value="draft">Draft</option>
+                        <option value="published">Published</option>
+                    </select>
+                </label>
+
+                <label className="block text-sm">
+                    Content *
                     <textarea
                         value={content}
                         onChange={(e) => setContent(e.target.value)}
                         rows={10}
                         className="mt-1 w-full rounded-lg border p-2 text-sm"
+                        placeholder="Nội dung blog..."
+                        required
                     />
                 </label>
 
                 <label className="block text-sm">
-                    Tags (cách nhau bởi dấu phẩy)
+                    Tags (phân cách bằng dấu phẩy)
                     <input
-                        value={tags.join(", ")}
-                        onChange={(e) =>
-                            setTags(
-                                e.target.value
-                                    .split(",")
-                                    .map((t) => t.trim())
-                                    .filter(Boolean),
-                            )
-                        }
+                        value={tags}
+                        onChange={(e) => setTags(e.target.value)}
                         className="mt-1 w-full rounded-lg border p-2 text-sm"
+                        placeholder="tag1, tag2, tag3"
                     />
                 </label>
 
                 <button
                     type="submit"
-                    className="inline-flex items-center gap-1 rounded-lg bg-slate-900 px-4 py-2 text-sm font-medium text-white hover:bg-slate-800"
+                    disabled={loading}
+                    className="inline-flex items-center gap-1 rounded-lg bg-slate-900 px-4 py-2 text-sm font-medium text-white hover:bg-slate-800 disabled:opacity-50"
                 >
-                    <Save className="h-4 w-4" /> Save Blog
+                    <Save className="h-4 w-4" /> 
+                    {loading ? "Creating..." : "Create Blog"}
                 </button>
             </form>
         </section>

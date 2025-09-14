@@ -10,7 +10,7 @@ export default function AboutPage() {
                 <div className="absolute inset-0 flex items-center justify-center bg-slate-900/70 px-4">
                     <div className="max-w-3xl text-center">
                         <h1 className="text-4xl font-bold text-white md:text-5xl">
-                            About <span className="text-[#06b6d4]">EventSphere</span>
+                            <span className="text-[#06b6d4]">EventSphere</span>
                         </h1>
                         <p className="mt-4 text-lg text-white/90">
                             EventSphere is more than just an event management tool — it’s a digital ecosystem built to
