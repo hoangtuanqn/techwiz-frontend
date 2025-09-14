@@ -126,20 +126,22 @@ export default function BlogPage() {
     const canLoadMore = visible < filtered.length;
 
     return (
-        <section id="blog" className="bg-white py-16">
-            <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <section id="blog" className="bg-white py-8 sm:py-12 md:py-16">
+            <div className="mx-auto max-w-7xl px-2 sm:px-4 lg:px-8">
                 {/* Header */}
-                <div className="mb-8 text-center">
-                    <h1 className="text-3xl font-bold text-slate-800 md:text-4xl">
-                        <span className="text-5xl text-cyan-600">Blog</span>
+
+                <div className="mb-6 sm:mb-8 text-center">
+                    <h1 className="text-2xl sm:text-3xl font-bold text-slate-800 md:text-4xl">
+                        From the <span className="text-cyan-600">Blog</span>
+
                     </h1>
-                    <p className="mx-auto mt-3 max-w-2xl text-slate-600">
+                    <p className="mx-auto mt-2 sm:mt-3 max-w-2xl text-slate-600 text-sm sm:text-base">
                         Stories, insights, and tips from our event organizers and students.
                     </p>
                 </div>
 
                 {/* Controls */}
-                <div className="mb-6 grid grid-cols-1 gap-3 md:grid-cols-12">
+                <div className="mb-4 sm:mb-6 grid grid-cols-1 gap-3 md:grid-cols-12">
                     <div className="relative md:col-span-4">
                         <Search className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-slate-400" />
                         <input
@@ -202,13 +204,13 @@ export default function BlogPage() {
                             className="inline-flex w-full items-center justify-center gap-1 rounded-xl border border-slate-300 bg-white px-3 py-2 text-sm text-slate-700 transition hover:border-cyan-500 hover:text-cyan-600"
                             title="Reset filters"
                         >
-                            <X className="h-4 w-4" /> Reset
+                            <X className="h-4 w-4" /> <span className="hidden sm:inline">Reset</span>
                         </button>
                     </div>
                 </div>
 
                 {/* Tags, min read, sort */}
-                <div className="mb-8 flex flex-col items-center justify-between gap-4 md:flex-row">
+                <div className="mb-6 sm:mb-8 flex flex-col items-stretch sm:items-center justify-between gap-4 md:flex-row">
                     <div className="flex flex-wrap gap-2">
                         {loading ? (
                             <div className="text-sm text-slate-500">Loading tags...</div>
@@ -247,7 +249,7 @@ export default function BlogPage() {
                                     setMinRead(Number(e.target.value) || 0);
                                     setVisible(12);
                                 }}
-                                className="w-20 rounded-xl border border-slate-200 px-2 py-1 text-sm focus:ring-2 focus:ring-cyan-500/40"
+                                className="w-16 sm:w-20 rounded-xl border border-slate-200 px-2 py-1 text-sm focus:ring-2 focus:ring-cyan-500/40"
                             />
                             <span className="text-slate-500">min</span>
                         </label>
@@ -265,85 +267,77 @@ export default function BlogPage() {
                     </div>
                 </div>
 
-                <div className="mb-6 text-center text-sm text-slate-500">
+                <div className="mb-4 sm:mb-6 text-center text-xs sm:text-sm text-slate-500">
                     {filtered.length} articles • showing {items.length}
                 </div>
 
                 {/* Grid */}
-                <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
-                    {loading ? (
-                        Array.from({ length: 6 }).map((_, i) => <BlogCardSkeleton key={i} />)
-                    ) : items.length === 0 ? (
-                        <div className="col-span-full text-center py-12">
-                            <p className="text-slate-500">Không có blog nào được tìm thấy.</p>
-                        </div>
-                    ) : (
-                        items.map((post) => (
-                            <article
-                                key={post.id}
-                                className="group relative overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-lg"
-                            >
-                                <Link
-                                    href={`/blog/${post.id}`}
-                                    className="absolute inset-0 z-10"
-                                    aria-label={post.title}
-                                />
-                                <div className="overflow-hidden">
-                                    <img
-                                        src={post.cover || `https://picsum.photos/seed/blog-${post.id}/900/600`}
-                                        alt={post.title}
-                                        className="h-48 w-full object-cover transition-transform duration-500 group-hover:scale-105"
-                                    />
-                                </div>
 
-                                <div className="p-5">
-                                    <div className="flex items-center justify-between text-xs text-slate-500">
-                                        <span className="rounded-full border border-slate-200 px-2 py-0.5 capitalize">
-                                            {post.category}
-                                        </span>
-                                        <span>{new Date(post.created_at).toLocaleDateString()}</span>
-                                    </div>
+                <div className="grid gap-6 sm:gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
+                    {items.length === 0
+                        ? Array.from({ length: 6 }).map((_, i) => <BlogCardSkeleton key={i} />)
+                        : items.map((post) => (
+                              <article
+                                  key={post.id}
+                                  className="group relative overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-lg"
+                              >
+                                  <Link
+                                      href={`/blog/${post.id}`}
+                                      className="absolute inset-0 z-10"
+                                      aria-label={post.title}
+                                  />
+                                  <div className="overflow-hidden">
+                                      <img
+                                          src={post.image}
+                                          alt={post.title}
+                                          className="h-40 sm:h-48 w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                                      />
+                                  </div>
 
-                                    <h3 className="mt-2 line-clamp-2 font-semibold text-slate-800 transition group-hover:text-cyan-600">
-                                        {post.title}
-                                    </h3>
-                                    <p className="mt-2 line-clamp-2 text-sm text-slate-600">
-                                        {post.excerpt || "Không có mô tả..."}
-                                    </p>
+                                  <div className="p-4 sm:p-5">
+                                      <div className="flex items-center justify-between text-xs text-slate-500">
+                                          <span className="rounded-full border border-slate-200 px-2 py-0.5">
+                                              {post.category}
+                                          </span>
+                                          <span>{post.date}</span>
+                                      </div>
 
-                                    {post.tags && (
-                                        <div className="mt-3 flex flex-wrap gap-2">
-                                            {post.tags.split(',').slice(0, 3).map((tg, index) => (
-                                                <span
-                                                    key={index}
-                                                    className="rounded-full border border-slate-200 px-2 py-0.5 text-xs text-slate-600"
-                                                >
-                                                    #{tg.trim()}
-                                                </span>
-                                            ))}
-                                        </div>
-                                    )}
+                                      <h3 className="mt-2 line-clamp-2 font-semibold text-slate-800 transition group-hover:text-cyan-600 text-base sm:text-lg">
+                                          {post.title}
+                                      </h3>
+                                      <p className="mt-2 line-clamp-2 text-sm text-slate-600">{post.desc}</p>
 
-                                    <div className="mt-3 flex items-center justify-between text-xs text-slate-500">
-                                        <span>{post.views_count} views</span>
-                                        <span className="relative inline-flex items-center gap-1 overflow-hidden rounded-lg border border-slate-200 px-3 py-1.5 text-cyan-600 transition group-hover:-translate-y-0.5 group-hover:border-cyan-500 group-hover:bg-cyan-50">
-                                            <span className="relative z-10">Read more</span>
-                                            <ArrowRight className="relative z-10 h-4 w-4 transition-transform group-hover:translate-x-0.5" />
-                                            <span className="pointer-events-none absolute inset-0 -z-0 bg-gradient-to-r from-transparent via-white/30 to-transparent opacity-0 transition group-hover:opacity-100" />
-                                        </span>
-                                    </div>
-                                </div>
-                            </article>
-                        ))
-                    )}
+                                      <div className="mt-3 flex flex-wrap gap-2">
+                                          {post.tags.map((tg) => (
+                                              <span
+                                                  key={tg}
+                                                  className="rounded-full border border-slate-200 px-2 py-0.5 text-xs text-slate-600"
+                                              >
+                                                  #{tg}
+                                              </span>
+                                          ))}
+                                      </div>
+
+                                      <div className="mt-3 flex items-center justify-between text-xs text-slate-500">
+                                          <span>~ {post.read} min read</span>
+                                          <span className="relative inline-flex items-center gap-1 overflow-hidden rounded-lg border border-slate-200 px-3 py-1.5 text-cyan-600 transition group-hover:-translate-y-0.5 group-hover:border-cyan-500 group-hover:bg-cyan-50">
+                                              <span className="relative z-10">Read more</span>
+                                              <ArrowRight className="relative z-10 h-4 w-4 transition-transform group-hover:translate-x-0.5" />
+                                              <span className="pointer-events-none absolute inset-0 -z-0 bg-gradient-to-r from-transparent via-white/30 to-transparent opacity-0 transition group-hover:opacity-100" />
+                                          </span>
+                                      </div>
+                                  </div>
+                              </article>
+                          ))}
+
                 </div>
 
                 {/* Load more */}
-                <div className="mt-12 flex justify-center">
+                <div className="mt-8 sm:mt-12 flex justify-center">
                     {canLoadMore ? (
                         <button
                             onClick={() => setVisible((v) => v + 12)}
-                            className="group relative inline-flex items-center gap-2 overflow-hidden rounded-xl border border-slate-300 bg-white px-5 py-3 text-slate-800 shadow-sm transition hover:-translate-y-0.5 hover:border-cyan-500 hover:shadow-lg active:translate-y-0"
+                            className="group relative inline-flex items-center gap-2 overflow-hidden rounded-xl border border-slate-300 bg-white px-4 sm:px-5 py-2.5 sm:py-3 text-slate-800 shadow-sm transition hover:-translate-y-0.5 hover:border-cyan-500 hover:shadow-lg active:translate-y-0"
                         >
                             <span className="pointer-events-none absolute inset-y-0 -left-10 w-10 translate-x-0 rotate-12 bg-white/40 opacity-0 transition group-hover:translate-x-[260%] group-hover:opacity-100" />
                             Show more
@@ -352,7 +346,7 @@ export default function BlogPage() {
                     ) : (
                         <button
                             onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-                            className="inline-flex items-center gap-2 rounded-xl bg-cyan-600 px-5 py-3 text-white shadow-sm transition hover:-translate-y-0.5 hover:shadow-lg active:translate-y-0"
+                            className="inline-flex items-center gap-2 rounded-xl bg-cyan-600 px-4 sm:px-5 py-2.5 sm:py-3 text-white shadow-sm transition hover:-translate-y-0.5 hover:shadow-lg active:translate-y-0"
                         >
                             You’re all caught up
                         </button>

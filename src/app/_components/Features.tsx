@@ -5,13 +5,13 @@ import { BadgeCheck, CalendarCheck2, LineChart, ScanLine, ShieldCheck, Users } f
 
 const Features = () => {
   return (
-    <section id="features" className="py-16 md:py-20">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <h2 className="text-center text-3xl font-bold" data-aos="fade-up">
+    <section id="features" className="py-10 sm:py-16 md:py-20">
+      <div className="mx-auto max-w-7xl px-2 sm:px-4 md:px-6 lg:px-8">
+  <h2 className="text-center text-2xl sm:text-3xl font-bold" data-aos="fade-up">
           Everything You Need to Run Great Events
         </h2>
         <p
-          className="mx-auto mt-2 max-w-3xl text-center text-slate-600"
+          className="mx-auto mt-2 max-w-2xl sm:max-w-3xl text-center text-slate-600 text-sm sm:text-base"
           data-aos="fade-up"
           data-aos-delay="40"
         >
@@ -20,7 +20,7 @@ const Features = () => {
         </p>
 
         {/* === First Row === */}
-        <div className="mt-10 grid gap-6 md:grid-cols-3">
+  <div className="mt-8 sm:mt-10 grid gap-4 sm:gap-6 md:grid-cols-3">
           <Link
             href="/events"
             className="rounded-2xl border border-slate-200 p-6 shadow transition hover:shadow-md block"
@@ -67,7 +67,7 @@ const Features = () => {
         </div>
 
         {/* === Second Row === */}
-        <div className="mt-6 grid gap-6 md:grid-cols-3">
+  <div className="mt-4 sm:mt-6 grid gap-4 sm:gap-6 md:grid-cols-3">
           <Link
             href="/insights"
             className="rounded-2xl border border-slate-200 p-6 shadow transition hover:shadow-md block"

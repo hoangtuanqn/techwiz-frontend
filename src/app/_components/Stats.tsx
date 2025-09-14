@@ -3,10 +3,10 @@ import React from "react";
 
 const Stats = () => {
     return (
-        <section className="bg-gradient-to-br from-cyan-50 to-fuchsia-50 py-12">
-            <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-                <div className="grid grid-cols-2 gap-6 text-center md:grid-cols-4">
-                    <div className="rounded-2xl border border-slate-200 bg-white p-6" data-aos="fade-up">
+        <section className="bg-gradient-to-br from-cyan-50 to-fuchsia-50 py-8 sm:py-12">
+            <div className="mx-auto max-w-7xl px-2 sm:px-4 md:px-6 lg:px-8">
+                <div className="grid grid-cols-2 gap-4 sm:gap-6 text-center md:grid-cols-4">
+                    <div className="rounded-2xl border border-slate-200 bg-white p-4 sm:p-6" data-aos="fade-up">
                         <div className="text-4xl font-extrabold">500+</div>
                         <div className="mt-1 text-slate-500">Events</div>
                     </div>
