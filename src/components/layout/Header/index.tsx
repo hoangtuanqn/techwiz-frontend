@@ -5,7 +5,7 @@ import ActionHeader from "./ActionHeader";
 
 const Header: React.FC = () => {
     return (
-        <header className="sticky top-0 z-1 border-b border-slate-200 bg-white/90 backdrop-blur">
+        <header className="sticky top-0 z-50 border-b border-slate-200 bg-white/90 backdrop-blur">
             <div className="max-w-10xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="flex h-16 items-center justify-between">
                     {/* Logo */}

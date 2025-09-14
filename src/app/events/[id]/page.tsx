@@ -73,12 +73,13 @@ export default async function EventDetailPage({ params }: { params: { id: string
     const capacityBarClass = tone === "ok" ? "bg-emerald-500" : tone === "warn" ? "bg-amber-500" : "bg-red-500";
 
     const isCheckOneDay = () => {
-        const eventDate = new Date(event.start_event);
+        const eventStart = new Date(event.start_event);
+        const eventEnd = new Date(event.end_event);
         const now = new Date();
-        const oneDayBefore = new Date(eventDate);
-        oneDayBefore.setDate(eventDate.getDate() - 1);
+        const oneDayBeforeStart = new Date(eventStart);
+        oneDayBeforeStart.setDate(eventStart.getDate() - 1);
 
-        return now >= oneDayBefore && now < eventDate;
+        return now >= oneDayBeforeStart && now <= eventEnd;
     };
 
     return (

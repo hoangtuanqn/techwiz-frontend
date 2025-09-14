@@ -65,8 +65,8 @@ export function ConfirmRegister({ event: ev }: { event: EventDetailResponseType[
                 });
                 // Mở 1 tab mới
                 window.open(gcalLink, "_blank");
-                window.location.reload();
             }
+            window.location.reload();
         },
         onError: notificationErrorApi,
     });

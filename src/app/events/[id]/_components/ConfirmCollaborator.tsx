@@ -67,8 +67,8 @@ export function ConfirmCollaborator({ event: ev }: { event: EventDetailResponseT
                 });
                 // Mở 1 tab mới
                 window.open(gcalLink, "_blank");
-                window.location.reload();
             }
+            window.location.reload();
         },
         onError: notificationErrorApi,
     });
