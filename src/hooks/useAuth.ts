@@ -11,16 +11,18 @@ import { UserType } from "~/types/user.type";
 import { setUser } from "~/app/store/userSlice";
 import { notificationErrorApi } from "~/libs/apis/validationResponse";
 import { getLocalStorage, removeLocalStorage, setLocalStorage } from "~/libs/localStorage";
+
 export function useAuth() {
     const dispatch = useDispatch<AppDispatch>();
     const router = useRouter();
     let user: UserType | null;
+
     if (typeof window !== "undefined") {
         user = JSON.parse(getLocalStorage("user") || "null") as UserType | null;
     }
     user = useSelector((state: RootState) => state.user.user);
 
-    // ✅ Hàm login
+    // ✅ Login function
     const login = (user: UserType) => {
         if (typeof window !== "undefined") {
             setLocalStorage("user", JSON.stringify(user));
@@ -28,6 +30,7 @@ export function useAuth() {
         dispatch(setUser(user));
     };
 
+    // ✅ Update profile in Redux store
     const updateProfile = (payload: Partial<UserType>) => {
         dispatch(
             setUser({
@@ -36,35 +39,36 @@ export function useAuth() {
             } as UserType),
         );
     };
-    // Mutation resend verify email
+
+    // ✅ Mutation: resend verification email
     const resendVerifyEmail = useMutation({
         mutationFn: () =>
             privateApi.post("/profile/resend-verify-email", {
                 email: user?.email,
             }),
         onSuccess: () => {
-            toast.success("Đã gửi lại email xác thực!");
+            toast.success("Verification email has been resent!");
         },
         onError: (error) => {
             notificationErrorApi(error);
         },
     });
 
-    // ✅ Mutation để logout
+    // ✅ Mutation: logout
     const logoutUser = useMutation({
         mutationFn: async () => {
             await privateApi.post("/auth/logout");
         },
         onSettled: () => {
-            dispatch(setUser(null)); // Xoá user khỏi Redux
+            dispatch(setUser(null)); // Clear user from Redux
             if (typeof window !== "undefined") {
-                removeLocalStorage("user"); // Xoá user khỏi localStorage
+                removeLocalStorage("user"); // Clear user from localStorage
             }
             router.push("/auth/login");
-            toast.success("Đăng xuất thành công!");
+            toast.success("Successfully logged out!");
         },
         onError: () => {
-            toast.error("Có lỗi khi đăng xuất!");
+            toast.error("An error occurred while logging out!");
         },
     });
 

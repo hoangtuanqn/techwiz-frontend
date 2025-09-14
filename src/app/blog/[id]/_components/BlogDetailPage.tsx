@@ -31,9 +31,9 @@ export default function BlogDetailPage({ blogId }: BlogDetailPageProps) {
                 setBlog(response.data.data);
             }
         } catch (error) {
-            console.error('Error loading blog:', error);
-            toast.error('Không thể tải blog');
-            router.push('/blog');
+            console.error("Error loading blog:", error);
+            toast.error("Failed to load blog");
+            router.push("/blog");
         } finally {
             setLoading(false);
         }
@@ -41,21 +41,21 @@ export default function BlogDetailPage({ blogId }: BlogDetailPageProps) {
 
     async function handleLike() {
         if (!blog || liking) return;
-        
+
         try {
             setLiking(true);
             if (blog.is_liked) {
                 await blogApi.unlikeBlog(blog.id);
                 setBlog(prev => prev ? { ...prev, is_liked: false, likes_count: prev.likes_count - 1 } : null);
-                toast.success('Đã bỏ thích bài viết');
+                toast.success("Unliked the blog");
             } else {
                 await blogApi.likeBlog(blog.id);
                 setBlog(prev => prev ? { ...prev, is_liked: true, likes_count: prev.likes_count + 1 } : null);
-                toast.success('Đã thích bài viết');
+                toast.success("Liked the blog");
             }
         } catch (error) {
-            console.error('Error liking blog:', error);
-            toast.error('Có lỗi khi thích bài viết');
+            console.error("Error liking blog:", error);
+            toast.error("An error occurred while liking the blog");
         } finally {
             setLiking(false);
         }
@@ -87,9 +87,9 @@ export default function BlogDetailPage({ blogId }: BlogDetailPageProps) {
         return (
             <div className="min-h-screen bg-white py-16">
                 <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 text-center">
-                    <h1 className="text-2xl font-bold text-slate-800 mb-4">Blog không tồn tại</h1>
+                    <h1 className="text-2xl font-bold text-slate-800 mb-4">Blog not found</h1>
                     <Link href="/blog" className="text-cyan-600 hover:text-cyan-700">
-                        Quay lại danh sách blog
+                        Back to blog list
                     </Link>
                 </div>
             </div>
@@ -105,7 +105,7 @@ export default function BlogDetailPage({ blogId }: BlogDetailPageProps) {
                     className="inline-flex items-center gap-2 text-slate-600 hover:text-slate-800 mb-8 transition-colors"
                 >
                     <ArrowLeft className="h-4 w-4" />
-                    Quay lại danh sách blog
+                    Back to blog list
                 </Link>
 
                 {/* Header */}
@@ -130,15 +130,15 @@ export default function BlogDetailPage({ blogId }: BlogDetailPageProps) {
                     <div className="mt-6 flex flex-wrap items-center gap-6 text-sm text-slate-500">
                         <div className="flex items-center gap-2">
                             <User className="h-4 w-4" />
-                            <span>{blog.author?.full_name || 'Unknown Author'}</span>
+                            <span>{blog.author?.full_name || "Unknown Author"}</span>
                         </div>
                         <div className="flex items-center gap-2">
                             <Calendar className="h-4 w-4" />
-                            <span>{new Date(blog.created_at).toLocaleDateString('vi-VN')}</span>
+                            <span>{new Date(blog.created_at).toLocaleDateString("en-US")}</span>
                         </div>
                         <div className="flex items-center gap-2">
                             <Eye className="h-4 w-4" />
-                            <span>{blog.views_count} lượt xem</span>
+                            <span>{blog.views_count} views</span>
                         </div>
                     </div>
                 </header>
@@ -157,7 +157,7 @@ export default function BlogDetailPage({ blogId }: BlogDetailPageProps) {
                 {/* Tags */}
                 {blog.tags && (
                     <div className="mb-8 flex flex-wrap gap-2">
-                        {blog.tags.split(',').map((tag, index) => (
+                        {blog.tags.split(",").map((tag, index) => (
                             <span
                                 key={index}
                                 className="rounded-full border border-slate-200 bg-slate-50 px-3 py-1 text-sm text-slate-600"
@@ -182,17 +182,17 @@ export default function BlogDetailPage({ blogId }: BlogDetailPageProps) {
                         disabled={liking}
                         className={`inline-flex items-center gap-2 px-6 py-3 rounded-lg border transition-colors ${
                             blog.is_liked
-                                ? 'border-red-300 bg-red-50 text-red-600 hover:bg-red-100'
-                                : 'border-slate-300 bg-white text-slate-700 hover:bg-slate-50'
+                                ? "border-red-300 bg-red-50 text-red-600 hover:bg-red-100"
+                                : "border-slate-300 bg-white text-slate-700 hover:bg-slate-50"
                         } disabled:opacity-50`}
                     >
-                        <Heart className={`h-5 w-5 ${blog.is_liked ? 'fill-current' : ''}`} />
-                        <span>{blog.is_liked ? 'Đã thích' : 'Thích'}</span>
+                        <Heart className={`h-5 w-5 ${blog.is_liked ? "fill-current" : ""}`} />
+                        <span>{blog.is_liked ? "Liked" : "Like"}</span>
                         <span className="ml-1">({blog.likes_count})</span>
                     </button>
 
                     <div className="text-sm text-slate-500">
-                        Cập nhật lần cuối: {new Date(blog.updated_at).toLocaleDateString('vi-VN')}
+                        Last updated: {new Date(blog.updated_at).toLocaleDateString("en-US")}
                     </div>
                 </div>
             </div>

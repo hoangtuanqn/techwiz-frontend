@@ -4,10 +4,10 @@ import React from "react";
 
 const Categories = () => {
     return (
-        <section id="categories" className="bg-slate-50 py-12">
-            <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-                <div className="flex items-end justify-between">
-                    <h2 className="text-3xl font-bold" data-aos="fade-up">
+        <section id="categories" className="bg-slate-50 py-8 sm:py-12">
+            <div className="mx-auto max-w-7xl px-2 sm:px-4 md:px-6 lg:px-8">
+                <div className="flex flex-col sm:flex-row items-start sm:items-end justify-between gap-2">
+                    <h2 className="text-2xl sm:text-3xl font-bold" data-aos="fade-up">
                         Featured Categories
                     </h2>
                     <a
@@ -20,7 +20,7 @@ const Categories = () => {
                     </a>
                 </div>
 
-                <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-5">
+                <div className="mt-6 grid gap-4 sm:gap-6 sm:grid-cols-2 lg:grid-cols-5">
                     {/* Card 1 */}
                     <a
                         className="group overflow-hidden rounded-2xl border border-slate-200 shadow transition hover:shadow-lg"
@@ -28,7 +28,7 @@ const Categories = () => {
                         data-aos="fade-up"
                     >
                         <img
-                            className="h-36 w-full object-cover"
+                            className="h-24 sm:h-36 w-full object-cover"
                             src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?q=80&w=1470&auto=format&fit=crop"
                             alt="Technical"
                         />
@@ -47,7 +47,7 @@ const Categories = () => {
                         data-aos-delay="20"
                     >
                         <img
-                            className="h-36 w-full object-cover"
+                            className="h-24 sm:h-36 w-full object-cover"
                             src="https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?q=80&w=1470&auto=format&fit=crop"
                             alt="Business"
                         />
@@ -66,7 +66,7 @@ const Categories = () => {
                         data-aos-delay="40"
                     >
                         <img
-                            className="h-36 w-full object-cover"
+                            className="h-24 sm:h-36 w-full object-cover"
                             src="https://images.unsplash.com/photo-1520975682031-a6b3800c9419?q=80&w=1470&auto=format&fit=crop"
                             alt="Cultural"
                         />
@@ -85,7 +85,7 @@ const Categories = () => {
                         data-aos-delay="60"
                     >
                         <img
-                            className="h-36 w-full object-cover"
+                            className="h-24 sm:h-36 w-full object-cover"
                             src="https://images.unsplash.com/photo-1495567720989-cebdbdd97913?q=80&w=1470&auto=format&fit=crop"
                             alt="Sports"
                         />
@@ -104,7 +104,7 @@ const Categories = () => {
                         data-aos-delay="80"
                     >
                         <img
-                            className="h-36 w-full object-cover"
+                            className="h-24 sm:h-36 w-full object-cover"
                             src="https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?q=80&w=1470&auto=format&fit=crop"
                             alt="Volunteering"
                         />

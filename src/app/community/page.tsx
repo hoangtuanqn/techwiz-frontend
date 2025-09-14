@@ -42,19 +42,19 @@ const AUTHORS = [
 
 function seedMessages(): Message[] {
   const templates = [
-    "Có ai biết cách tối ưu truy vấn MySQL cho bảng registrations không?",
-    "Mình có file thiết kế badge QR, ai cần thì mình share.",
-    "Thông báo: chiều nay hệ thống bảo trì 30 phút.",
-    "Check-in realtime chạy ổn rồi nhé, dùng WebSocket là xong.",
-    "Tối mai có meetup nho nhỏ ở phòng Lab 2, ai rảnh join nhé.",
-    "Có mẹo nào để build Next.js giảm thời gian từ 120s xuống 60s?",
-    "Laravel 12 + PHP 8.2 deploy cPanel ok, mình viết hướng dẫn ngắn.",
-    "Gợi ý giao diện trang report: card KPI + bảng lịch sử là đủ dùng",
+    "Does anyone know how to optimize MySQL queries for the registrations table?",
+    "I have a QR badge design file—ping me if you need it.",
+    "Notice: the system will be under maintenance for 30 minutes this afternoon.",
+    "Check-in in realtime is stable now; WebSocket did the trick.",
+    "Small meetup tomorrow evening in Lab 2—join if you’re free!",
+    "Any tips to cut Next.js build time from 120s to 60s?",
+    "Laravel 12 + PHP 8.2 deploys fine on cPanel—I wrote a short guide.",
+    "UI suggestion for the report page: KPI cards + a history table are enough.",
   ] as const;
 
   const now = new Date();
   const messages: Message[] = [];
-  for (let i = 0; i < 30; i++) { // <-- 30 tin nhắn
+  for (let i = 0; i < 30; i++) { // <-- 30 messages
     const minsAgo = rand(10, 60 * 24 * 10);
     const d = new Date(now.getTime() - minsAgo * 60 * 1000);
     const author = pick(AUTHORS);
@@ -69,7 +69,7 @@ function seedMessages(): Message[] {
       pinned: rng() < 0.12,
     });
   }
-  // Pinned (nếu có) đưa lên trước, sau đó mới theo thời gian
+  // Pinned (if any) first, then sort by time
   return messages
     .sort((a, b) => +new Date(b.createdAt) - +new Date(a.createdAt))
     .sort((a, b) => Number(b.pinned) - Number(a.pinned));
@@ -80,7 +80,7 @@ export default function CommunityMessagesMinimal() {
   const data = useMemo(seedMessages, []);
 
   const [q, setQ] = useState("");
-  const [visible, setVisible] = useState(10); // <-- hiển thị 10 tin đầu
+  const [visible, setVisible] = useState(10); // <-- show first 10 items
 
   const filtered = useMemo(() => {
     const t = q.trim().toLowerCase();
@@ -95,7 +95,7 @@ export default function CommunityMessagesMinimal() {
     });
   }, [data, q]);
 
-  // Mỗi lần tìm kiếm thay đổi thì reset về 10 tin
+  // Reset to 10 when the search query changes
   React.useEffect(() => setVisible(10), [q]);
 
   const showing = filtered.slice(0, visible);
@@ -106,19 +106,19 @@ export default function CommunityMessagesMinimal() {
       <main className="mx-auto max-w-4xl px-4 py-6 sm:px-6 lg:px-8">
         {/* Header */}
         <header className="mb-4 flex items-center justify-between gap-3">
-          <h1 className="text-xl font-extrabold">Cộng đồng · Tin nhắn</h1>
+          <h1 className="text-xl font-extrabold">Community · Messages</h1>
           <div className="flex items-center gap-2">
             <div className="relative">
               <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
               <input
                 value={q}
                 onChange={(e) => setQ(e.target.value)}
-                placeholder="Tìm tin nhắn hoặc tác giả…"
+                placeholder="Search messages or authors…"
                 className="w-64 rounded-xl border border-slate-200 bg-white py-2 pl-9 pr-3 text-sm outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-200/60"
               />
             </div>
-            <span className="hidden sm:inline text-xs font-semibold text-slate-600">
-              Chỉ Admin & Organizer được gửi tin • Tắt phản hồi
+            <span className="hidden text-xs font-semibold text-slate-600 sm:inline">
+              Only Admin & Organizer can post • Replies disabled
             </span>
           </div>
         </header>
@@ -156,7 +156,7 @@ export default function CommunityMessagesMinimal() {
 
           {!showing.length && (
             <div className="rounded-2xl border border-dashed border-slate-300 bg-white p-8 text-center text-slate-500">
-              Không có tin nhắn phù hợp bộ lọc.
+              No messages match your filter.
             </div>
           )}
 
@@ -166,10 +166,10 @@ export default function CommunityMessagesMinimal() {
                 onClick={() => setVisible((v) => Math.min(v + 10, filtered.length))}
                 className="inline-flex items-center rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 shadow-sm hover:bg-slate-50"
               >
-                Xem thêm 10 tin
+                Show 10 more
               </button>
               <div className="mt-1 text-xs text-slate-500">
-                Đang hiển thị {showing.length}/{filtered.length}
+                Showing {showing.length}/{filtered.length}
               </div>
             </div>
           )}

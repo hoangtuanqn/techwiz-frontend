@@ -25,27 +25,27 @@ const UpcomingEvents: React.FC = () => {
     });
 
     return (
-        <section className="py-16 md:py-20">
-            <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <section className="py-10 sm:py-14 md:py-20">
+            <div className="mx-auto max-w-7xl px-2 sm:px-4 md:px-6 lg:px-8">
                 {/* TITLE + VIEW ALL */}
-                <div className="flex items-end justify-between">
-                    <h2 className="text-3xl font-bold">Upcoming Events</h2>
-                    <Link href="/events" className="inline-flex items-center gap-1 text-cyan-600 hover:underline">
+                <div className="flex flex-col sm:flex-row items-start sm:items-end justify-between gap-2">
+                    <h2 className="text-2xl sm:text-3xl font-bold">Upcoming Events</h2>
+                    <Link href="/events" className="inline-flex items-center gap-1 text-cyan-600 hover:underline text-sm sm:text-base">
                         View all <ArrowRight className="h-4 w-4" />
                     </Link>
                 </div>
 
                 {/* GRID */}
-                <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                <div className="mt-6 grid gap-4 sm:gap-6 sm:grid-cols-2 lg:grid-cols-3">
                     {/* Loading */}
                     {isLoading &&
                         Array.from({ length: 3 }).map((_, i) => (
                             <div
                                 key={i}
-                                className="h-64 animate-pulse overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm"
+                                className="h-52 sm:h-64 animate-pulse overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm"
                             >
-                                <div className="h-40 w-full bg-slate-100" />
-                                <div className="space-y-3 p-4">
+                                <div className="h-32 sm:h-40 w-full bg-slate-100" />
+                                <div className="space-y-2 sm:space-y-3 p-3 sm:p-4">
                                     <div className="h-4 w-2/3 rounded bg-slate-100" />
                                     <div className="h-3 w-5/6 rounded bg-slate-100" />
                                     <div className="h-3 w-3/5 rounded bg-slate-100" />
@@ -82,9 +82,9 @@ const UpcomingEvents: React.FC = () => {
                                         alt={ev.title}
                                         width={400}
                                         height={160}
-                                        className="h-40 w-full object-cover transition-transform duration-300 group-hover:scale-105"
+                                        className="h-32 sm:h-40 w-full object-cover transition-transform duration-300 group-hover:scale-105"
                                     />
-                                    <div className="p-4">
+                                    <div className="p-3 sm:p-4">
                                         <h3
                                             className={`font-semibold transition-colors ${
                                                 ev.is_booked
@@ -110,8 +110,8 @@ const UpcomingEvents: React.FC = () => {
                                                 />
                                             </div>
                                         </div>
-                                        <p className="mt-2 line-clamp-2 text-sm text-slate-600">{ev.description}</p>
-                                        <div className="mt-3 flex items-center justify-between text-sm">
+                                        <p className="mt-2 line-clamp-2 text-xs sm:text-sm text-slate-600">{ev.description}</p>
+                                        <div className="mt-2 sm:mt-3 flex items-center justify-between text-xs sm:text-sm">
                                             <span className="text-slate-500">{formatter.capitalize(ev.category)}</span>
                                             <span
                                                 className={`rounded-full px-2 py-1 text-xs font-semibold ${
@@ -132,7 +132,7 @@ const UpcomingEvents: React.FC = () => {
                         })}
 
                     {!isLoading && events?.data.length === 0 && (
-                        <div className="col-span-full rounded-xl border border-slate-200 bg-white p-6 text-slate-600">
+                        <div className="col-span-full rounded-xl border border-slate-200 bg-white p-4 sm:p-6 text-slate-600 text-center">
                             No events found.
                         </div>
                     )}
