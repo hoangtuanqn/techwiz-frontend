@@ -6,6 +6,7 @@ import { useAuth } from "~/hooks/useAuth";
 
 const QrCodeCheckIn = ({ id_event }: { id_event: number }) => {
     const { user } = useAuth();
+    if(!user) return null;
     return (
         <div className="mt-8 flex flex-col items-center justify-center">
             <div className="rounded-xl border border-cyan-200 bg-cyan-50 p-6 shadow">

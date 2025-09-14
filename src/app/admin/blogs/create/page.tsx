@@ -24,7 +24,7 @@ export default function CreateBlogPage() {
 
     async function handleSave() {
         if (!title.trim() || !slug.trim() || !content.trim()) {
-            toast.error("Please enter Title, Slug, and Content!");
+            toast.error("Please enter the Title, Slug, and Content completely!");
             return;
         }
 

@@ -117,7 +117,7 @@ export default function MyBlogsPage() {
             <article className="rounded-2xl border bg-white p-6 shadow-sm">
                 <div className="flex items-center justify-between">
                     <div>
-                        <h1 className="text-xl font-semibold">Admin Blogs</h1>
+                        <h1 className="text-xl font-semibold">Blogs Management</h1>
                         <p className="mt-1 text-sm text-slate-600">
                             Manage all blogs in the system. You can view, edit, and delete blogs.
                         </p>
@@ -144,12 +144,7 @@ export default function MyBlogsPage() {
                                 className="w-full rounded-lg border py-1.5 pr-2 pl-8 text-sm"
                             />
                         </div>
-                        <Link
-                            href="/admin/blogs/create"
-                            className="inline-flex items-center gap-2 rounded-lg bg-slate-900 px-3 py-1.5 text-xs font-medium text-white hover:bg-slate-800"
-                        >
-                            <Plus className="h-4 w-4" /> New
-                        </Link>
+
                     </div>
 
                     <div className="max-h-[60vh] overflow-y-auto">
@@ -207,7 +202,7 @@ export default function MyBlogsPage() {
                                 </div>
                                 {current.tags && (
                                     <div className="mt-2 flex flex-wrap gap-2">
-                                        {current.tags.split(',').map((t, index) => (
+                                        {current.tags.split(",").map((t, index) => (
                                             <span
                                                 key={index}
                                                 className="rounded-full bg-cyan-50 px-2 py-0.5 text-xs text-cyan-700"
@@ -256,7 +251,7 @@ export default function MyBlogsPage() {
                                 <label className="block text-sm">
                                     Excerpt
                                     <textarea
-                                        value={current.excerpt || ''}
+                                        value={current.excerpt || ""}
                                         onChange={(e) => setCurrent({ ...current, excerpt: e.target.value })}
                                         rows={3}
                                         className="mt-1 w-full rounded-lg border p-2 text-sm"
@@ -303,7 +298,7 @@ export default function MyBlogsPage() {
                                 <label className="block text-sm">
                                     Tags (comma separated)
                                     <input
-                                        value={current.tags || ''}
+                                        value={current.tags || ""}
                                         onChange={(e) =>
                                             setCurrent({
                                                 ...current,

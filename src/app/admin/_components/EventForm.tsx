@@ -63,14 +63,14 @@ export default function EventForm({
         // 👇 Giới hạn chiều rộng form ở đây
         <div className="max-w mx-auto w-full space-y-6">
             {/* OVERVIEW */}
-            <Section title="TỔNG QUAN">
+            <Section title="OVERVIEW">
                 <div className={`grid gap-6 md:grid-cols-2 ${disabledCls}`}>
                     <div>
                         <label className="mb-1 block text-xs font-medium text-slate-600">Event title</label>
                         <input
                             value={values.title}
                             onChange={bind("title")}
-                            placeholder="Tên sự kiện"
+                            placeholder="Event title"
                             className={`${inputCls} w-full`}
                         />
                     </div>
@@ -90,7 +90,7 @@ export default function EventForm({
                         <input
                             value={values.teaser}
                             onChange={bind("teaser")}
-                            placeholder="Giới thiệu ngắn"
+                            placeholder="Short introduction"
                             className={`${inputCls} w-full`}
                         />
                     </div>
@@ -101,7 +101,7 @@ export default function EventForm({
                             value={values.description}
                             onChange={bind("description")}
                             rows={4}
-                            placeholder="Mô tả chi tiết"
+                            placeholder="Detailed description"
                             className={`${inputCls} w-full`}
                         />
                     </div>
@@ -178,7 +178,7 @@ export default function EventForm({
                         <input
                             value={values.place}
                             onChange={bind("place")}
-                            placeholder="Địa điểm / Link online"
+                            placeholder="Destination/ Online link"
                             className={`${inputCls} w-full`}
                         />
                     </div>
@@ -188,7 +188,7 @@ export default function EventForm({
                         <input
                             value={values.mapNote}
                             onChange={bind("mapNote")}
-                            placeholder="Ghi chú bản đồ"
+                            placeholder="Map note"
                             className={`${inputCls} w-full`}
                         />
                     </div>
@@ -201,7 +201,7 @@ export default function EventForm({
                 <input
                     value={values.learning}
                     onChange={bind("learning")}
-                    placeholder="Ví dụ: Thành thạo Git workflow cơ bản"
+                    placeholder="For example: Master the basic Git workflow"
                     className={`${inputCls} w-full ${disabledCls}`}
                 />
             </Section>
@@ -225,7 +225,7 @@ export default function EventForm({
                             <input
                                 value={values.certName}
                                 onChange={bind("certName")}
-                                placeholder="Tên chứng chỉ"
+                                placeholder="Certificate name"
                                 className={`${inputCls} w-full`}
                             />
                         </div>
@@ -234,7 +234,7 @@ export default function EventForm({
                             <input
                                 value={values.certCondition}
                                 onChange={bind("certCondition")}
-                                placeholder="Điều kiện"
+                                placeholder="Condition to get certificate"
                                 className={`${inputCls} w-full`}
                             />
                         </div>
