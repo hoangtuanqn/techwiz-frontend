@@ -28,24 +28,27 @@ const UpcomingEvents: React.FC = () => {
         <section className="py-10 sm:py-14 md:py-20">
             <div className="mx-auto max-w-7xl px-2 sm:px-4 md:px-6 lg:px-8">
                 {/* TITLE + VIEW ALL */}
-                <div className="flex flex-col sm:flex-row items-start sm:items-end justify-between gap-2">
-                    <h2 className="text-2xl sm:text-3xl font-bold">Upcoming Events</h2>
-                    <Link href="/events" className="inline-flex items-center gap-1 text-cyan-600 hover:underline text-sm sm:text-base">
+                <div className="flex flex-col items-start justify-between gap-2 sm:flex-row sm:items-end">
+                    <h2 className="text-2xl font-bold sm:text-3xl">Upcoming Events</h2>
+                    <Link
+                        href="/events"
+                        className="inline-flex items-center gap-1 text-sm text-cyan-600 hover:underline sm:text-base"
+                    >
                         View all <ArrowRight className="h-4 w-4" />
                     </Link>
                 </div>
 
                 {/* GRID */}
-                <div className="mt-6 grid gap-4 sm:gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                <div className="mt-6 grid gap-4 sm:grid-cols-2 sm:gap-6 lg:grid-cols-3">
                     {/* Loading */}
                     {isLoading &&
                         Array.from({ length: 3 }).map((_, i) => (
                             <div
                                 key={i}
-                                className="h-52 sm:h-64 animate-pulse overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm"
+                                className="h-52 animate-pulse overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm sm:h-64"
                             >
-                                <div className="h-32 sm:h-40 w-full bg-slate-100" />
-                                <div className="space-y-2 sm:space-y-3 p-3 sm:p-4">
+                                <div className="h-32 w-full bg-slate-100 sm:h-40" />
+                                <div className="space-y-2 p-3 sm:space-y-3 sm:p-4">
                                     <div className="h-4 w-2/3 rounded bg-slate-100" />
                                     <div className="h-3 w-5/6 rounded bg-slate-100" />
                                     <div className="h-3 w-3/5 rounded bg-slate-100" />
@@ -56,7 +59,7 @@ const UpcomingEvents: React.FC = () => {
                     {/* Cards (exact same structure as EventList) */}
                     {!isLoading &&
                         events?.data.map((ev) => {
-                            const p = pct(ev.booked_count, ev.seating.total_seats ?? 0);
+                            const p = pct(ev.booked_count, ev?.seating?.total_seats ?? 0);
                             return (
                                 <Link
                                     key={ev.id}
@@ -82,7 +85,7 @@ const UpcomingEvents: React.FC = () => {
                                         alt={ev.title}
                                         width={400}
                                         height={160}
-                                        className="h-32 sm:h-40 w-full object-cover transition-transform duration-300 group-hover:scale-105"
+                                        className="h-32 w-full object-cover transition-transform duration-300 group-hover:scale-105 sm:h-40"
                                     />
                                     <div className="p-3 sm:p-4">
                                         <h3
@@ -99,7 +102,7 @@ const UpcomingEvents: React.FC = () => {
                                             <div className="flex items-center justify-between text-xs text-slate-600">
                                                 <span className="mb-3 flex items-center gap-1">
                                                     <Users className="h-4 w-4 text-cyan-600" />
-                                                    {ev.booked_count}/{ev.seating.total_seats} booked
+                                                    {ev.booked_count}/{ev?.seating?.total_seats ?? 0} booked
                                                 </span>
                                                 <span className="font-medium">{Math.max(0, 100 - p)}% left</span>
                                             </div>
@@ -110,8 +113,10 @@ const UpcomingEvents: React.FC = () => {
                                                 />
                                             </div>
                                         </div>
-                                        <p className="mt-2 line-clamp-2 text-xs sm:text-sm text-slate-600">{ev.description}</p>
-                                        <div className="mt-2 sm:mt-3 flex items-center justify-between text-xs sm:text-sm">
+                                        <p className="mt-2 line-clamp-2 text-xs text-slate-600 sm:text-sm">
+                                            {ev.description}
+                                        </p>
+                                        <div className="mt-2 flex items-center justify-between text-xs sm:mt-3 sm:text-sm">
                                             <span className="text-slate-500">{formatter.capitalize(ev.category)}</span>
                                             <span
                                                 className={`rounded-full px-2 py-1 text-xs font-semibold ${
@@ -132,7 +137,7 @@ const UpcomingEvents: React.FC = () => {
                         })}
 
                     {!isLoading && events?.data.length === 0 && (
-                        <div className="col-span-full rounded-xl border border-slate-200 bg-white p-4 sm:p-6 text-slate-600 text-center">
+                        <div className="col-span-full rounded-xl border border-slate-200 bg-white p-4 text-center text-slate-600 sm:p-6">
                             No events found.
                         </div>
                     )}

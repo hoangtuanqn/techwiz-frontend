@@ -1,10 +1,11 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import Link from "next/link";
+
 import { GraduationCap, Facebook, Twitter, Instagram, MapPin, Mail, Phone, ArrowUp } from "lucide-react";
 import { Toaster } from "sonner";
 import ChatBotAI from "~/components/ChatBotAI";
+import Link from "next/link";
 
 const Footer: React.FC = () => {
     const [showScroll, setShowScroll] = useState(false);

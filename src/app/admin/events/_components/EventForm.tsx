@@ -69,9 +69,7 @@ export default function EventForm() {
             eventApi.createEvent(data);
         },
 
-        onSuccess: (data) => {
-            console.log(data);
-
+        onSuccess: () => {
             toast.success("Event created successfully!");
             // form.reset();
         },

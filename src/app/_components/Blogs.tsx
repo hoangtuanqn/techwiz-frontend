@@ -1,7 +1,6 @@
-"use client";
 import React from "react";
 import { ArrowRight } from "lucide-react";
-import NextLink from "next/link";
+import Link from "next/link";
 const Blogs = () => {
     return (
         <section id="blog" className="bg-gray-50 py-12 sm:py-16 md:py-20">
@@ -47,7 +46,7 @@ const Blogs = () => {
                                     category: "other",
                                 },
                             ].map(({ img, alt, title, desc, category }, i) => (
-                                <NextLink
+                                <Link
                                     href={`/blog?category=${category}`}
                                     key={i}
                                     className="group overflow-hidden rounded-3xl border border-slate-300 bg-white shadow-sm transition-shadow hover:shadow-lg"
@@ -63,14 +62,11 @@ const Blogs = () => {
                                     <div className="p-4 sm:p-6">
                                         <h3 className="text-base font-semibold text-slate-900 sm:text-lg">{title}</h3>
                                         <p className="mt-2 text-xs text-slate-600 sm:text-sm">{desc}</p>
-                                        <a
-                                            href={"/blog?category=" + category}
-                                            className="mt-3 inline-flex items-center gap-1 text-xs font-medium text-cyan-600 hover:text-cyan-700 sm:mt-4 sm:text-base"
-                                        >
+                                        <span className="mt-3 inline-flex items-center gap-1 text-xs font-medium text-cyan-600 hover:text-cyan-700 sm:mt-4 sm:text-base">
                                             Read more <ArrowRight className="h-4 w-4" />
-                                        </a>
+                                        </span>
                                     </div>
-                                </NextLink>
+                                </Link>
                             ))}
                         </div>
                     </div>
