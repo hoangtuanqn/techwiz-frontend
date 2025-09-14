@@ -36,6 +36,7 @@ import { Checkbox } from "~/components/ui/checkbox";
 import { Label } from "~/components/ui/label";
 import { useState } from "react";
 import { getGoogleCalendarLink } from "~/libs/googleCalendar";
+import { ConfirmWaitlist } from "./ConfirmWaitlist";
 export function ConfirmRegister({ event: ev }: { event: EventDetailResponseType["data"] }) {
     const { user } = useAuth();
     const [isAddToCalendar, setIsAddToCalendar] = useState(true);
@@ -94,16 +95,26 @@ export function ConfirmRegister({ event: ev }: { event: EventDetailResponseType[
         <div className="flex gap-3">
             <Dialog>
                 <DialogTrigger asChild>
-                    <Button
-                        disabled={ev.is_booked || available === 0}
-                        className={`inline-flex items-center justify-center rounded-xl px-6 py-3 font-medium text-white shadow-lg transition-all duration-200 hover:scale-105 disabled:cursor-not-allowed disabled:opacity-60 ${
-                            ev.is_booked
-                                ? "bg-gradient-to-r from-emerald-500 to-green-500 hover:shadow-emerald-500/25"
-                                : "bg-gradient-to-r from-cyan-500 to-fuchsia-500 hover:shadow-cyan-500/25"
-                        }`}
-                    >
-                        {ev.is_booked ? "✓ Already Registered" : available === 0 ? "Sold Out" : "Register Now"}
-                    </Button>
+                    {available === 0 && seating?.waitlist_enabled === 1 ? (
+                        <ConfirmWaitlist event={ev} />
+                    ) : (
+                        <Button
+                            disabled={available === 0 && seating?.waitlist_enabled === 0}
+                            className={`inline-flex items-center justify-center rounded-xl px-6 py-3 font-medium text-white shadow-lg transition-all duration-200 hover:scale-105 disabled:cursor-not-allowed disabled:opacity-60 ${
+                                available === 0
+                                    ? seating?.waitlist_enabled
+                                        ? "bg-gradient-to-r from-yellow-400 to-orange-500"
+                                        : "bg-gradient-to-r from-gray-400 to-gray-600"
+                                    : "bg-gradient-to-r from-cyan-500 to-fuchsia-500 hover:shadow-cyan-500/25"
+                            }`}
+                        >
+                            {available === 0
+                                ? seating?.waitlist_enabled
+                                    ? "Join Waitlist"
+                                    : "Đã hết chỗ"
+                                : "Register Now"}
+                        </Button>
+                    )}
                 </DialogTrigger>
 
                 <DialogContent className="max-h-[80vh] overflow-y-auto sm:max-w-[600px]">
