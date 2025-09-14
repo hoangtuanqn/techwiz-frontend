@@ -37,8 +37,9 @@ const ReviewEvent = ({ id }: { id: number }) => {
     });
 
     const eventMutation = useMutation({
-        mutationFn: async (data: { id: number; reason: string }) => {
-            const res = await eventApi.updateEventStatus(data.id, "rejected", data.reason);
+        mutationFn: async (data: { id: number; reason: string; action: "approved" | "rejected" }) => {
+            const res = await eventApi.updateEventStatus(data.id, data.action, data.reason);
+            return res.data;
         },
         onSuccess: () => {
             toast.success("Event rejected successfully");
@@ -84,12 +85,14 @@ const ReviewEvent = ({ id }: { id: number }) => {
 
                 {/* Action Buttons */}
                 <div className="flex items-center gap-3">
-                    <Link href={`/admin/events/${id}`}>
-                        <Button className="inline-flex items-center gap-2 rounded-lg border border-blue-300 bg-blue-50 px-4 py-2 text-sm font-medium text-blue-700 transition-colors hover:bg-blue-100">
-                            <Edit3 className="h-4 w-4" />
-                            Edit Event
-                        </Button>
-                    </Link>
+                    {event.status !== "rejected" && (
+                        <Link href={`/admin/events/${id}`}>
+                            <Button className="inline-flex items-center gap-2 rounded-lg border border-blue-300 bg-blue-50 px-4 py-2 text-sm font-medium text-blue-700 transition-colors hover:bg-blue-100">
+                                <Edit3 className="h-4 w-4" />
+                                Edit Event
+                            </Button>
+                        </Link>
+                    )}
 
                     {event.status === "pending" && (
                         <>
@@ -97,7 +100,7 @@ const ReviewEvent = ({ id }: { id: number }) => {
                             <ConfirmDialog
                                 message="Are you sure you want to approve this event?"
                                 action={() => {
-                                    eventMutation.mutate({ id: event.id, reason: "" });
+                                    eventMutation.mutate({ id: event.id, reason: "", action: "approved" });
                                 }}
                             >
                                 <Button className="inline-flex items-center gap-2 rounded-lg bg-green-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-green-700">
