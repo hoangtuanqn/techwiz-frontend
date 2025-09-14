@@ -4,6 +4,7 @@
 import Link from "next/link";
 import { useMemo, useState, useEffect } from "react";
 import { ArrowRight, Search, X } from "lucide-react";
+import { useSearchParams } from "next/navigation";
 import { BlogCardSkeleton } from "./BlogSkeleton";
 import blogApi from "~/apiRequest/blog";
 import { BlogItemType } from "~/types/schemaZod/blog.schema";
@@ -15,6 +16,7 @@ const CATEGORIES = ["All", "technology", "culture", "education", "other"] as con
 type Post = BlogItemType;
 
 export default function BlogPage() {
+    const searchParams = useSearchParams();
     const [ALL, setALL] = useState<Post[]>([]);
     const [loading, setLoading] = useState(true);
     const [q, setQ] = useState("");
@@ -30,6 +32,14 @@ export default function BlogPage() {
     useEffect(() => {
         loadBlogs();
     }, []);
+
+    // Set category from URL params
+    useEffect(() => {
+        const categoryParam = searchParams.get('category');
+        if (categoryParam && CATEGORIES.includes(categoryParam as any)) {
+            setCategory(categoryParam as (typeof CATEGORIES)[number]);
+        }
+    }, [searchParams]);
 
     async function loadBlogs() {
         try {
@@ -121,7 +131,7 @@ export default function BlogPage() {
                 {/* Header */}
                 <div className="mb-8 text-center">
                     <h1 className="text-3xl font-bold text-slate-800 md:text-4xl">
-                        From the <span className="text-cyan-600">Blog</span>
+                        <span className="text-5xl text-cyan-600">Blog</span>
                     </h1>
                     <p className="mx-auto mt-3 max-w-2xl text-slate-600">
                         Stories, insights, and tips from our event organizers and students.
