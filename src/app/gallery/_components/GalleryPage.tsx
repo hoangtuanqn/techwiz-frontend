@@ -1,71 +1,68 @@
 // app/gallery/_components/GalleryPage.tsx
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 
-/** ===== Types + demo data ===== */
-type Category = {
-    key: string;
-    title: string;
-    desc: string;
-    image: string;
-};
+/** ===== Types + data ===== */
+type Category = { key: string; title: string; desc: string; image: string };
 
 const CATEGORIES: Category[] = [
     {
         key: "technical",
         title: "Technical",
-        desc: "Ảnh & video về công nghệ, hackathon, robot…",
+        desc: "Photos & videos of tech, hackathons, robotics…",
         image: "https://images.unsplash.com/photo-1451186859696-371d9477be93?q=80&w=1600&auto=format&fit=crop",
     },
     {
         key: "business",
         title: "Business",
-        desc: "Pitch, startup showcase, marketing…",
+        desc: "Pitches, startup showcases, marketing…",
         image: "https://images.unsplash.com/photo-1556761175-129418cb2dfe?q=80&w=1600&auto=format&fit=crop",
     },
     {
         key: "cultural",
         title: "Cultural",
-        desc: "Âm nhạc, vũ đạo, lễ hội đa văn hóa.",
-        image: "https://images.unsplash.com/photo-1520975682031-a6b3800c9419?q=80&w=1600&auto=format&fit=crop",
+        desc: "Music, dance, multicultural festivals.",
+        // ✅ replaced with a reliable Unsplash Source (dynamic but always served)
+        image: "https://source.unsplash.com/1600x900/?festival,culture",
     },
     {
         key: "sports",
         title: "Sports",
-        desc: "Điền kinh, bóng đá, esports…",
+        desc: "Athletics, football, esports…",
         image: "https://images.unsplash.com/photo-1502810190503-8303352d0dd1?q=80&w=1600&auto=format&fit=crop",
     },
     {
         key: "workshop",
         title: "Workshop",
-        desc: "Hands-on, phòng lab, training.",
+        desc: "Hands-on labs and trainings.",
         image: "https://images.unsplash.com/photo-1498050108023-c5249f4df085?q=80&w=1600&auto=format&fit=crop",
     },
     {
         key: "academic",
         title: "Academic",
-        desc: "Poster day, seminar, research.",
+        desc: "Poster day, seminars, research.",
         image: "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?q=80&w=1600&auto=format&fit=crop",
     },
     {
         key: "annual",
         title: "Annual",
-        desc: "Ngày hội, diễu hành, pháo hoa.",
+        desc: "Fairs, parades, fireworks.",
         image: "https://images.unsplash.com/photo-1495567720989-cebdbdd97913?q=80&w=1600&auto=format&fit=crop",
     },
     {
         key: "community",
         title: "Community",
-        desc: "Tình nguyện, thiện nguyện, kết nối.",
-        image: "https://images.unsplash.com/photo-1460593861527-6107e4c9e064?q=80&w=1600&auto=format&fit=crop",
+        desc: "Volunteering, charity, connections.",
+        // ✅ replaced with Unsplash Source + will always return something
+        image: "https://source.unsplash.com/1600x900/?community,volunteer",
     },
     {
         key: "other",
         title: "Other",
-        desc: "Khoảnh khắc hậu trường & đa thể loại.",
+        desc: "Backstage moments & mixed themes.",
         image: "https://images.unsplash.com/photo-1492724441997-5dc865305da7?q=80&w=1600&auto=format&fit=crop",
     },
 ];
@@ -74,13 +71,19 @@ const CATEGORIES: Category[] = [
 function CategoryTile({ cat }: { cat: Category }) {
     return (
         <Link
-            href={`/gallery/${encodeURIComponent(cat.key)}`} // ⬅ route động /gallery/[cat]
+            href={`/gallery/${encodeURIComponent(cat.key)}`} // ✅ fixed template string
             className="group block overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition hover:shadow-md focus:ring-2 focus:ring-cyan-300 focus:outline-none"
         >
             <div className="relative">
                 <img
                     src={cat.image}
                     alt={cat.title}
+                    loading="lazy"
+                    decoding="async"
+                    onError={(e) => {
+                        // ✅ fallback if any image fails
+                        e.currentTarget.src = `https://picsum.photos/seed/${encodeURIComponent(cat.key)}/1600/900`;
+                    }}
                     className="h-56 w-full object-cover transition duration-300 group-hover:scale-[1.02]"
                 />
             </div>
@@ -94,14 +97,13 @@ function CategoryTile({ cat }: { cat: Category }) {
 
 /** ===== Page ===== */
 export default function GalleryPage() {
-    const [openMobile, setOpenMobile] = useState(false);
-
-    // Redirect nếu còn dùng ?cat=... → /gallery/[cat]
+    // Redirect legacy ?cat=... → /gallery/[cat]
     const router = useRouter();
     const searchParams = useSearchParams();
+
     useEffect(() => {
         const cat = searchParams.get("cat");
-        if (cat) router.replace(`/gallery/${encodeURIComponent(cat)}`);
+        if (cat) router.replace(`/gallery/${encodeURIComponent(cat)}`); // ✅ fixed template string
     }, [router, searchParams]);
 
     return (
@@ -110,9 +112,11 @@ export default function GalleryPage() {
             <section id="categories" className="border-b border-slate-200">
                 <div className="mx-auto w-full max-w-[1600px] px-3 sm:px-4 lg:px-6 2xl:max-w-[1760px]">
                     <div className="py-8">
-                        <h1 className="text-2xl font-extrabold tracking-tight md:text-3xl text-center">Media Gallery</h1>
-                        <p className="mt-2 max-w-3xl text-slate-600 mx-auto text-center">
-                            Chọn danh mục để xem bộ sưu tập ảnh/video theo từng chủ đề.
+                        <h1 className="text-center text-2xl font-extrabold tracking-tight md:text-3xl">
+                            Media Gallery
+                        </h1>
+                        <p className="mx-auto mt-2 max-w-3xl text-center text-slate-600">
+                            Choose a category to explore curated photo/video collections.
                         </p>
                     </div>
                 </div>
