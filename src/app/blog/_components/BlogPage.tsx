@@ -288,7 +288,7 @@ export default function BlogPage() {
                                   />
                                   <div className="overflow-hidden">
                                       <img
-                                          src={post.image}
+                                          src={post.cover || '/images/blog-placeholder.jpg'}
                                           alt={post.title}
                                           className="h-40 sm:h-48 w-full object-cover transition-transform duration-500 group-hover:scale-105"
                                       />
@@ -299,27 +299,27 @@ export default function BlogPage() {
                                           <span className="rounded-full border border-slate-200 px-2 py-0.5">
                                               {post.category}
                                           </span>
-                                          <span>{post.date}</span>
+                                          <span>{new Date(post.created_at).toLocaleDateString()}</span>
                                       </div>
 
                                       <h3 className="mt-2 line-clamp-2 font-semibold text-slate-800 transition group-hover:text-cyan-600 text-base sm:text-lg">
                                           {post.title}
                                       </h3>
-                                      <p className="mt-2 line-clamp-2 text-sm text-slate-600">{post.desc}</p>
+                                      <p className="mt-2 line-clamp-2 text-sm text-slate-600">{post.excerpt || post.content.substring(0, 100) + '...'}</p>
 
                                       <div className="mt-3 flex flex-wrap gap-2">
-                                          {post.tags.map((tg) => (
+                                          {post.tags && post.tags.split(',').map((tg, index) => (
                                               <span
-                                                  key={tg}
+                                                  key={index}
                                                   className="rounded-full border border-slate-200 px-2 py-0.5 text-xs text-slate-600"
                                               >
-                                                  #{tg}
+                                                  #{tg.trim()}
                                               </span>
                                           ))}
                                       </div>
 
                                       <div className="mt-3 flex items-center justify-between text-xs text-slate-500">
-                                          <span>~ {post.read} min read</span>
+                                          <span>~ {Math.ceil(post.content.length / 1000)} min read</span>
                                           <span className="relative inline-flex items-center gap-1 overflow-hidden rounded-lg border border-slate-200 px-3 py-1.5 text-cyan-600 transition group-hover:-translate-y-0.5 group-hover:border-cyan-500 group-hover:bg-cyan-50">
                                               <span className="relative z-10">Read more</span>
                                               <ArrowRight className="relative z-10 h-4 w-4 transition-transform group-hover:translate-x-0.5" />
